@@ -7,5 +7,12 @@
 </head>
 <body>
     <h1>Ecommarce</h1>
+    <pre>
+    <?php 
+    include "./database/database.php";
+    $a = new database();
+    print_r($a->getResult())
+    ?>
+    </pre>
 </body>
 </html>
