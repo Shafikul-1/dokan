@@ -3,7 +3,7 @@ include "header.php";
 include "../database/database.php";
 $databaseFN = new database();
 
-echo "<pre>";
+
 if (isset($_POST['submit'])) {
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -13,10 +13,10 @@ if (isset($_POST['submit'])) {
     $userComment = $_POST['userComment'];
     $userRoll = $_POST['userRoll'];
 
-    $formData = ["name"=> $name, "pass" => $pass, "conPass"=>$conPass, "date"=>$date, "userComment"=>$userComment, "userRoll"=>$userRoll];
-    print_r($formData);
+    $formData = ["name" => $name, "pass" => $pass, "conPass" => $conPass, "date" => $date, "userComment" => $userComment, "userRoll" => $userRoll];
+    $databaseFN->insertData('users', $formData);
 }
-echo "</pre>";
+
 
 ?>
 
@@ -291,30 +291,30 @@ echo "</pre>";
         <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
             <div>
                 <label class="text-white dark:text-gray-200" for="username">Full Name</label>
-                <input name="name" id="username" type="text" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                <input name="name" id="username" type="text" class="userAddInput1 block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
             </div>
 
             <div>
                 <label class="text-white dark:text-gray-200" for="emailAddress">Email Address</label>
-                <input name="email" id="emailAddress" type="email" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                <input name="email" id="emailAddress" type="email" class="userAddInput2 block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
             </div>
 
             <div>
                 <label class="text-white dark:text-gray-200" for="password">Password</label>
-                <input name="pass" id="password" type="password" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                <input name="pass" id="password" type="password" class="userAddInput3 block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
             </div>
 
             <div>
                 <label class="text-white dark:text-gray-200" for="passwordConfirmation">Password Confirmation</label>
-                <input name="conPass" id="passwordConfirmation" type="password" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                <input name="conPass" id="passwordConfirmation" type="password" class="userAddInput4 block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
             </div>
             <div>
                 <label class="text-white dark:text-gray-200" for="passwordConfirmation">Select</label>
-                <select name="userRoll" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
-                    <?php 
+                <select name="userRoll" class="userAddInput5 block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                    <?php
                     $databaseFN->getData("users");
                     $usersOption = $databaseFN->getResult();
-                    foreach ($usersOption as list("userRoll"=>$userRoll)) {
+                    foreach ($usersOption as list("userRoll" => $userRoll)) {
                         echo "<option value='$userRoll'>";
                         if ($userRoll == 1) {
                             echo "Admin";
@@ -332,18 +332,17 @@ echo "</pre>";
             </div>
             <div class="hidden">
                 <label class="text-white dark:text-gray-200" for="passwordConfirmation">Date</label>
-                <input name="date" 
-                value="<?php date_default_timezone_set("Asia/Dhaka"); echo date("d-m-Y h:i:s A"); ?>" 
-                id="date" type="text" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                <input name="date" value="<?php date_default_timezone_set("Asia/Dhaka");
+                echo date("d-m-Y h:i:s A"); ?>" id="date" type="text" class="userAddInput6 block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
             </div>
             <div>
                 <label class="text-white dark:text-gray-200" for="passwordConfirmation">Text Area</label>
-                <textarea name="userComment" id="textarea" type="textarea" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"></textarea>
+                <textarea name="userComment" id="textarea" type="textarea" class="userAddInput7 block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"></textarea>
             </div>
         </div>
 
         <div class="flex justify-end mt-6">
-            <input type="submit" name="submit" value="Save" class=" px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-pink-500 rounded-md hover:bg-pink-700 focus:outline-none focus:bg-gray-600">
+            <input type="submit" disabled name="submit" value="Save" class="userAddInput8 cursor-pointer px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-pink-500 rounded-md hover:bg-pink-700 focus:outline-none focus:bg-gray-600">
         </div>
     </form>
 </section>
@@ -369,6 +368,7 @@ echo "</pre>";
         const userAddingForm = document.querySelector(".userAddingForm");
         userAddingForm.classList.replace("top-[-0rem]", "top-[-69rem]");
     }
+
 </script>
 
 

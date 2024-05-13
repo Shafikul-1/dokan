@@ -6,11 +6,12 @@ CREATE TABLE users (
     name varchar (200),
     pass varchar (500),
     conPass varchar (500),
-    date varchar (20),
+    date varchar (50),
     userComment TEXT,
     userRoll int,
     PRIMARY KEY (id)
 ) 
+-- ALTER TABLE users MODIFY date varchar(50);
 
 -- Insert Basic Users Data 
 INSERT INTO
