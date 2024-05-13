@@ -1,6 +1,5 @@
 -- Create Database
-CREATE DATABASE dokan;
-
+-- CREATE DATABASE dokan;
 -- Create User Table
 CREATE TABLE users (
     id int AUTO_INCREMENT,
@@ -11,4 +10,48 @@ CREATE TABLE users (
     userComment TEXT,
     userRoll int,
     PRIMARY KEY (id)
-)
+) 
+
+-- Insert Basic Users Data 
+INSERT INTO
+    `users`(
+        `name`,
+        `pass`,
+        `conPass`,
+        `date`,
+        `userComment`,
+        `userRoll`
+    )
+VALUES
+    (
+        'Md Shaifkul Islam',
+        'shafikul',
+        'shafikul',
+        '555',
+        'Best',
+        '1'
+    ),
+    (
+        'Md Shaifkul Islam',
+        'shafikul',
+        'shafikul',
+        '555',
+        'Best',
+        '2'
+    ),
+    (
+        'Md Shaifkul Islam',
+        'shafikul',
+        'shafikul',
+        '555',
+        'Best',
+        '3'
+    ),
+    (
+        'Md Shaifkul Islam',
+        'shafikul',
+        'shafikul',
+        '555',
+        'Best',
+        '4'
+    )

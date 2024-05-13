@@ -1,14 +1,23 @@
-<?php 
+<?php
 include "header.php";
 include "../database/database.php";
+$databaseFN = new database();
+
 echo "<pre>";
-if(isset($_POST['submit'])){
-    print_r($_POST);
+if (isset($_POST['submit'])) {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $pass = $_POST['pass'];
+    $conPass = $_POST['conPass'];
+    $date = $_POST['date'];
+    $userComment = $_POST['userComment'];
+    $userRoll = $_POST['userRoll'];
+
+    $formData = ["name"=> $name, "pass" => $pass, "conPass"=>$conPass, "date"=>$date, "userComment"=>$userComment, "userRoll"=>$userRoll];
+    print_r($formData);
 }
 echo "</pre>";
-$userOption = new database();
-                    $userOption->getData("users");
-                    print_r($userOption->getResult());
+
 ?>
 
 
@@ -282,7 +291,7 @@ $userOption = new database();
         <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
             <div>
                 <label class="text-white dark:text-gray-200" for="username">Full Name</label>
-                <input name="fullName" id="username" type="text" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                <input name="name" id="username" type="text" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
             </div>
 
             <div>
@@ -298,24 +307,38 @@ $userOption = new database();
             <div>
                 <label class="text-white dark:text-gray-200" for="passwordConfirmation">Password Confirmation</label>
                 <input name="conPass" id="passwordConfirmation" type="password" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
-            </div> 
+            </div>
             <div>
                 <label class="text-white dark:text-gray-200" for="passwordConfirmation">Select</label>
-                <select name="chooseOption" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
-                   
-                    <option>Admin</option>
-                    <option>Manager</option>
-                    <option>Empolyee</option>
-                    <option>User</option>
+                <select name="userRoll" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                    <?php 
+                    $databaseFN->getData("users");
+                    $usersOption = $databaseFN->getResult();
+                    foreach ($usersOption as list("userRoll"=>$userRoll)) {
+                        echo "<option value='$userRoll'>";
+                        if ($userRoll == 1) {
+                            echo "Admin";
+                        } else if ($userRoll == 2) {
+                            echo "Manager";
+                        } else if ($userRoll == 3) {
+                            echo "Empolyee";
+                        } else if ($userRoll == 4) {
+                            echo "User";
+                        }
+                        echo "</option>";
+                    }
+                    ?>
                 </select>
             </div>
-            <div class="hidden"> 
+            <div class="hidden">
                 <label class="text-white dark:text-gray-200" for="passwordConfirmation">Date</label>
-                <input name="currentDate" value="<?php date_default_timezone_set("Asia/Dhaka"); echo date("d-m-Y h:i:s A"); ?>" id="date" type="text" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                <input name="date" 
+                value="<?php date_default_timezone_set("Asia/Dhaka"); echo date("d-m-Y h:i:s A"); ?>" 
+                id="date" type="text" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
             </div>
             <div>
                 <label class="text-white dark:text-gray-200" for="passwordConfirmation">Text Area</label>
-                <textarea name="UserComment" id="textarea" type="textarea" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"></textarea>
+                <textarea name="userComment" id="textarea" type="textarea" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"></textarea>
             </div>
         </div>
 

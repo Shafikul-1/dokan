@@ -25,7 +25,12 @@ class database{
 
     public function insertData($table, $params = array())
     {
-
+        if ($this->checkTable($table)) {
+            # code...
+        } else {
+            return false;
+        }
+        
     }
 
     public function getData ($table, $row = "*", $join = null, $where = null, $order = null, $limit = null)
