@@ -115,3 +115,26 @@
 
 
       style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(522.5px, 3847.5px, 0px);"
+
+
+
+
+
+
+       <?php 
+                    $databaseFN->getData("users");
+                    $usersOption = $databaseFN->getResult();
+                    foreach ($usersOption as list("userRoll"=>$userRoll)) {
+                        echo "<option value='$userRoll'>";
+                        if ($userRoll == 1) {
+                            echo "Admin";
+                        } else if ($userRoll == 2) {
+                            echo "Manager";
+                        } else if ($userRoll == 3) {
+                            echo "Empolyee";
+                        } else if ($userRoll == 4) {
+                            echo "User";
+                        }
+                        echo "</option>";
+                    }
+                    ?>
