@@ -193,9 +193,9 @@ if (isset($_POST['submit'])) {
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex justify-between">
-                            <a href="<?php echo $databaseFN->mainUrl.'/admin/usersDetails.php?eid='.$id ?>"><i class="text-[1.2rem] fa-solid fa-pen-to-square hover:text-green-500"></i></a>
-                            <a href="<?php echo $databaseFN->mainUrl.'/admin/usersDetails.php?did='.$id ?>"><i class="text-[1.2rem] fa-solid fa-trash hover:text-red-600"></i></a>
-                            <a href="<?php echo $databaseFN->mainUrl.'/admin/usersDetails.php?vid='.$id ?>"><i class="text-[1.2rem] fa-solid fa-eye hover:text-indigo-500"></i></a>
+                            <a href="<?php echo $databaseFN->mainUrl.'/admin/user?eid='.$id ?>"><i class="text-[1.2rem] fa-solid fa-pen-to-square hover:text-green-500"></i></a>
+                            <a href="<?php echo $databaseFN->mainUrl.'/admin/user?did='.$id ?>"><i class="text-[1.2rem] fa-solid fa-trash hover:text-red-600"></i></a>
+                            <a href="<?php echo $databaseFN->mainUrl.'/admin/user?vid='.$id ?>"><i class="text-[1.2rem] fa-solid fa-eye hover:text-indigo-500"></i></a>
                         </div>
                     </td>
                 </tr>
