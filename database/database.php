@@ -49,7 +49,7 @@ class database{
     public function getData ($table, $row = "*", $join = null, $where = null, $order = null, $limit = null)
     {
         if ($this->TableExits($table)) {
-            $sql = "SELECT $row FROM $table";
+            $sql = "SELECT $row FROM $table ";
             if($join != null){
                 $sql .= " JOIN $join";
             }
@@ -66,8 +66,9 @@ class database{
                     $page = 1;
                 }
                 $start = ($page - 1) * $limit;
-                $sql .= "LIMIT $start, $limit";
+               $sql .= "LIMIT $start, $limit";
             }
+            // echo $sql;
             if ($dataResult = $this->sqli->query($sql)) {
                 $this->result = $dataResult->fetch_all(MYSQLI_ASSOC);
                 return true;
