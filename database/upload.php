@@ -1,5 +1,4 @@
 <?php
-
 class Upload
 {
     private $name;
@@ -11,7 +10,6 @@ class Upload
     private $target_dir = "E:/Xampp/htdocs/dokan/upload/";
     private $result = [];
  
-
     public function uploadFile($file)
     {
         $this->name = $file['name'];
@@ -41,7 +39,7 @@ class Upload
         }
 
         // Check file size
-        if ($this->size > 500000) {
+        if ($this->size > 50000000) {
             $this->result[] = "Sorry, your file is too large.";
             $this->uploadOk = false;
         }
@@ -66,9 +64,17 @@ class Upload
         }
     }
 
-    public function deleteFile()
+    public function deleteFile($fileName)
     {
-        
+        $target_file = $this->target_dir . $fileName;
+         // Check if file already exists
+         if (file_exists($target_file)) {
+            unlink($target_file);
+            return true;
+        } else{
+            $this->result['fileNotEXit'] = "Your File not exit";
+            return false;
+        }
     }
 
     public function getFileResult()

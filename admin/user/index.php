@@ -6,7 +6,7 @@ $obj = new database();
 if (isset($_GET['did'])) {
     include "./deleteUser.php";
     deleteUser($_GET['did']);
-    header("Location: " . $obj->mainUrl . "/admin/users.php");
+    // header("Location: " . $obj->mainUrl . "/admin/users.php");
 } else if (isset($_GET['eid'])) {
     include "./editUser.php";
     edituser($_GET['eid']);
