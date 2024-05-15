@@ -2,6 +2,12 @@
 function viewUser($id)
 {
     include "../header.php";
+    // include "../../database/database.php";
+    $databaseFN = new database();
+    $databaseFN->getData("users", "*", null, "id = $id", null, null);
+    $data = $databaseFN->getResult();
+    foreach ($data as list("name"=>$name, "img"=>$img, "userComment"=>$userComment)) {
+        
     // echo $id."<br>";
 ?>
 
@@ -13,28 +19,21 @@ function viewUser($id)
 
         <!-- User Profile Image -->
         <div class="w-full mx-auto flex justify-center">
-            <img src="https://images.unsplash.com/photo-1463453091185-61582044d556?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwxMnx8cGVvcGxlfGVufDB8MHx8fDE3MTA0ODExOTN8MA&ixlib=rb-4.0.3&q=80&w=1080" alt="User Profile"
+            <img src="../../upload/<?php echo ($img == null) ? 'user/user-defult-icon.png' : $img ?>" alt="<?php echo ($img == null) ? 'user-defult-icon.png' : $img ?>"
                     class="rounded-full object-cover xl:w-[16rem] xl:h-[16rem] lg:w-[16rem] lg:h-[16rem] md:w-[12rem] md:h-[12rem] sm:w-[10rem] sm:h-[10rem] xs:w-[8rem] xs:h-[8rem] outline outline-2 outline-offset-2 outline-yellow-500 shadow-xl relative xl:bottom-[7rem] lg:bottom-[8rem] md:bottom-[6rem] sm:bottom-[5rem] xs:bottom-[4.3rem]" />
         </div>
 
         <div
             class="xl:w-[80%] lg:w-[90%] md:w-[94%] sm:w-[96%] xs:w-[92%] mx-auto flex flex-col gap-4 justify-center items-center relative xl:-top-[6rem] lg:-top-[6rem] md:-top-[4rem] sm:-top-[3rem] xs:-top-[2.2rem]">
             <!-- FullName -->
-            <h1 class="text-center text-gray-800 dark:text-white text-4xl font-serif">Samuel Abera</h1>
+            <h1 class="text-center text-gray-800 dark:text-white text-4xl font-serif"><?php echo $name ?></h1>
             <!-- About -->
-            <p class="w-full text-gray-700 dark:text-gray-400 text-md text-pretty text-center">Lorem, ipsum dolor sit amet
-                consectetur adipisicing elit. Quisquam debitis labore consectetur voluptatibus mollitia dolorem
-                veniam omnis ut quibusdam minima sapiente repellendus asperiores explicabo, eligendi odit, dolore
-                similique fugiat dolor, doloremque eveniet. Odit, consequatur. Ratione voluptate exercitationem hic
-                eligendi vitae animi nam in, est earum culpa illum aliquam. Atque aperiam et voluptatum voluptate
-                distinctio, nostrum hic voluptatibus nisi. Eligendi voluptatibus numquam maxime voluptatem labore
-                similique qui illo est magnam adipisci autem quisquam, quia incidunt excepturi, possimus odit
-                praesentium?</p>
+            <p class="w-full text-gray-700 dark:text-gray-400 text-md text-pretty text-center"><?php echo $userComment ?></p>
 
             <!-- Social Links -->
             <div
                 class="px-2 flex rounded-sm bg-gray-200 text-gray-500 dark:bg-gray-700 dark:bg-opacity-30 dark:text-gray-700 hover:text-gray-600 hover:dark:text-gray-400">
-                <a href="https://www.linkedin.com/in/samuel-abera-6593a2209/">
+                <a href="#">
                     <div data-title="LinkedIn" class="p-2 hover:text-primary hover:dark:text-primary">
                         <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -47,7 +46,7 @@ function viewUser($id)
 
                     </div>
                 </a>
-                <a href="https://twitter.com/Samuel7Abera7">
+                <a href="#">
                     <div data-title="X" class="p-2 hover:text-primary hover:dark:text-primary">
                         <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -58,7 +57,7 @@ function viewUser($id)
 
                     </div>
                 </a>
-                <a href="">
+                <a href="#">
                     <div data-title="Facebook" class="p-2 hover:text-blue-500 hover:dark:text-blue-500">
                         <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -70,7 +69,7 @@ function viewUser($id)
 
                     </div>
                 </a>
-                <a href="https://www.youtube.com/@silentcoder7">
+                <a href="#">
                     <div data-title="Youtube" class="p-2 hover:text-primary hover:dark:text-primary">
                         <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -107,4 +106,4 @@ function viewUser($id)
     </div>
 </section>
 
-<?php  include "../footer.php"; } ?>
+<?php } include "../footer.php"; } ?>

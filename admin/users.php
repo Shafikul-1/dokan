@@ -13,20 +13,20 @@ if (isset($_POST['submit'])) {
     $userComment = $_POST['userComment'];
     $userRoll = $_POST['userRoll'];
 
-    $formData = ["name" => $name, "email" => $email, "img" => $img, "pass" => $pass, "conPass" => $conPass, "date" => $date, "userComment" => $userComment, "userRoll" => $userRoll];
+    $formData = ["name" => $name, "email" => $email, "pass" => $pass, "conPass" => $conPass, "date" => $date, "userComment" => $userComment, "userRoll" => $userRoll];
     $databaseFN->insertData("users", $formData);
 }
-if(isset($_GET['fmsg']) == "error"){
+if (isset($_GET['fmsg']) == "error") {
     echo "<b style='background:red;color:white; padding:5px;'>File Delete Failed</b>";
 }
-if(isset($_GET['dmsg']) == "error"){
+if (isset($_GET['dmsg']) == "error") {
     echo "<b style='background:red;color:white; padding:5px;'>Database Data Delete Failed</b>";
 }
 ?>
 
 
 
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg"> 
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
         <!-- user toggle BTn -->
         <div>
@@ -124,7 +124,9 @@ if(isset($_GET['dmsg']) == "error"){
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                 </svg>
             </div>
-            <input type="text" id="table-search-users" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for users">
+            <form method="get">
+                <input type="text" name="search" id="table-search-users" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for users">
+            </form>
         </div>
     </div>
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -155,9 +157,13 @@ if(isset($_GET['dmsg']) == "error"){
         </thead>
         <tbody>
             <?php
-            $databaseFN->getData("users");
+            if(isset($_GET['search'])){
+                $databaseFN->searchData("users", "*", "name", $_GET['search']);
+            } else{
+                $databaseFN->getData("users", "*", null, null, "name DESC", null);
+            }
             $allUsers = $databaseFN->getResult();
-            foreach ($allUsers as list("id" => $id, "name" => $name, "email" => $email, "img" => $img, "date" => $date, "userComment" => $userComment, "userRoll" => $userRoll)) {
+            foreach ($allUsers as list("id"=>$id, "name" => $name, "email" => $email, "img" => $img, "date" => $date, "userComment" => $userComment, "userRoll" => $userRoll)) {
             ?>
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="w-4 p-4">
@@ -167,7 +173,7 @@ if(isset($_GET['dmsg']) == "error"){
                         </div>
                     </td>
                     <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                        <img class="w-10 h-10 rounded-full" src="../upload/<?php echo $img ?>" alt="<?php echo $img ?>">
+                        <img class="w-10 h-10 rounded-full" src="../upload/<?php echo ($img == null) ? 'user/user-defult-icon.png' : $img ?>" alt="<?php echo ($img == null) ? 'user-defult-icon.png' : $img ?>">
                         <div class="ps-3">
                             <div class="text-base font-semibold"><?php echo $name; ?></div>
                             <div class="font-normal text-gray-500"><?php echo $email; ?></div>
@@ -198,9 +204,9 @@ if(isset($_GET['dmsg']) == "error"){
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex justify-between">
-                            <a href="<?php echo $databaseFN->mainUrl.'/admin/user?eid='.$id ?>"><i class="text-[1.2rem] fa-solid fa-pen-to-square hover:text-green-500"></i></a>
-                            <a href="<?php echo $databaseFN->mainUrl.'/admin/user?did='.$id ?>"><i class="text-[1.2rem] fa-solid fa-trash hover:text-red-600"></i></a>
-                            <a href="<?php echo $databaseFN->mainUrl.'/admin/user?vid='.$id ?>"><i class="text-[1.2rem] fa-solid fa-eye hover:text-indigo-500"></i></a>
+                            <a href="<?php echo $databaseFN->mainUrl . '/admin/user?eid=' . $id ?>"><i class="text-[1.2rem] fa-solid fa-pen-to-square hover:text-green-500"></i></a>
+                            <a href="<?php echo $databaseFN->mainUrl . '/admin/user?did=' . $id ?>"><i class="text-[1.2rem] fa-solid fa-trash hover:text-red-600"></i></a>
+                            <a href="<?php echo $databaseFN->mainUrl . '/admin/user?vid=' . $id ?>"><i class="text-[1.2rem] fa-solid fa-eye hover:text-indigo-500"></i></a>
                         </div>
                     </td>
                 </tr>

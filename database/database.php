@@ -131,6 +131,26 @@ class database{
         
     }
 
+    public function searchData ($table, $row = "*", $searchColumn, $searchVal = null)
+    {
+        if ($this->TableExits($table)) {
+            $sql = "SELECT $row FROM $table WHERE $searchColumn ";
+           if($searchVal != null){
+            $sql .= " LIKE '%$searchVal%'";
+           }
+           if ($searchReslt = $this->sqli->query($sql)) {
+            $this->result = $searchReslt->fetch_all(MYSQLI_ASSOC);
+            return true;
+           } else {
+            array_push($this->result, $this->sqli->error);
+            return false;
+           }
+           
+        } else {
+            return false;
+        }
+    }
+
     // Table Is Exits
     private function TableExits($table)
     {
