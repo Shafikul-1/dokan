@@ -12,13 +12,14 @@ function edituser($id)
         $userRoll = $_POST['userRoll'];
         $userComment = $_POST['userComment'];
         $fileUploadComplete = false;
-
-        if (isset($_FILES['newImg'])) {
+        
+        // Check File Is Upload!
+        if (isset($_FILES['newImg']) && $_FILES['newImg']['error'] == UPLOAD_ERR_OK) {
             include "../../database/upload.php";
             $fileObj = new upload();
             $fileObj->uploadFile($_FILES['newImg']);
             $fileResult = $fileObj->getFileResult();
-            if (isset($fileResult['fileName'])) {
+            if (isset($fileResult['fileName']) && !empty($fileResult['fileName'])) {
                 $img = $fileResult['fileName'];
                 $fileUploadComplete = true;
             } else {
@@ -27,7 +28,8 @@ function edituser($id)
                     echo "<b>Error -> </b>". $errorResult."<br>";
                 }
             }
-        } else {
+        } 
+        else {
             $img = $_POST['oldImg'];
             $fileUploadComplete = true;
         }
@@ -54,8 +56,6 @@ function edituser($id)
     <section class="max-w-4xl p-6 mx-auto bg-indigo-600 rounded-md shadow-md dark:bg-gray-800 mt-2">
         <h1 class="text-xl font-bold text-white capitalize dark:text-white">Edit Account Information</h1>
         <?php
-
-
         $data->getData("users", "name, userComment, userRoll, email, img", null, "id=$id", null, null);
         foreach ($data->getResult() as list("name" => $name, "userComment" => $userComment, "userRoll" => $userRoll, "email" => $email, "img" => $img)) {
             // echo "<li>$name</li><li>$userComment</li><li>$userRoll</li><li>$email</li>";
@@ -118,11 +118,11 @@ function edituser($id)
                     <div>
                         <input type="text" name="oldImg" hidden value="<?php echo $img ?>">
                         <input type="text" name="id" hidden value="<?php echo $id ?>">
-                        <img id="profileImage" class="w-[5rem]" src="../img/<?php echo $img ?>" alt="">
+                        <img id="profileImage" class="w-[5rem] rounded-full" src="../../upload/<?php echo ($img == null) ? 'user/user-defult-icon.png' : $img  ?>" alt="<?php echo ($img == null) ? 'user-defult-icon.png' : $img  ?>">
                     </div>
                 </div>
                 <div class="flex justify-end mt-6">
-                    <input type="submit" name="submit" value="Save" id="submit" class=" px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-pink-500 rounded-md  focus:outline-none focus:bg-blue-600">
+                    <input type="submit" name="submit" value="Save" id="submit" class="cursor-pointer px-6 py-2 leading-5 text-black transition-colors duration-200 transform bg-green-300 rounded-md hover:bg-green-600 hover:text-white  focus:outline-none focus:bg-blue-600">
                 </div>
             </form>
     </section>

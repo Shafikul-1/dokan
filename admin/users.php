@@ -160,7 +160,7 @@ if (isset($_GET['dmsg']) == "error") {
             if(isset($_GET['search'])){
                 $databaseFN->searchData("users", "*", "name", $_GET['search']);
             } else{
-                $databaseFN->getData("users", "*", null, null, "name DESC", null);
+                $databaseFN->getData("users", "*", null, null, "id DESC", null);
             }
             $allUsers = $databaseFN->getResult();
             foreach ($allUsers as list("id"=>$id, "name" => $name, "email" => $email, "img" => $img, "date" => $date, "userComment" => $userComment, "userRoll" => $userRoll)) {
@@ -273,6 +273,6 @@ if (isset($_GET['dmsg']) == "error") {
     </form>
 </section>
 <!-- User Add Section End -->
-
+<script src="./js/users.js"></script>
 
 <?php include "footer.php"; ?>

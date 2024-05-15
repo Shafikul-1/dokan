@@ -9,7 +9,7 @@ class Upload
     private $uploadOk = true;
     private $target_dir = "E:/Xampp/htdocs/dokan/upload/";
     private $result = [];
- 
+
     public function uploadFile($file)
     {
         $this->name = $file['name'];
@@ -31,11 +31,12 @@ class Upload
             $this->result[] = "File is not an image.";
             $this->uploadOk = false;
         }
-
-        // Check if file already exists
+        
+        // Check if file already exists and rename it
         if (file_exists($target_file)) {
-            $this->result[] = "Sorry, file already exists.";
-            $this->uploadOk = false;
+            date_default_timezone_set("Asia/Dhaka");
+            $this->name = pathinfo($this->name, PATHINFO_FILENAME) . '_' . date("d-m-Y h_i_s_A") . '.' . $imageFileType;
+            $target_file = $this->target_dir . $this->name;
         }
 
         // Check file size
@@ -67,13 +68,17 @@ class Upload
     public function deleteFile($fileName)
     {
         $target_file = $this->target_dir . $fileName;
-         // Check if file already exists
-         if (file_exists($target_file)) {
-            unlink($target_file);
+        if (empty($fileName)) {
             return true;
-        } else{
-            $this->result['fileNotEXit'] = "Your File not exit";
-            return false;
+        }
+        if (file_exists($target_file)) {
+            if (unlink($target_file)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
         }
     }
 
