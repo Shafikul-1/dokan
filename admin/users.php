@@ -16,12 +16,17 @@ if (isset($_POST['submit'])) {
     $formData = ["name" => $name, "email" => $email, "img" => $img, "pass" => $pass, "conPass" => $conPass, "date" => $date, "userComment" => $userComment, "userRoll" => $userRoll];
     $databaseFN->insertData("users", $formData);
 }
-
+if(isset($_GET['fmsg']) == "error"){
+    echo "<b style='background:red;color:white; padding:5px;'>File Delete Failed</b>";
+}
+if(isset($_GET['dmsg']) == "error"){
+    echo "<b style='background:red;color:white; padding:5px;'>Database Data Delete Failed</b>";
+}
 ?>
 
 
 
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg"> 
     <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
         <!-- user toggle BTn -->
         <div>
@@ -162,7 +167,7 @@ if (isset($_POST['submit'])) {
                         </div>
                     </td>
                     <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                        <img class="w-10 h-10 rounded-full" src="../upload/<?php echo $img ?>" alt="Jese image">
+                        <img class="w-10 h-10 rounded-full" src="../upload/<?php echo $img ?>" alt="<?php echo $img ?>">
                         <div class="ps-3">
                             <div class="text-base font-semibold"><?php echo $name; ?></div>
                             <div class="font-normal text-gray-500"><?php echo $email; ?></div>
