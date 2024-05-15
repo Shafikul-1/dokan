@@ -45,6 +45,33 @@ class database{
         
     }
 
+    // Update Data In Database
+    public function updateData($table, $params=array(), $where = null)
+    {
+        if ($this->TableExits($table)) {
+             $args = array();
+             foreach ($params as $key => $value) {
+                $args[] = "$key = '$value'";
+             }
+            $sql = "UPDATE `users` SET " . implode(", ", $args);
+            if($where != null){
+                $sql .= " WHERE $where";
+            }
+            
+            if ($this->sqli->query($sql)) {
+                array_push($this->result, $this->sqli->affected_rows);
+                return true;
+            } else {
+                array_push($this->result, $this->sqli->error);
+                return false;
+            }
+            
+        } else {
+            return false;
+        }
+        
+    }
+
     // Database Get Data
     public function getData ($table, $row = "*", $join = null, $where = null, $order = null, $limit = null)
     {
@@ -103,7 +130,6 @@ class database{
         }
         
     }
-
 
     // Table Is Exits
     private function TableExits($table)

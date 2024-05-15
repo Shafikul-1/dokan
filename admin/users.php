@@ -162,7 +162,7 @@ if (isset($_POST['submit'])) {
                         </div>
                     </td>
                     <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                        <img class="w-10 h-10 rounded-full" src="./img/<?php echo $img ?>" alt="Jese image">
+                        <img class="w-10 h-10 rounded-full" src="../upload/<?php echo $img ?>" alt="Jese image">
                         <div class="ps-3">
                             <div class="text-base font-semibold"><?php echo $name; ?></div>
                             <div class="font-normal text-gray-500"><?php echo $email; ?></div>
