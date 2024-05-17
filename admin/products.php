@@ -39,7 +39,7 @@ $databaseFN = new database();
                     </div>
                 </a>
             </div>
-            <a href="<?php echo $databaseFN->mainUrl . "/admin/product?msg=category" ?>" class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded">
+            <a href="<?php echo $databaseFN->mainUrl . "/admin/category" ?>" class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded">
                 <p class="text-sm font-medium leading-none text-white">Add Category</p>
             </a>
             <a href="<?php echo $databaseFN->mainUrl . "/admin/product?msg=add" ?>" class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded">
@@ -147,10 +147,10 @@ $databaseFN = new database();
                         </button>
                         <div class="dropdownContent bg-white shadow w-24 hidden z-30 right-0 top-[3.2rem] absolute">
                             <div class="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
-                                <p>Edit</p>
+                                <a href="<?php echo $databaseFN->mainUrl . "/admin/product?msg=edit" ?>">Edit</a>
                             </div>
                             <div class="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
-                                <p>Delete</p>
+                                <a href="<?php echo $databaseFN->mainUrl . "/admin/product?msg=delete" ?>">Delete</a>
                             </div>
                         </div>
                     </div>
