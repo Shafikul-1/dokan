@@ -32,6 +32,7 @@ class database{
             $tableColumn = implode(", ", array_keys($params));
             $tableValue = implode("', '", $params);
             $sql = "INSERT INTO $table ($tableColumn) VALUES ('$tableValue')";
+            // echo $sql;
             if ($this->sqli->query($sql)) {
                 array_push($this->result, $this->sqli->insert_id);
                 return true;

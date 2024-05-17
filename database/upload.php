@@ -68,10 +68,67 @@ class Upload
     }
 
     // get multi file info
-    public function multiFileUpload ()
-    {
+    // public function multiFileUpload ($fileInfo)
+    // {
+    //     $productDir = $this->target_dir . "product";
+    //      // Check if file already exists and rename it
+    //      if (file_exists($productDir)) {
+    //         date_default_timezone_set("Asia/Dhaka");
+    //         $this->name = pathinfo($this->name, PATHINFO_FILENAME) . '_' . date("d-m-Y h_i_s_A") . '.' . $imageFileType;
+    //         $target_file = $this->target_dir . $this->name;
+    //     }
 
+    //     echo "<pre>";
+    //     print_r($fileInfo);
+    //     echo "</pre>";
+    // }
+    public function multiFileUpload($fileInfo) {
+        
+        $uploadDir =  $this->target_dir ."product/" ;
+        
+         // Ensure the upload directory exists
+         if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        // Initialize the fileNames array
+        $this->result['fileNames'] = [];
+
+        // Loop through each file in the file array
+        foreach ($fileInfo['name'] as $key => $name) {
+            // Check if there was an upload error
+            if ($fileInfo['error'][$key] == UPLOAD_ERR_OK) {
+                $tmpName = $fileInfo['tmp_name'][$key];
+                $fileSize = $fileInfo['size'][$key];
+                $fileType = $fileInfo['type'][$key];
+
+                // Generate a unique file name if the file already exists
+                $destination = $uploadDir . basename($name);
+                if (file_exists($destination)) {
+                    $pathInfo = pathinfo($destination);
+                    date_default_timezone_set("Asia/Dhaka");
+                    $uniqueName = $pathInfo['filename'] . '_' . date("d-m-Y_h_i_s_A") . '.' . $pathInfo['extension'];
+                    $destination = $uploadDir . $uniqueName;
+                }
+
+                // Move the file to the destination
+                if (move_uploaded_file($tmpName, $destination)) {
+                    // Store the base name of the uploaded file in the fileNames array
+                    $this->result['fileNames'][] = basename($destination);
+                } else {
+                    // If file move failed, return false
+                    return false;
+                }
+            } else {
+                // If there's an error in the file upload, return false
+                return false;
+            }
+        }
+        
+        // If all files are uploaded successfully, return true
+        return true;
     }
+
 
     // Multi File uplaod functon
     private function multiFileCheck()
@@ -105,3 +162,4 @@ class Upload
         return $val;
     }
 }
+

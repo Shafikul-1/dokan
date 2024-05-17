@@ -1,14 +1,78 @@
 
 <?php
+ob_start();
 include "../header.php";
-if(isset($_POST['submit'])){
-    echo "<pre>";
-print_r($_POST);
-print_r($_FILES);
-echo "</pre>";
-}
-?>
+include "../../database/upload.php";
+$uploadFN = new Upload();
+$databaseFN = new database();
 
+if(isset($_POST['submit'])){
+$productName = $_POST['productName'];
+$productDescription = $_POST['productDescription'];
+$productColor = $_POST['productColor'];
+$category = $_POST['category'];
+$price = $_POST['price'];
+$discount = $_POST['discount'];
+$tax = $_POST['tax'];
+$weight = $_POST['weight'];
+$brand = $_POST['brand'];
+$shippingClass = $_POST['shippingClass'];
+$warranty = $_POST['warranty'];
+$customFields = $_POST['customFields'];
+$releaseDate = $_POST['releaseDate'];
+$complianceInfo = $_POST['complianceInfo'];
+$metaTitle = $_POST['metaTitle'];
+$metaDescription = $_POST['metaDescription'];
+$keywords = $_POST['keywords'];
+$checkImgOrVideo = false;
+
+if(isset($_FILES['productImages']) && !empty($_FILES['productImages']['name'][0])){
+    if ($uploadFN->multiFileUpload($_FILES['productImages'])) {
+        $getFileName = $uploadFN->getFileResult();
+        $nameStr = implode(", ", $getFileName['fileNames']);
+        $productImages = "$nameStr";
+        $checkImgOrVideo = true;
+    } else {
+        $checkImgOrVideo = false;
+    }
+} else {
+    $productImages = '';
+    $checkImgOrVideo = true;
+}
+if(isset($_FILES['videos']) && !empty($_FILES['videos']['name'][0])){
+    if ($uploadFN->multiFileUpload($_FILES['videos'])) {
+        $getFileName = $uploadFN->getFileResult();
+        $nameStr = implode(", ", $getFileName['fileNames']);
+        $videos = "$nameStr";
+        $checkImgOrVideo = true;
+    } else {
+        $checkImgOrVideo = false;
+    }
+} else {
+    $videos = '';
+    $checkImgOrVideo = true;
+}
+// echo "$productImages <br>$videos ";
+
+$productInfo = ['productName' => $productName, 'productDescription'=>$productDescription, 'productColor'=>$productColor, 'category'=>$category, 'price'=>$price, 'discount'=>$discount, 'tax'=>$tax, 'weight'=>$weight, 'brand'=>$brand, 'shippingClass'=>$shippingClass, 'warranty'=>$warranty, 'customFields'=>$customFields, 'releaseDate'=>$releaseDate, 'complianceInfo'=>$complianceInfo, 'metaTitle'=>$metaTitle, 'metaDescription'=>$metaDescription, 'keywords'=>$keywords, 'productImages'=>$productImages, 'videos'=>$videos];
+if($checkImgOrVideo){
+    if ($databaseFN->insertData("productdetails", $productInfo)) {
+        header("Location: " . $databaseFN->mainUrl ."/admin/products.php");
+        exit();
+    } else {
+        header("Location: " . $databaseFN->mainUrl ."/admin/product/?msg=add&error=dbinfalse");
+        exit();
+    }
+} else {
+    header("Location: " . $databaseFN->mainUrl ."/admin/product/?msg=add&error=imgUpFalse");
+    exit();
+}
+
+
+}
+ob_end_flush();
+?>
+ 
 <style>
     .input-border-animated:focus {
         border-width: 1.5px;
@@ -38,6 +102,18 @@ echo "</pre>";
     }
 </style>
 <div class="bg-gray-100 p-4">
+    <?php
+    if (isset($_GET['error'])) {
+        if($_GET['error'] == 'dbinfalse'){
+            echo '<p class="bg-red-600 text-white text-center font-bold text-xl">Database Data Not Insert</p>';
+        }
+        if($_GET['error'] == 'imgUpFalse'){
+            echo '<p class="bg-red-600 text-white text-center font-bold text-xl">Image Upload not Complete</p>'; 
+        }
+    }
+    
+    ?>
+
     <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg">
         <h1 class="text-2xl font-bold mb-6">Add New Product</h1>
         <form id="productForm" action="<?php $_SERVER['PHP_SELF'] ?>" method="POST" enctype="multipart/form-data">
@@ -57,10 +133,10 @@ echo "</pre>";
                 <div class="col-span-1">
                     <label for="category" class="block text-sm font-medium text-gray-700">Category*</label>
                     <select id="category" name="category" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm input-border-animated" required>
-                        <option value="">Select Category</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="apparel">Apparel</option>
-                        <option value="home">Home</option>
+                        <option value="0">UnCategory</option>
+                        <option value="1">Electronics</option>
+                        <option value="2">Apparel</option>
+                        <option value="3">Home</option>
                     </select>
                 </div>
                 <div class="col-span-1">
@@ -69,15 +145,15 @@ echo "</pre>";
                 </div>
                 <div class="col-span-1">
                     <label for="discount" class="block text-sm font-medium text-gray-700">Discount</label>
-                    <input type="number" id="discount" name="discount" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm input-border-animated">
+                    <input type="text" id="discount" name="discount" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm input-border-animated">
                 </div>
                 <div class="col-span-1">
                     <label for="tax" class="block text-sm font-medium text-gray-700">Tax</label>
-                    <input type="number" id="tax" name="tax" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm input-border-animated">
+                    <input type="text" id="tax" name="tax" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm input-border-animated">
                 </div>
                 <div class="col-span-1">
                     <label for="weight" class="block text-sm font-medium text-gray-700">Weight</label>
-                    <input type="number" id="weight" name="weight" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm input-border-animated">
+                    <input type="text" id="weight" name="weight" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm input-border-animated">
                 </div>
                 <div class="col-span-1">
                     <label for="brand" class="block text-sm font-medium text-gray-700">Brand</label>
@@ -103,9 +179,10 @@ echo "</pre>";
                     <label for="customFields" class="block text-sm font-medium text-gray-700">Custom Fields</label>
                     <input type="text" id="customFields" name="customFields" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm input-border-animated">
                 </div>
-                <div class="col-span-1">
+                <div class="col-span-1 hidden">
                     <label for="releaseDate" class="block text-sm font-medium text-gray-700">Release Date</label>
-                    <input type="date" id="releaseDate" name="releaseDate" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm input-border-animated">
+                    <input type="text" value="<?php date_default_timezone_set("Asia/Dhaka");
+                                                echo date("d-m-Y h:i:s A"); ?>" id="releaseDate" name="releaseDate" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm input-border-animated">
                 </div>
                 <div class="col-span-1">
                     <label for="complianceInfo" class="block text-sm font-medium text-gray-700">Compliance Information</label>
