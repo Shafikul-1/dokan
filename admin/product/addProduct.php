@@ -1,9 +1,17 @@
+
 <?php
 include "../header.php";
+if(isset($_POST['submit'])){
+    echo "<pre>";
+print_r($_POST);
+print_r($_FILES);
+echo "</pre>";
+}
 ?>
+
 <style>
     .input-border-animated:focus {
-        border-width: 3px;
+        border-width: 1.5px;
         animation: border-color-animation 2s infinite;
     }
 
@@ -32,7 +40,7 @@ include "../header.php";
 <div class="bg-gray-100 p-4">
     <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg">
         <h1 class="text-2xl font-bold mb-6">Add New Product</h1>
-        <form id="productForm" action="insert.php" method="POST" enctype="multipart/form-data">
+        <form id="productForm" action="<?php $_SERVER['PHP_SELF'] ?>" method="POST" enctype="multipart/form-data">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="col-span-1">
                     <label for="productName" class="block text-sm font-medium text-gray-700">Product Name*</label>
@@ -117,7 +125,7 @@ include "../header.php";
                 </div>
             </div>
             <div class="mt-6">
-                <button type="submit" id="submitBtn" class="w-full py-2 px-4 text-white font-semibold rounded-md" disabled>Submit</button>
+                <button type="submit" name="submit" id="submitBtn" class="w-full py-2 px-4 text-white font-semibold rounded-md" disabled>Submit</button>
             </div>
         </form>
     </div>

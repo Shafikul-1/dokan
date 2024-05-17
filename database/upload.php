@@ -10,6 +10,7 @@ class Upload
     private $target_dir = "E:/Xampp/htdocs/dokan/upload/";
     private $result = [];
 
+    // get single file info
     public function uploadFile($file)
     {
         $this->name = $file['name'];
@@ -20,6 +21,7 @@ class Upload
         $this->checkFile();
     }
 
+    // single file upload functon
     private function checkFile()
     {
         $target_file = $this->target_dir . basename($this->name);
@@ -65,6 +67,19 @@ class Upload
         }
     }
 
+    // get multi file info
+    public function multiFileUpload ()
+    {
+
+    }
+
+    // Multi File uplaod functon
+    private function multiFileCheck()
+    {
+
+    }
+
+    // delete file function
     public function deleteFile($fileName)
     {
         $target_file = $this->target_dir . $fileName;
@@ -82,6 +97,7 @@ class Upload
         }
     }
 
+// output result function
     public function getFileResult()
     {
         $val = $this->result;

@@ -40,7 +40,7 @@ $databaseFN = new database();
                 </a>
             </div>
             <a href="<?php echo $databaseFN->mainUrl . "/admin/category" ?>" class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded">
-                <p class="text-sm font-medium leading-none text-white">Add Category</p>
+                <p class="text-sm font-medium leading-none text-white">View Category</p>
             </a>
             <a href="<?php echo $databaseFN->mainUrl . "/admin/product?msg=add" ?>" class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded">
                 <p class="text-sm font-medium leading-none text-white">Add Product</p>
@@ -122,7 +122,7 @@ $databaseFN = new database();
                             <button class="py-3 px-3 text-sm focus:outline-none leading-none text-red-700 bg-red-100 rounded">Due today at 18:00</button>
                         </td>
                         <td class="pl-4">
-                            <button class="focus:ring-2 focus:ring-offset-2 focus:ring-red-300 text-sm leading-none text-gray-600 py-3 px-5 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none">View</button>
+                            <a href="<?php echo $databaseFN->mainUrl . "/admin/product?msg=view&id=" ?>" class="focus:ring-2 focus:ring-offset-2 focus:ring-red-300 text-sm leading-none text-gray-600 py-3 px-5 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none">View</a>
                         </td>
                         <!-- <td>
                             <div class=" px-5 pt-2">
@@ -147,10 +147,10 @@ $databaseFN = new database();
                         </button>
                         <div class="dropdownContent bg-white shadow w-24 hidden z-30 right-0 top-[3.2rem] absolute">
                             <div class="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
-                                <a href="<?php echo $databaseFN->mainUrl . "/admin/product?msg=edit" ?>">Edit</a>
+                                <a href="<?php echo $databaseFN->mainUrl . "/admin/product?msg=edit&id=" ?>">Edit</a>
                             </div>
                             <div class="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
-                                <a href="<?php echo $databaseFN->mainUrl . "/admin/product?msg=delete" ?>">Delete</a>
+                                <a href="<?php echo $databaseFN->mainUrl . "/admin/product?msg=delete&id=" ?>">Delete</a>
                             </div>
                         </div>
                     </div>
