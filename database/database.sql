@@ -46,28 +46,28 @@ id int AUTO_INCREMENT PRIMARY KEY,
     metaDescription  varchar (900),
     keywords varchar (500),
     productImages text,
-    videos varchar (600)
+    videos text,
+    userAuth int
 )
 -- Insert Basic Product Data 
 INSERT INTO productDetails 
 (productName, productDescription, productColor, category, price, discount, tax, weight, brand, shippingClass, warranty, customFields, releaseDate, complianceInfo, metaTitle, metaDescription, keywords, productImages, videos)
 VALUES
-('computer', ' this is product description', '#4523600', 'electronic', '53329', '2', '4.6', '45.5', 'hp', 'shipping class details', '4', 'Csutom filed desils', '21-04-2023 12:40PM', 'Compliance information Details', 'Meta title Content', 'Meta description Content', 'Computer HP', 'product photo', 'product video'),
-('rich', ' this is product description', '#4523600', 'food', '53329', '2', '4', '45', 'dell', 'shipping class details', '4', 'Csutom filed desils', '21-04-2023 12:40PM', 'Compliance information Details', 'Meta tatle Content', 'Meta description Content', 'Computer HP', 'product photo', 'product video')
+('computer', ' this is product description', '#4523600', 'electronic', '53329', '2', '4.6', '45.5', 'hp', 'shipping class details', '4', 'Csutom filed desils', '21-04-2023 12:40PM', 'Compliance information Details', 'Meta title Content', 'Meta description Content', 'Computer HP', 'product photo', 'product video', '1'),
+('rich', ' this is product description', '#4523600', 'food', '53329', '2', '4', '45', 'dell', 'shipping class details', '4', 'Csutom filed desils', '21-04-2023 12:40PM', 'Compliance information Details', 'Meta tatle Content', 'Meta description Content', 'Computer HP', 'product photo', 'product video', '2')
 
 
 -- Create category table
 CREATE TABLE productCatagory (
     id INT AUTO_INCREMENT PRIMARY KEY ,
     categoryName VARCHAR (500),
-    categoryQty INT
+    categoryQty INT,
+    categoryDescription VARCHAR (600),  
+    userAuth INT
 )
 -- Insert Basic category Data 
-INSERT INTO productCatagory 
-(categoryName , categoryQty)
-VALUES
-('electronic', 123),
-('cloth', 463),
-('fesion', 2),
-('food', 87),
-('charger', 12)
+INSERT INTO productCatagory (`categoryName` , `categoryQty`, `categoryDescription`,`userAuth`) VALUES
+('electronic', 123, 'Other Description', 2),
+('cloth', 463,'Other Description', 1),
+('fesion', 2, 'Other Description',2),
+('food', 87,'Other Description', 2)
