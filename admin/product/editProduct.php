@@ -6,7 +6,6 @@ function editProduct($id)
 {
     include "../header.php";
     include "../../database/upload.php";
-    $uploadFN = new Upload();
     $databaseFN = new database();
 
     if (isset($_POST['submit'])) {
@@ -22,25 +21,18 @@ function editProduct($id)
         $shippingClass = $_POST['shippingClass'];
         $warranty = $_POST['warranty'];
         $customFields = $_POST['customFields'];
-        $releaseDate = $_POST['releaseDate'];
         $complianceInfo = $_POST['complianceInfo'];
         $metaTitle = $_POST['metaTitle'];
         $metaDescription = $_POST['metaDescription'];
-        $userAuth = $_POST['userAuth'];
         $keywords = $_POST['keywords'];
-        $checkImgOrVideo = false;
 
-        $productInfo = ['productName' => $productName, 'productDescription' => $productDescription, 'productColor' => $productColor, 'category' => $category, 'price' => $price, 'discount' => $discount, 'tax' => $tax, 'weight' => $weight, 'brand' => $brand, 'shippingClass' => $shippingClass, 'warranty' => $warranty, 'customFields' => $customFields, 'releaseDate' => $releaseDate, 'complianceInfo' => $complianceInfo, 'metaTitle' => $metaTitle, 'metaDescription' => $metaDescription, 'keywords' => $keywords, 'productImages' => $productImages, 'videos' => $videos, "userAuth" => $userAuth];
-        if ($checkImgOrVideo) {
-            if ($databaseFN->insertData("productdetails", $productInfo)) {
-                header("Location: " . $databaseFN->mainUrl . "/admin/products.php");
-                exit();
-            } else {
-                header("Location: " . $databaseFN->mainUrl . "/admin/product/?msg=add&error=dbinfalse");
-                exit();
-            }
+        $productInfo = ['productName' => $productName, 'productDescription' => $productDescription, 'productColor' => $productColor, 'category' => $category, 'price' => $price, 'discount' => $discount, 'tax' => $tax, 'weight' => $weight, 'brand' => $brand, 'shippingClass' => $shippingClass, 'warranty' => $warranty, 'customFields' => $customFields, 'complianceInfo' => $complianceInfo, 'metaTitle' => $metaTitle, 'metaDescription' => $metaDescription, 'keywords' => $keywords];
+
+        if ($databaseFN->updateData("productdetails",$productInfo, "id = $id")) {
+            header("Location: " . $databaseFN->mainUrl . "/admin/products.php");
+            exit();
         } else {
-            header("Location: " . $databaseFN->mainUrl . "/admin/product/?msg=add&error=imgUpFalse");
+            header("Location: " . $databaseFN->mainUrl . "/admin/product/?msg=edit&id=$id?error=dbupfailed");
             exit();
         }
     }
@@ -48,6 +40,11 @@ function editProduct($id)
 
     if ($databaseFN->getData("productdetails", "*", null, "id=$id")) {
         foreach ($databaseFN->getResult() as list('productName' => $productName, 'productDescription' => $productDescription, 'productColor' => $productColor, 'category' => $category, 'price' => $price, 'discount' => $discount, 'tax' => $tax, 'weight' => $weight, 'brand' => $brand, 'shippingClass' => $shippingClass, 'warranty' => $warranty, 'customFields' => $customFields, 'releaseDate' => $releaseDate, 'complianceInfo' => $complianceInfo, 'metaTitle' => $metaTitle, 'metaDescription' => $metaDescription, 'keywords' => $keywords, "userAuth" => $userAuth)) {
+
+            if(isset($_GET['error']) && $_GET['error'] == 'dbupfailed'){
+                echo '<p class="text-white bg-red-500 text-center">Database Update Problem</p>';
+            }
+
 ?>
 
             <style>
@@ -158,7 +155,7 @@ function editProduct($id)
                             </div>
                         </div>
                         <div class="mt-6">
-                            <button type="submit" name="submit" id="submitBtn" class="w-full py-2 px-4 text-white font-semibold rounded-md" disabled>Submit</button>
+                            <button type="submit" name="submit" id="submitBtn" class="w-full py-2 px-4 text-white bg-fuchsia-500 font-semibold rounded-md">Submit</button>
                         </div>
                     </form>
                 </div>
