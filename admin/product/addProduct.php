@@ -1,78 +1,77 @@
-
 <?php
 ob_start();
+session_start();
 include "../header.php";
 include "../../database/upload.php";
 $uploadFN = new Upload();
 $databaseFN = new database();
 
-if(isset($_POST['submit'])){
-$productName = $_POST['productName'];
-$productDescription = $_POST['productDescription'];
-$productColor = $_POST['productColor'];
-$category = $_POST['category'];
-$price = $_POST['price'];
-$discount = $_POST['discount'];
-$tax = $_POST['tax'];
-$weight = $_POST['weight'];
-$brand = $_POST['brand'];
-$shippingClass = $_POST['shippingClass'];
-$warranty = $_POST['warranty'];
-$customFields = $_POST['customFields'];
-$releaseDate = $_POST['releaseDate'];
-$complianceInfo = $_POST['complianceInfo'];
-$metaTitle = $_POST['metaTitle'];
-$metaDescription = $_POST['metaDescription'];
-$keywords = $_POST['keywords'];
-$checkImgOrVideo = false;
+if (isset($_POST['submit'])) {
+    $productName = $_POST['productName'];
+    $productDescription = $_POST['productDescription'];
+    $productColor = $_POST['productColor'];
+    $category = $_POST['category'];
+    $price = $_POST['price'];
+    $discount = $_POST['discount'];
+    $tax = $_POST['tax'];
+    $weight = $_POST['weight'];
+    $brand = $_POST['brand'];
+    $shippingClass = $_POST['shippingClass'];
+    $warranty = $_POST['warranty'];
+    $customFields = $_POST['customFields'];
+    $releaseDate = $_POST['releaseDate'];
+    $complianceInfo = $_POST['complianceInfo'];
+    $metaTitle = $_POST['metaTitle'];
+    $metaDescription = $_POST['metaDescription'];
+    $userAuth = $_POST['userAuth'];
+    $keywords = $_POST['keywords'];
+    $checkImgOrVideo = false;
 
-if(isset($_FILES['productImages']) && !empty($_FILES['productImages']['name'][0])){
-    if ($uploadFN->multiFileUpload($_FILES['productImages'])) {
-        $getFileName = $uploadFN->getFileResult();
-        $nameStr = implode(", ", $getFileName['fileNames']);
-        $productImages = "$nameStr";
+    if (isset($_FILES['productImages']) && !empty($_FILES['productImages']['name'][0])) {
+        if ($uploadFN->multiFileUpload($_FILES['productImages'])) {
+            $getFileName = $uploadFN->getFileResult();
+            $nameStr = implode(", ", $getFileName['fileNames']);
+            $productImages = "$nameStr";
+            $checkImgOrVideo = true;
+        } else {
+            $checkImgOrVideo = false;
+        }
+    } else {
+        $productImages = '';
         $checkImgOrVideo = true;
-    } else {
-        $checkImgOrVideo = false;
     }
-} else {
-    $productImages = '';
-    $checkImgOrVideo = true;
-}
-if(isset($_FILES['videos']) && !empty($_FILES['videos']['name'][0])){
-    if ($uploadFN->multiFileUpload($_FILES['videos'])) {
-        $getFileName = $uploadFN->getFileResult();
-        $nameStr = implode(", ", $getFileName['fileNames']);
-        $videos = "$nameStr";
+    if (isset($_FILES['videos']) && !empty($_FILES['videos']['name'][0])) {
+        if ($uploadFN->multiFileUpload($_FILES['videos'])) {
+            $getFileName = $uploadFN->getFileResult();
+            $nameStr = implode(", ", $getFileName['fileNames']);
+            $videos = "$nameStr";
+            $checkImgOrVideo = true;
+        } else {
+            $checkImgOrVideo = false;
+        }
+    } else {
+        $videos = '';
         $checkImgOrVideo = true;
-    } else {
-        $checkImgOrVideo = false;
     }
-} else {
-    $videos = '';
-    $checkImgOrVideo = true;
-}
-// echo "$productImages <br>$videos ";
+    // echo "$productImages <br>$videos ";
 
-$productInfo = ['productName' => $productName, 'productDescription'=>$productDescription, 'productColor'=>$productColor, 'category'=>$category, 'price'=>$price, 'discount'=>$discount, 'tax'=>$tax, 'weight'=>$weight, 'brand'=>$brand, 'shippingClass'=>$shippingClass, 'warranty'=>$warranty, 'customFields'=>$customFields, 'releaseDate'=>$releaseDate, 'complianceInfo'=>$complianceInfo, 'metaTitle'=>$metaTitle, 'metaDescription'=>$metaDescription, 'keywords'=>$keywords, 'productImages'=>$productImages, 'videos'=>$videos];
-if($checkImgOrVideo){
-    if ($databaseFN->insertData("productdetails", $productInfo)) {
-        header("Location: " . $databaseFN->mainUrl ."/admin/products.php");
-        exit();
+    $productInfo = ['productName' => $productName, 'productDescription' => $productDescription, 'productColor' => $productColor, 'category' => $category, 'price' => $price, 'discount' => $discount, 'tax' => $tax, 'weight' => $weight, 'brand' => $brand, 'shippingClass' => $shippingClass, 'warranty' => $warranty, 'customFields' => $customFields, 'releaseDate' => $releaseDate, 'complianceInfo' => $complianceInfo, 'metaTitle' => $metaTitle, 'metaDescription' => $metaDescription, 'keywords' => $keywords, 'productImages' => $productImages, 'videos' => $videos, "userAuth" => $userAuth];
+    if ($checkImgOrVideo) {
+        if ($databaseFN->insertData("productdetails", $productInfo)) {
+            header("Location: " . $databaseFN->mainUrl . "/admin/products.php");
+            exit();
+        } else {
+            header("Location: " . $databaseFN->mainUrl . "/admin/product/?msg=add&error=dbinfalse");
+            exit();
+        }
     } else {
-        header("Location: " . $databaseFN->mainUrl ."/admin/product/?msg=add&error=dbinfalse");
+        header("Location: " . $databaseFN->mainUrl . "/admin/product/?msg=add&error=imgUpFalse");
         exit();
     }
-} else {
-    header("Location: " . $databaseFN->mainUrl ."/admin/product/?msg=add&error=imgUpFalse");
-    exit();
-}
-
-
 }
 ob_end_flush();
 ?>
- 
+
 <style>
     .input-border-animated:focus {
         border-width: 1.5px;
@@ -104,14 +103,14 @@ ob_end_flush();
 <div class="bg-gray-100 p-4">
     <?php
     if (isset($_GET['error'])) {
-        if($_GET['error'] == 'dbinfalse'){
+        if ($_GET['error'] == 'dbinfalse') {
             echo '<p class="bg-red-600 text-white text-center font-bold text-xl">Database Data Not Insert</p>';
         }
-        if($_GET['error'] == 'imgUpFalse'){
-            echo '<p class="bg-red-600 text-white text-center font-bold text-xl">Image Upload not Complete</p>'; 
+        if ($_GET['error'] == 'imgUpFalse') {
+            echo '<p class="bg-red-600 text-white text-center font-bold text-xl">Image Upload not Complete</p>';
         }
     }
-    
+
     ?>
 
     <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg">
@@ -134,9 +133,13 @@ ob_end_flush();
                     <label for="category" class="block text-sm font-medium text-gray-700">Category*</label>
                     <select id="category" name="category" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm input-border-animated" required>
                         <option value="0">UnCategory</option>
-                        <option value="1">Electronics</option>
-                        <option value="2">Apparel</option>
-                        <option value="3">Home</option>
+                        <?php
+                        if ($databaseFN->getData("productCatagory")) {
+                            foreach ($databaseFN->getResult() as list("categoryName" => $categoryName, "id" => $id)) {
+                                echo "<option value=" . $id . ">$categoryName</option>";
+                            }
+                        }
+                        ?>
                     </select>
                 </div>
                 <div class="col-span-1">
@@ -201,6 +204,7 @@ ob_end_flush();
                     <input type="text" id="keywords" name="keywords" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm input-border-animated">
                 </div>
             </div>
+            <input type="text" hidden value="<?php echo $_SESSION['userAuth'] ?>" id="userAuth" name="userAuth">
             <div class="mt-6">
                 <button type="submit" name="submit" id="submitBtn" class="w-full py-2 px-4 text-white font-semibold rounded-md" disabled>Submit</button>
             </div>

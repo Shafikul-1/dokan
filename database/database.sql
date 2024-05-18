@@ -33,12 +33,12 @@ id int AUTO_INCREMENT PRIMARY KEY,
     productColor varchar (300),
     category int ,
     price int,
-    discount int,
-    tax int,
-    weight int,
+    discount FLOAT,
+    tax FLOAT,
+    weight FLOAT,
     brand varchar (500),
     shippingClass varchar (500),
-    warranty int,
+    warranty FLOAT,
     customFields text,
     releaseDate  varchar (500),
     complianceInfo text,
@@ -51,7 +51,7 @@ id int AUTO_INCREMENT PRIMARY KEY,
 )
 -- Insert Basic Product Data 
 INSERT INTO productDetails 
-(productName, productDescription, productColor, category, price, discount, tax, weight, brand, shippingClass, warranty, customFields, releaseDate, complianceInfo, metaTitle, metaDescription, keywords, productImages, videos)
+(productName, productDescription, productColor, category, price, discount, tax, weight, brand, shippingClass, warranty, customFields, releaseDate, complianceInfo, metaTitle, metaDescription, keywords, productImages, videos, userAuth)
 VALUES
 ('computer', ' this is product description', '#4523600', 'electronic', '53329', '2', '4.6', '45.5', 'hp', 'shipping class details', '4', 'Csutom filed desils', '21-04-2023 12:40PM', 'Compliance information Details', 'Meta title Content', 'Meta description Content', 'Computer HP', 'product photo', 'product video', '1'),
 ('rich', ' this is product description', '#4523600', 'food', '53329', '2', '4', '45', 'dell', 'shipping class details', '4', 'Csutom filed desils', '21-04-2023 12:40PM', 'Compliance information Details', 'Meta tatle Content', 'Meta description Content', 'Computer HP', 'product photo', 'product video', '2')

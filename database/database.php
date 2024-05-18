@@ -54,11 +54,11 @@ class database{
              foreach ($params as $key => $value) {
                 $args[] = "$key = '$value'";
              }
-            $sql = "UPDATE `users` SET " . implode(", ", $args);
+            $sql = "UPDATE $table SET " . implode(", ", $args);
             if($where != null){
                 $sql .= " WHERE $where";
             }
-            
+        //    echo $sql; 
             if ($this->sqli->query($sql)) {
                 array_push($this->result, $this->sqli->affected_rows);
                 return true;
@@ -74,12 +74,15 @@ class database{
     }
 
     // Database Get Data
-    public function getData ($table, $row = "*", $join = null, $where = null, $order = null, $limit = null)
+    public function getData ($table, $row = "*", $join = null, $where = null, $order = null, $limit = null, $leftJoin = null)
     {
         if ($this->TableExits($table)) {
             $sql = "SELECT $row FROM $table ";
             if($join != null){
                 $sql .= " JOIN $join";
+            }
+            if($leftJoin != null){
+                $sql .= " LEFT JOIN $leftJoin";
             }
             if($where != null){
                 $sql .= "WHERE $where";

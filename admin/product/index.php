@@ -9,7 +9,7 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'add') {
 } else if (isset($_GET['msg']) && $_GET['msg'] == 'delete') {
     include "./deleteProduct.php";
 }  else if (isset($_GET['msg']) && $_GET['msg'] == 'view') {
-    include "./singleProduct.php";
+    include "./viewProduct.php";
 } else {
     header("Location: ". $databaseFN->mainUrl ."/admin/products.php");
 }

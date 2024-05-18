@@ -1,4 +1,8 @@
-<?php include "header.php"; ?>
+<?php 
+session_start();
+$_SESSION["userAuth"] = "4";
+
+include "header.php"; ?>
 
 <div class="grid grid-cols-3 gap-4 mb-4">
    <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">

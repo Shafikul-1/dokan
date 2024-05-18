@@ -1,5 +1,6 @@
 <?php
 ob_start();
+include "../header.php";
 include "../../database/database.php";
 $databaseFN = new database();
 
@@ -19,13 +20,13 @@ if (isset($_POST['submit'])) {
 ob_end_flush();
 
 if (isset($_GET['id'])) {
-    include "../header.php";
+
     $id = $_GET['id'];
     $databaseFN->getData("productCatagory", "*", null, "id=$id");
     foreach ($databaseFN->getResult() as list("categoryName" => $categoryName, "categoryDescription" => $categoryDescription)) {
 
-        if (isset($_GET['error'])) {
-            echo '<p class="text-white bg-red-600"></p>';
+        if (isset($_GET['error']) && $_GET['error'] == 'dbupfalse') {
+            echo "<p class='text-white bg-red-600 text-center'>Database data insert Problem</p>";
         }
 ?>
 
