@@ -1,5 +1,6 @@
-<?php 
-class database{
+<?php
+class database
+{
     public $mainUrl = "http://localhost/dokan";
     private $host = "localhost";
     private $user = "root";
@@ -16,7 +17,7 @@ class database{
         if (!$this->conn) {
             $this->sqli = new mysqli($this->host, $this->user, $this->password, $this->dbName);
             $this->conn = true;
-            if($this->sqli->connect_error){
+            if ($this->sqli->connect_error) {
                 array_push($this->result, $this->sqli->connect_error);
                 return false;
             }
@@ -43,22 +44,21 @@ class database{
         } else {
             return false;
         }
-        
     }
 
     // Update Data In Database
-    public function updateData($table, $params=array(), $where = null)
+    public function updateData($table, $params = array(), $where = null)
     {
         if ($this->TableExits($table)) {
-             $args = array();
-             foreach ($params as $key => $value) {
+            $args = array();
+            foreach ($params as $key => $value) {
                 $args[] = "$key = '$value'";
-             }
+            }
             $sql = "UPDATE $table SET " . implode(", ", $args);
-            if($where != null){
+            if ($where != null) {
                 $sql .= " WHERE $where";
             }
-        //    echo $sql; 
+            //    echo $sql; 
             if ($this->sqli->query($sql)) {
                 array_push($this->result, $this->sqli->affected_rows);
                 return true;
@@ -66,38 +66,57 @@ class database{
                 array_push($this->result, $this->sqli->error);
                 return false;
             }
-            
         } else {
             return false;
         }
-        
+    }
+
+    // Custom method to increment a column value
+    public function incrementOrDecrement($table, $columns, $where, $what)
+    {
+        if ($this->TableExits($table)) {
+            $incrementClauses = [];
+            foreach ($columns as $column => $increment) {
+                $incrementClauses[] = "$column = $column $what $increment";
+            }
+            $sql = "UPDATE $table SET " . implode(", ", $incrementClauses) . " WHERE $where";
+            if ($this->sqli->query($sql)) {
+                array_push($this->result, $this->sqli->affected_rows);
+                return true;
+            } else {
+                array_push($this->result, $this->sqli->error);
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     // Database Get Data
-    public function getData ($table, $row = "*", $join = null, $where = null, $order = null, $limit = null, $leftJoin = null)
+    public function getData($table, $row = "*", $join = null, $where = null, $order = null, $limit = null, $leftJoin = null)
     {
         if ($this->TableExits($table)) {
             $sql = "SELECT $row FROM $table ";
-            if($join != null){
+            if ($join != null) {
                 $sql .= " JOIN $join";
             }
-            if($leftJoin != null){
+            if ($leftJoin != null) {
                 $sql .= " LEFT JOIN $leftJoin";
             }
-            if($where != null){
-                $sql .= "WHERE $where";
+            if ($where != null) {
+                $sql .= " WHERE $where";
             }
-            if($order != null){
-                $sql .= "ORDER BY $order";
+            if ($order != null) {
+                $sql .= " ORDER BY $order";
             }
-            if($limit != null){
-                if(isset($_GET['page'])){
+            if ($limit != null) {
+                if (isset($_GET['page'])) {
                     $page = $_GET['page'];
-                } else{
+                } else {
                     $page = 1;
                 }
                 $start = ($page - 1) * $limit;
-               $sql .= "LIMIT $start, $limit";
+                $sql .= " LIMIT $start, $limit";
             }
             // echo $sql;
             if ($dataResult = $this->sqli->query($sql)) {
@@ -107,7 +126,7 @@ class database{
                 array_push($this->result, $this->sqli->error);
                 return false;
             }
-        }else{
+        } else {
             return false;
         }
     }
@@ -117,7 +136,7 @@ class database{
     {
         if ($this->TableExits($table)) {
             $sql = "DELETE FROM $table WHERE ";
-            if($where != null){
+            if ($where != null) {
                 $sql .= "$where";
             }
             // echo $sql;
@@ -128,28 +147,25 @@ class database{
                 array_push($this->result, $this->sqli->error);
                 return false;
             }
-            
         } else {
             return false;
         }
-        
     }
 
-    public function searchData ($table, $row = "*", $searchColumn, $searchVal = null)
+    public function searchData($table, $row = "*", $searchColumn, $searchVal = null)
     {
         if ($this->TableExits($table)) {
             $sql = "SELECT $row FROM $table WHERE $searchColumn ";
-           if($searchVal != null){
-            $sql .= " LIKE '%$searchVal%'";
-           }
-           if ($searchReslt = $this->sqli->query($sql)) {
-            $this->result = $searchReslt->fetch_all(MYSQLI_ASSOC);
-            return true;
-           } else {
-            array_push($this->result, $this->sqli->error);
-            return false;
-           }
-           
+            if ($searchVal != null) {
+                $sql .= " LIKE '%$searchVal%'";
+            }
+            if ($searchReslt = $this->sqli->query($sql)) {
+                $this->result = $searchReslt->fetch_all(MYSQLI_ASSOC);
+                return true;
+            } else {
+                array_push($this->result, $this->sqli->error);
+                return false;
+            }
         } else {
             return false;
         }
@@ -169,7 +185,7 @@ class database{
     }
 
     // Show Database Data Function
-    public function getResult ()
+    public function getResult()
     {
         $val = $this->result;
         $this->result = array();
@@ -183,11 +199,9 @@ class database{
             if ($this->sqli->close()) {
                 $this->conn = false;
                 return true;
-            } 
+            }
         } else {
             return false;
         }
-        
     }
 }
-?>

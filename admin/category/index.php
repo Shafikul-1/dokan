@@ -43,8 +43,8 @@ if(isset($_GET['error']) && $_GET['error'] == 'dbdfalse'){
                 </thead>
                 <tbody>
                     <?php 
-                    $databaseFN->getData("productCatagory");
-                    foreach ($databaseFN->getResult() as list("id"=>$id, "categoryName"=>$categoryName,"categoryDescription"=>$Description,"userAuth"=>$userAuth,  "categoryQty"=>$categoryQty)) {
+                    $databaseFN->getData("productCatagory", "productCatagory.id, productCatagory.categoryName, productCatagory.categoryDescription, productCatagory.categoryQty, users.name ", " users ON productcatagory.userAuth = users.userRoll");
+                    foreach ($databaseFN->getResult() as list("id"=>$id, "categoryName"=>$categoryName,"categoryDescription"=>$Description,"name"=>$name,  "categoryQty"=>$categoryQty)) {
                         # code...
                    
                     ?>
@@ -52,7 +52,7 @@ if(isset($_GET['error']) && $_GET['error'] == 'dbdfalse'){
                         <td class="py-2 px-4 border-b border-gray-300"><?php echo $id ?></td>
                         <td class="py-2 px-4 border-b border-gray-300"><?php echo $categoryName ?></td>
                         <td class="py-2 px-4 border-b border-gray-300"><?php echo $Description ?></td>
-                        <td class="py-2 px-4 border-b border-gray-300"><?php echo $userAuth ?></td>
+                        <td class="py-2 px-4 border-b border-gray-300"><?php echo $name ?></td>
                         <td class="py-2 px-4 border-b border-gray-300"><?php echo $categoryQty ?></td>
                         <td class="py-2 px-4 border-b border-gray-300">
                             <a href="<?php echo $databaseFN->mainUrl . "/admin/category/edit.php?id=".$id ?>" class="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-600">Edit</a>

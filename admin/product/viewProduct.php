@@ -19,8 +19,12 @@ function viewProduct($id)
                 <?php
                 $productimageExplode = explode(",", $productImages);
                 $productImageCount = count($productimageExplode);
+                $supportExt = ['jpg', 'png', 'jpeg', 'gif', 'webp'];
                 for ($i = 0; $i < $productImageCount; $i++) {
-                  echo "<img src='../../upload/product/" . trim($productimageExplode[$i]) . "' alt='" . $productimageExplode[$i] . "' class='w-full cursor-pointer rounded-sm outline' />";
+                  $fileExt = strtolower(pathinfo($productimageExplode[$i],PATHINFO_EXTENSION));
+                  if (in_array($fileExt, $supportExt)) {
+                    echo "<img src='../../upload/product/" . trim($productimageExplode[$i]) . "' alt='" . $productimageExplode[$i] . "' class='w-full cursor-pointer rounded-sm outline' />";
+                  } 
                 }
                 ?>
               </div>

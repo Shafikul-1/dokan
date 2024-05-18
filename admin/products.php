@@ -51,7 +51,7 @@ $databaseFN = new database();
                 <tbody>
                     <?php
                     if ($databaseFN->getData("productdetails", "productdetails.id, productdetails.releaseDate, productdetails.productName, productcatagory.categoryName, users.name, productcatagory.categoryName", null, null, null, null, " productcatagory ON productdetails.category = productcatagory.id LEFT JOIN users ON productdetails.userAuth = users.userRoll")) {
-                        foreach ($databaseFN->getResult() as list('releaseDate'=>$releaseDate, 'id' => $id, 'productName' => $productName, 'name' => $name, "categoryName" => $categoryName)) {
+                        foreach ($databaseFN->getResult() as list('releaseDate' => $releaseDate, 'id' => $id, 'productName' => $productName, 'name' => $name, "categoryName" => $categoryName)) {
                     ?>
                             <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded relative">
                                 <td>
@@ -121,7 +121,7 @@ $databaseFN = new database();
                                     </div>
                                 </td>
                                 <td class="pl-5">
-                                    <button class="py-3 px-3 text-sm focus:outline-none leading-none text-red-700 bg-red-100 rounded">Release Date <?php echo substr($releaseDate, 0 , 10); ?></button>
+                                    <button class="py-3 px-3 text-sm focus:outline-none leading-none text-red-700 bg-red-100 rounded">Release Date <?php echo substr($releaseDate, 0, 10); ?></button>
                                 </td>
                                 <td class="pl-4">
                                     <p class="focus:ring-2 focus:ring-offset-2 focus:ring-red-300 text-sm leading-none text-gray-600 py-3 px-5 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none"><?php echo $name; ?></p>
@@ -133,13 +133,13 @@ $databaseFN = new database();
                                         </button>
                                         <div class="dropdownContent bg-white shadow w-24 hidden z-30 right-0 top-[3.2rem] absolute">
                                             <div class="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
+                                                <a href="<?php echo $databaseFN->mainUrl . "/admin/product?msg=view&id=" . $id ?>">View</a>
+                                            </div>
+                                            <div class="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
                                                 <a href="<?php echo $databaseFN->mainUrl . "/admin/product?msg=edit&id=" . $id ?>">Edit</a>
                                             </div>
                                             <div class="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
                                                 <a href="<?php echo $databaseFN->mainUrl . "/admin/product?msg=delete&id=" . $id ?>">Delete</a>
-                                            </div>
-                                            <div class="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
-                                                <a href="<?php echo $databaseFN->mainUrl . "/admin/product?msg=view&id=" . $id ?>">View</a>
                                             </div>
                                         </div>
                                     </div>

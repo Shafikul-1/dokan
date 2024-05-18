@@ -7,44 +7,55 @@ function editProduct($id)
     include "../header.php";
     include "../../database/upload.php";
     $databaseFN = new database();
-
-    if (isset($_POST['submit'])) {
-        $productName = $_POST['productName'];
-        $productDescription = $_POST['productDescription'];
-        $productColor = $_POST['productColor'];
-        $category = $_POST['category'];
-        $price = $_POST['price'];
-        $discount = $_POST['discount'];
-        $tax = $_POST['tax'];
-        $weight = $_POST['weight'];
-        $brand = $_POST['brand'];
-        $shippingClass = $_POST['shippingClass'];
-        $warranty = $_POST['warranty'];
-        $customFields = $_POST['customFields'];
-        $complianceInfo = $_POST['complianceInfo'];
-        $metaTitle = $_POST['metaTitle'];
-        $metaDescription = $_POST['metaDescription'];
-        $keywords = $_POST['keywords'];
-
-        $productInfo = ['productName' => $productName, 'productDescription' => $productDescription, 'productColor' => $productColor, 'category' => $category, 'price' => $price, 'discount' => $discount, 'tax' => $tax, 'weight' => $weight, 'brand' => $brand, 'shippingClass' => $shippingClass, 'warranty' => $warranty, 'customFields' => $customFields, 'complianceInfo' => $complianceInfo, 'metaTitle' => $metaTitle, 'metaDescription' => $metaDescription, 'keywords' => $keywords];
-
-        if ($databaseFN->updateData("productdetails",$productInfo, "id = $id")) {
-            header("Location: " . $databaseFN->mainUrl . "/admin/products.php");
-            exit();
-        } else {
-            header("Location: " . $databaseFN->mainUrl . "/admin/product/?msg=edit&id=$id?error=dbupfailed");
-            exit();
-        }
-    }
-    ob_end_flush();
-
     if ($databaseFN->getData("productdetails", "*", null, "id=$id")) {
-        foreach ($databaseFN->getResult() as list('productName' => $productName, 'productDescription' => $productDescription, 'productColor' => $productColor, 'category' => $category, 'price' => $price, 'discount' => $discount, 'tax' => $tax, 'weight' => $weight, 'brand' => $brand, 'shippingClass' => $shippingClass, 'warranty' => $warranty, 'customFields' => $customFields, 'releaseDate' => $releaseDate, 'complianceInfo' => $complianceInfo, 'metaTitle' => $metaTitle, 'metaDescription' => $metaDescription, 'keywords' => $keywords, "userAuth" => $userAuth)) {
+        if (isset($_POST['submit'])) {
+            $productName = $_POST['productName'];
+            $productDescription = htmlentities($_POST['productDescription']);
+            $productColor = $_POST['productColor'];
+            $category = $_POST['category'];
+            $price = $_POST['price'];
+            $discount = $_POST['discount'];
+            $tax = $_POST['tax'];
+            $weight = $_POST['weight'];
+            $brand = $_POST['brand'];
+            $shippingClass = $_POST['shippingClass'];
+            $warranty = $_POST['warranty'];
+            $customFields = $_POST['customFields'];
+            $complianceInfo = $_POST['complianceInfo'];
+            $metaTitle = $_POST['metaTitle'];
+            $metaDescription = $_POST['metaDescription'];
+            $keywords = $_POST['keywords'];
 
-            if(isset($_GET['error']) && $_GET['error'] == 'dbupfailed'){
+            $productInfo = ['productName' => $productName, 'productDescription' => $productDescription, 'productColor' => $productColor, 'category' => $category, 'price' => $price, 'discount' => $discount, 'tax' => $tax, 'weight' => $weight, 'brand' => $brand, 'shippingClass' => $shippingClass, 'warranty' => $warranty, 'customFields' => $customFields, 'complianceInfo' => $complianceInfo, 'metaTitle' => $metaTitle, 'metaDescription' => $metaDescription, 'keywords' => $keywords];
+
+            if ($databaseFN->updateData("productdetails", $productInfo, "id = $id")) {
+                $categoryId = $category;
+                $decrementOrIncrement = ['categoryQty' => 1];
+                if ($databaseFN->incrementOrDecrement("productcatagory", $decrementOrIncrement, "id = $categoryId", "+")) {
+                    foreach ($databaseFN->getResult() as list('category' => $category)) {
+                        if ($databaseFN->incrementOrDecrement("productcatagory", $decrementOrIncrement, "id = $category", "-")) {
+                            header("Location: " . $databaseFN->mainUrl . "/admin/products.php");
+                            exit();
+                        } else {
+                            header("Location: " . $databaseFN->mainUrl . "/admin/product/?msg=edit&id=$id?error=dbupfailed");
+                            exit();
+                        }
+                    }
+                } else {
+                    header("Location: " . $databaseFN->mainUrl . "/admin/product/?msg=edit&id=$id?error=dbupfailed");
+                    exit();
+                }
+            } else {
+                header("Location: " . $databaseFN->mainUrl . "/admin/product/?msg=edit&id=$id?error=dbupfailed");
+                exit();
+            }
+        }
+        ob_end_flush();
+
+        foreach ($databaseFN->getResult() as list('productName' => $productName, 'productDescription' => $productDescription, 'productColor' => $productColor, 'category' => $category, 'price' => $price, 'discount' => $discount, 'tax' => $tax, 'weight' => $weight, 'brand' => $brand, 'shippingClass' => $shippingClass, 'warranty' => $warranty, 'customFields' => $customFields, 'releaseDate' => $releaseDate, 'complianceInfo' => $complianceInfo, 'metaTitle' => $metaTitle, 'metaDescription' => $metaDescription, 'keywords' => $keywords, "userAuth" => $userAuth)) {
+            if (isset($_GET['error']) && $_GET['error'] == 'dbupfailed') {
                 echo '<p class="text-white bg-red-500 text-center">Database Update Problem</p>';
             }
-
 ?>
 
             <style>
@@ -95,7 +106,6 @@ function editProduct($id)
                             <div class="col-span-1">
                                 <label for="category" class="block text-sm font-medium text-gray-700">Category*</label>
                                 <select id="category" name="category" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm input-border-animated" required>
-                                    <option value="0">UnCategory</option>
                                     <?php
                                     if ($databaseFN->getData("productCatagory")) {
                                         foreach ($databaseFN->getResult() as list("categoryName" => $categoryName, "id" => $id)) {

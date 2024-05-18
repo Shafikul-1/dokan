@@ -58,8 +58,15 @@ if (isset($_POST['submit'])) {
     $productInfo = ['productName' => $productName, 'productDescription' => $productDescription, 'productColor' => $productColor, 'category' => $category, 'price' => $price, 'discount' => $discount, 'tax' => $tax, 'weight' => $weight, 'brand' => $brand, 'shippingClass' => $shippingClass, 'warranty' => $warranty, 'customFields' => $customFields, 'releaseDate' => $releaseDate, 'complianceInfo' => $complianceInfo, 'metaTitle' => $metaTitle, 'metaDescription' => $metaDescription, 'keywords' => $keywords, 'productImages' => $productImages, 'videos' => $videos, "userAuth" => $userAuth];
     if ($checkImgOrVideo) {
         if ($databaseFN->insertData("productdetails", $productInfo)) {
-            header("Location: " . $databaseFN->mainUrl . "/admin/products.php");
-            exit();
+            // Update the category quantity
+            $categoryId = $category; 
+            $columnsToIncrement = ['categoryQty' => 1];
+
+            if ($databaseFN->incrementOrDecrement("productcatagory", $columnsToIncrement, "id = $categoryId", "+")) {
+                header("Location: " . $databaseFN->mainUrl . "/admin/products.php");
+            } else {
+                header("Location: " . $databaseFN->mainUrl . "/admin/product/?msg=add&error=dbinfalse");
+            }
         } else {
             header("Location: " . $databaseFN->mainUrl . "/admin/product/?msg=add&error=dbinfalse");
             exit();
@@ -132,7 +139,6 @@ ob_end_flush();
                 <div class="col-span-1">
                     <label for="category" class="block text-sm font-medium text-gray-700">Category*</label>
                     <select id="category" name="category" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm input-border-animated" required>
-                        <option value="0">UnCategory</option>
                         <?php
                         if ($databaseFN->getData("productCatagory")) {
                             foreach ($databaseFN->getResult() as list("categoryName" => $categoryName, "id" => $id)) {
