@@ -109,10 +109,12 @@ function editProduct($id)
                                     <?php
                                     if ($databaseFN->getData("productCatagory")) {
                                         foreach ($databaseFN->getResult() as list("categoryName" => $categoryName, "id" => $id)) {
-                                            echo "<option value=" . $id . ">$categoryName</option>";
+                                            $selected = ($id == $category) ? ' selected' : '';
+                                            echo "<option $selected value=" . $id . ">$categoryName</option>";
                                         }
                                     }
                                     ?>
+                                    
                                 </select>
                             </div>
                             <div class="col-span-1">

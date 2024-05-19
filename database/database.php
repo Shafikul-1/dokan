@@ -75,11 +75,11 @@ class database
     public function incrementOrDecrement($table, $columns, $where, $what)
     {
         if ($this->TableExits($table)) {
-            $incrementClauses = [];
+            $incrementDecrementClauses = [];
             foreach ($columns as $column => $increment) {
-                $incrementClauses[] = "$column = $column $what $increment";
+                $incrementDecrementClauses[] = "$column = $column $what $increment";
             }
-            $sql = "UPDATE $table SET " . implode(", ", $incrementClauses) . " WHERE $where";
+            $sql = "UPDATE $table SET " . implode(", ", $incrementDecrementClauses) . " WHERE $where";
             if ($this->sqli->query($sql)) {
                 array_push($this->result, $this->sqli->affected_rows);
                 return true;

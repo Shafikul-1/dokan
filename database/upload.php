@@ -33,7 +33,7 @@ class Upload
             $this->result[] = "File is not an image.";
             $this->uploadOk = false;
         }
-        
+
         // Check if file already exists and rename it
         if (file_exists($target_file)) {
             date_default_timezone_set("Asia/Dhaka");
@@ -66,35 +66,36 @@ class Upload
             }
         }
     }
+    // delete file function
+    public function deleteFile($fileName)
+    {
+        $target_file = $this->target_dir . $fileName;
+        if (empty($fileName)) {
+            return true;
+        }
+        if (file_exists($target_file)) {
+            if (unlink($target_file)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
 
-    // get multi file info
-    // public function multiFileUpload ($fileInfo)
-    // {
-    //     $productDir = $this->target_dir . "product";
-    //      // Check if file already exists and rename it
-    //      if (file_exists($productDir)) {
-    //         date_default_timezone_set("Asia/Dhaka");
-    //         $this->name = pathinfo($this->name, PATHINFO_FILENAME) . '_' . date("d-m-Y h_i_s_A") . '.' . $imageFileType;
-    //         $target_file = $this->target_dir . $this->name;
-    //     }
+    // Multi File Uplode
+    public function multiFileUpload($fileInfo)
+    {
+        $uploadDir =  $this->target_dir . "product/";
 
-    //     echo "<pre>";
-    //     print_r($fileInfo);
-    //     echo "</pre>";
-    // }
-    public function multiFileUpload($fileInfo) {
-        
-        $uploadDir =  $this->target_dir ."product/" ;
-        
-         // Ensure the upload directory exists
-         if (!is_dir($uploadDir)) {
+        // Ensure the upload directory exists
+        if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
-
         // Initialize the fileNames array
         $this->result['fileNames'] = [];
 
-        // Loop through each file in the file array
         foreach ($fileInfo['name'] as $key => $name) {
             // Check if there was an upload error
             if ($fileInfo['error'][$key] == UPLOAD_ERR_OK) {
@@ -120,41 +121,32 @@ class Upload
                     return false;
                 }
             } else {
-                // If there's an error in the file upload, return false
                 return false;
             }
         }
-        
-        // If all files are uploaded successfully, return true
         return true;
     }
 
-
-    // Multi File uplaod functon
-    private function multiFileCheck()
+    // Multi File delete
+    public function multifileDelete($filesName)
     {
-
-    }
-
-    // delete file function
-    public function deleteFile($fileName)
-    {
-        $target_file = $this->target_dir . $fileName;
-        if (empty($fileName)) {
-            return true;
-        }
-        if (file_exists($target_file)) {
-            if (unlink($target_file)) {
-                return true;
-            } else {
-                return false;
+        $strToArr = explode(",", $filesName);
+        $fileDir = $this->target_dir . "product/";
+        $allDeleted = true; // Initialize flag to track overall deletion success
+    
+        foreach ($strToArr as $fileName) {
+            $filePath = $fileDir . trim($fileName); // Trim to remove any extra spaces
+            if (file_exists($filePath)) {
+                if (!unlink($filePath)) {
+                    $allDeleted = false; // If any file fails to delete, set flag to false
+                }
             }
-        } else {
-            return true;
         }
+        return $allDeleted;
     }
 
-// output result function
+
+    // output result function
     public function getFileResult()
     {
         $val = $this->result;
@@ -162,4 +154,3 @@ class Upload
         return $val;
     }
 }
-
