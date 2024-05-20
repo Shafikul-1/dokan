@@ -6,7 +6,16 @@ $databaseFN = new database();
 
 <!-- component -->
 <div class="sm:px-3 w-full">
-    <!--- more free and premium Tailwind CSS components at https://tailwinduikit.com/ --->
+    <?php 
+    if(isset($_GET['msg']) && $_GET['msg'] == 'dbfalse')
+    {
+        echo "Database insert Problem";
+    } 
+    if(isset($_GET['msg']) && $_GET['msg'] == 'filefalse')
+    {
+        echo "File delete Failed";
+    }  
+    ?>
     <div class="px-4 md:px-10 py-4 md:py-7">
         <div class="flex items-center justify-between">
             <p tabindex="0" class="focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal text-gray-800">Tasks</p>

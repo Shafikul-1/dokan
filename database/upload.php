@@ -130,19 +130,23 @@ class Upload
     // Multi File delete
     public function multifileDelete($filesName)
     {
-        $strToArr = explode(",", $filesName);
-        $fileDir = $this->target_dir . "product/";
-        $allDeleted = true; // Initialize flag to track overall deletion success
-    
-        foreach ($strToArr as $fileName) {
-            $filePath = $fileDir . trim($fileName); // Trim to remove any extra spaces
-            if (file_exists($filePath)) {
-                if (!unlink($filePath)) {
-                    $allDeleted = false; // If any file fails to delete, set flag to false
+        if(!empty($filesName)){
+            $strToArr = explode(",", $filesName);
+            $fileDir = $this->target_dir . "product/";
+            $allDeleted = true; // Initialize flag to track overall deletion success
+        
+            foreach ($strToArr as $fileName) {
+                $filePath = $fileDir . trim($fileName); // Trim to remove any extra spaces
+                if (file_exists($filePath)) {
+                    if (!unlink($filePath)) {
+                        $allDeleted = false; // If any file fails to delete, set flag to false
+                    }
                 }
             }
+            return $allDeleted;
+        }else {
+            return true;
         }
-        return $allDeleted;
     }
 
 
