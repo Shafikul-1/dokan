@@ -60,8 +60,6 @@ if(isset($_GET['error']) && $_GET['error'] == 'dbdfalse'){
                         </td>
                     </tr>
                     <?php  } ?>
-                    <!-- Add more rows as needed -->
-                    
                 </tbody>
             </table>
         </div>

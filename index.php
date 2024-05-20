@@ -1,11 +1,7 @@
 <?php 
 session_start();
 
-if(isset($_POST['submit'])){
-   $s = htmlentities($_POST['age'], ENT_QUOTES );
-   $a = htmlentities($_POST['name'], ENT_QUOTES );
-   echo $s . "<br>" . $a;
-}
+print_r($_SESSION['userAuth']);
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -8,14 +8,17 @@ function fileDelete($id)
     $uploadFN = new Upload();
 
     $databaseFN->getData("productdetails", "*", null, "id = $id");
-    foreach ($databaseFN->getResult() as list("productImages" => $productImages)) {
+    foreach ($databaseFN->getResult() as list("productImages" => $productImages, "videos"=>$videos)) {
         // echo $productImages."<br>";
         if($uploadFN->multifileDelete($productImages)){
-            return true;
+            if ($uploadFN->multifileDelete($videos)) {
+                return true;
+            } else {
+                return false;
+            }
         } else{
             return false;
         }
-
     }
 }
 

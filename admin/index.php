@@ -1,6 +1,6 @@
 <?php 
 session_start();
-$_SESSION["userAuth"] = "4";
+$_SESSION["userAuth"] = "2";
 
 include "header.php"; ?>
 

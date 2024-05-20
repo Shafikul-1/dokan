@@ -118,7 +118,7 @@ class database
                 $start = ($page - 1) * $limit;
                 $sql .= " LIMIT $start, $limit";
             }
-            // echo $sql;
+            echo $sql;
             if ($dataResult = $this->sqli->query($sql)) {
                 $this->result = $dataResult->fetch_all(MYSQLI_ASSOC);
                 return true;
@@ -129,6 +129,35 @@ class database
         } else {
             return false;
         }
+    }
+
+    // Pagination funtion
+    public function pagination($table,$leftJoin = null, $where = null, $limit = null)
+    {
+        if ($this->TableExits($table)) {
+            $sql = "SELECT COUNT(*) FROM $table ";
+            if ($leftJoin != null) {
+                $sql .= " LEFT JOIN $leftJoin";
+            }
+            if ($where != null) {
+                $sql .= " WHERE $where";
+            }
+            // echo $sql;
+            if ($dataResult = $this->sqli->query($sql)) {
+               $totalRecord = $dataResult->fetch_array();
+               $totalRecord = $totalRecord[0];
+               $totalPage = ceil($totalRecord / $limit);
+                if ($totalRecord > $limit) {
+                   return $totalPage; 
+                } 
+
+            } else {
+                array_push($this->result, $this->sqli->error);
+                return false;
+            }
+        } else {
+            return false;
+        }  
     }
 
     // Database Data Delete

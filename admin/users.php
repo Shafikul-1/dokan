@@ -4,14 +4,14 @@ include "../database/database.php";
 $databaseFN = new database();
 
 if (isset($_POST['submit'])) {
-    $name = htmlentities($_POST['name'], ENT_QUOTES );
-    $email = htmlentities($_POST['email'], ENT_QUOTES );
-    $img = htmlentities($_POST['img'], ENT_QUOTES );
-    $pass = htmlentities($_POST['pass'], ENT_QUOTES );
-    $conPass = htmlentities($_POST['conPass'], ENT_QUOTES );
-    $date = htmlentities($_POST['date'], ENT_QUOTES );
-    $userComment = htmlentities($_POST['userComment'], ENT_QUOTES );
-    $userRoll = htmlentities($_POST['userRoll'], ENT_QUOTES );
+    $name = htmlentities($_POST['name'], ENT_QUOTES);
+    $email = htmlentities($_POST['email'], ENT_QUOTES);
+    $img = htmlentities($_POST['img'], ENT_QUOTES);
+    $pass = md5($_POST['pass']);
+    $conPass = md5($_POST['conPass']);
+    $date = htmlentities($_POST['date'], ENT_QUOTES);
+    $userComment = htmlentities($_POST['userComment'], ENT_QUOTES);
+    $userRoll = htmlentities($_POST['userRoll'], ENT_QUOTES);
 
     $formData = ["name" => $name, "email" => $email, "pass" => $pass, "conPass" => $conPass, "date" => $date, "userComment" => $userComment, "userRoll" => $userRoll];
     $databaseFN->insertData("users", $formData);
@@ -157,13 +157,13 @@ if (isset($_GET['dmsg']) == "error") {
         </thead>
         <tbody>
             <?php
-            if(isset($_GET['search'])){
+            if (isset($_GET['search'])) {
                 $databaseFN->searchData("users", "*", "name", $_GET['search']);
-            } else{
-                $databaseFN->getData("users", "*", null, null, "id DESC", null);
+            } else {
+                $databaseFN->getData("users", "*", null, null, "id DESC", 5);
             }
             $allUsers = $databaseFN->getResult();
-            foreach ($allUsers as list("id"=>$id, "name" => $name, "email" => $email, "img" => $img, "date" => $date, "userComment" => $userComment, "userRoll" => $userRoll)) {
+            foreach ($allUsers as list("id" => $id, "name" => $name, "email" => $email, "img" => $img, "date" => $date, "userComment" => $userComment, "userRoll" => $userRoll)) {
             ?>
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="w-4 p-4">
@@ -213,6 +213,35 @@ if (isset($_GET['dmsg']) == "error") {
             <?php } ?>
         </tbody>
     </table>
+    <!-- Pagination -->
+    <div class="text-center my-4">
+        <nav aria-label="Page navigation example">
+            <ul class="inline-flex -space-x-px text-sm">
+                <?php
+                $getTotalPage = $databaseFN->pagination("users", null, null, 5);
+                $currentPath = $_SERVER['PHP_SELF'];
+                if (isset($_GET['page'])) {
+                    $page = $_GET['page'];
+                } else {
+                    $page = 1;
+                }
+                if ($page > 1) {
+                    $prev = $page - 1;
+                    echo "<li><a href='$currentPath?page=$prev'class='flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Previous</a></li>";
+                }
+                for ($i = 1; $i <= $getTotalPage; $i++) {
+                    $active = ($i == $page) ? 'bg-indigo-500 text-white' : '';
+                    echo "<li><a href='$currentPath?page=$i' class='$active flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>$i</a></li>";
+                }
+                if ($page < $getTotalPage) {
+                    $next = $page + 1;
+                    echo "<li><a href='$currentPath?page=$next' class='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Next</a></li>";
+                }
+                ?>
+            </ul>
+        </nav>
+    </div>
+    <!-- Pagination -->
 </div>
 
 
