@@ -18,7 +18,7 @@ $databaseFN = new database();
     ?>
     <div class="px-4 md:px-10 py-4 md:py-7">
         <div class="flex items-center justify-between">
-            <p tabindex="0" class="focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal text-gray-800">Tasks</p>
+            <p tabindex="0" class="focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal text-gray-800 dark:text-white">Tasks</p>
             <div class="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
                 <p>Sort By:</p>
                 <select aria-label="select" class="focus:text-indigo-600 focus:outline-none bg-transparent ml-1">
@@ -29,7 +29,7 @@ $databaseFN = new database();
             </div>
         </div>
     </div>
-    <div class="bg-white py-4 md:py-4 px-4 md:px-4 xl:px-5">
+    <div class="bg-white py-4 md:py-4 px-4 md:px-4 xl:px-5 dark:bg-gray-800">
         <div class="sm:flex sm:flex-wrap items-center justify-between">
             <div class="flex items-center flex-wrap sm:flex-nowrap">
                 <a class="rounded-full focus:outline-none focus:ring-2  focus:bg-indigo-50 focus:ring-indigo-800" href=" javascript:void(0)">

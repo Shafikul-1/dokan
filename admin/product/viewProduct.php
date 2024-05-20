@@ -13,29 +13,82 @@ function viewProduct($id)
 
       <div class="font-sans">
         <div class="p-6 lg:max-w-6xl max-w-2xl mx-auto">
+          <!-- grid -->
           <div class="grid items-start grid-cols-1 lg:grid-cols-2 gap-8">
-            <div class="w-full lg:sticky top-0 sm:flex gap-2">
-              <div class="sm:space-y-3 w-16 max-sm:flex max-sm:mb-4 max-sm:gap-4">
-                <?php
-                $productimageExplode = explode(",", $productImages);
-                $productImageCount = count($productimageExplode);
-                $supportExt = ['jpg', 'png', 'jpeg', 'gif', 'webp'];
-                for ($i = 0; $i < $productImageCount; $i++) {
-                  $fileExt = strtolower(pathinfo($productimageExplode[$i],PATHINFO_EXTENSION));
-                  if (in_array($fileExt, $supportExt)) {
-                    echo "<img src='../../upload/product/" . trim($productimageExplode[$i]) . "' alt='" . $productimageExplode[$i] . "' class='w-full cursor-pointer rounded-sm outline' />";
-                  } 
-                }
-                ?>
+            <div class="">
+              <div class="w-full lg:sticky  top-0 sm:flex gap-2 dark:bg-gray-800 bg-white">
+                <div class="sm:space-y-3 w-16 max-sm:flex max-sm:mb-4 max-sm:gap-4">
+                  <?php
+                  $productimageExplode = explode(",", $productImages);
+                  $productImageCount = count($productimageExplode);
+                  $supportExt = ['jpg', 'png', 'jpeg', 'gif', 'webp'];
+                  for ($i = 0; $i < $productImageCount; $i++) {
+                    $fileExt = strtolower(pathinfo($productimageExplode[$i], PATHINFO_EXTENSION));
+                    if (in_array($fileExt, $supportExt)) {
+                      echo "<img src='../../upload/product/" . trim($productimageExplode[$i]) . "' alt='" . $productimageExplode[$i] . "' class='w-full cursor-pointer rounded-sm outline' />";
+                    }
+                  }
+                  ?>
+                </div>
+                <img src="../../upload/product/<?php echo trim($productimageExplode[0]) ?>" alt="<?php echo trim($productimageExplode[0]) ?>" class="w-4/5 rounded object-cover" />
               </div>
-              <img src="https://readymadeui.com/images/product2.webp" alt="Product" class="w-4/5 rounded object-cover" />
-            </div>
+              <div class="">
+                <section class="w-full rounded-lg border-2 border-purple-600 p-4 my-8 mx-auto max-w-xl">
+                  <h3 class="font-os text-lg font-bold">Comments</h3>
 
+                  <!-- Sample Comment 1 -->
+                  <div class="flex mt-4">
+                    <div class="w-14 h-14 rounded-full bg-purple-400/50 flex-shrink-0 flex items-center justify-center">
+                      <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/43.jpg" alt="">
+                    </div>
+
+                    <div class="ml-3">
+                      <div class="font-medium text-purple-800">John Doe</div>
+                      <div class="text-gray-600">Posted on 2023-10-02 14:30</div>
+                      <div class="mt-2 text-purple-800">This is a sample comment. Lorem ipsum dolor sit amet, consectetur
+                        adipiscing elit.
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Sample Comment 2 -->
+                  <div class="flex mt-4">
+                    <div class="w-14 h-14 rounded-full bg-purple-400/50 flex-shrink-0 flex items-center justify-center">
+                      <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/43.jpg" alt="">
+                    </div>
+                    <div class="ml-3">
+                      <div class="font-medium text-purple-800">Jane Smith</div>
+                      <div class="text-gray-600">Posted on 2023-10-02 15:15</div>
+                      <div class="mt-2 text-purple-800">Another sample comment. Sed quis velit auctor, bibendum dolor in,
+                        accumsan tellus.
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Comment Form -->
+                  <form class="mt-4">
+                    <div class="mb-4">
+                      <label for="name" class="block text-purple-800 font-medium">Name</label>
+                      <input type="text" id="name" name="name" class="border-2 border-purple-600 p-2 w-full rounded" required>
+                    </div>
+
+                    <div class="mb-4">
+                      <label for="comment" class="block text-purple-800 font-medium">Comment</label>
+                      <textarea id="comment" name="comment" class="border-2 border-purple-600 p-2 w-full rounded" required></textarea>
+                    </div>
+
+                    <button type="submit" class="bg-purple-700 text-white font-medium py-2 px-4 rounded hover:bg-purple-600">Post
+                      Comment
+                    </button>
+                  </form>
+                </section>
+              </div>
+            </div>
             <div>
-              <h2 class="text-2xl font-extrabold text-gray-800"><?php echo html_entity_decode($productName); ?></h2>
+              <h2 class="text-2xl font-extrabold text-gray-800 dark:text-white"><?php echo html_entity_decode($productName); ?></h2>
               <div class="flex flex-wrap gap-4 mt-4">
-                <p class="text-gray-800 text-xl font-bold">$12</p>
-                <p class="text-gray-400 text-xl"><strike>$16</strike> <span class="text-sm ml-1">Tax included</span></p>
+                <p class="text-gray-800 text-xl font-bold dark:text-white">$<?php echo html_entity_decode($price); ?></p>
+                <p class="text-gray-400 text-xl dark:gray-500"><strike>$16</strike> <span class="text-sm ml-1">Tax included</span></p>
               </div>
 
               <div class="flex space-x-2 mt-4">
@@ -59,7 +112,7 @@ function viewProduct($id)
               <div class="mt-8">
                 <h3 class="text-lg font-bold text-gray-800">Sizes</h3>
                 <div class="flex flex-wrap gap-4 mt-4">
-                  <button type="button" class="w-12 h-12 border-2 hover:border-gray-800 font-semibold text-sm rounded-full flex items-center justify-center shrink-0">SM</button>
+                  <button type="button" class="w-12 h-12 border-2 hover:border-gray-800 font-semibold text-sm rounded-full flex items-center justify-center shrink-0 ">SM</button>
                   <button type="button" class="w-12 h-12 border-2 hover:border-gray-800 border-gray-800 font-semibold text-sm rounded-full flex items-center justify-center shrink-0">MD</button>
                   <button type="button" class="w-12 h-12 border-2 hover:border-gray-800 font-semibold text-sm rounded-full flex items-center justify-center shrink-0">LG</button>
                   <button type="button" class="w-12 h-12 border-2 hover:border-gray-800 font-semibold text-sm rounded-full flex items-center justify-center shrink-0">XL</button>
@@ -69,13 +122,9 @@ function viewProduct($id)
 
               <div class="mt-8">
                 <h3 class="text-lg font-bold text-gray-800">About the item</h3>
-                <ul class="space-y-3 list-disc mt-4 pl-4 text-sm text-gray-800">
-                  <p><?php echo html_entity_decode($productDescription); ?></p>
-                  <li>A gray t-shirt is a wardrobe essential because it is so versatile.</li>
-                  <li>Available in a wide range of sizes, from extra small to extra large, and even in tall and petite sizes.</li>
-                  <li>This is easy to care for. They can usually be machine-washed and dried on low heat.</li>
-                  <li>You can add your own designs, paintings, or embroidery to make it your own.</li>
-                </ul>
+                <div class="space-y-3 list-disc mt-4 pl-0 text-sm text-gray-800 dark:text-white">
+                  <?php echo html_entity_decode($productDescription); ?>
+                </div>
               </div>
 
               <div class="mt-8 max-w-md">
@@ -140,6 +189,7 @@ function viewProduct($id)
               </div>
             </div>
           </div>
+          <!-- grid -->
         </div>
       </div>
 
