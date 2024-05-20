@@ -7,24 +7,24 @@ $uploadFN = new Upload();
 $databaseFN = new database();
 
 if (isset($_POST['submit'])) {
-    $productName = $_POST['productName'];
-    $productDescription = $_POST['productDescription'];
-    $productColor = $_POST['productColor'];
-    $category = $_POST['category'];
-    $price = $_POST['price'];
-    $discount = $_POST['discount'];
-    $tax = $_POST['tax'];
-    $weight = $_POST['weight'];
-    $brand = $_POST['brand'];
-    $shippingClass = $_POST['shippingClass'];
-    $warranty = $_POST['warranty'];
-    $customFields = $_POST['customFields'];
-    $releaseDate = $_POST['releaseDate'];
-    $complianceInfo = $_POST['complianceInfo'];
-    $metaTitle = $_POST['metaTitle'];
-    $metaDescription = $_POST['metaDescription'];
-    $userAuth = $_POST['userAuth'];
-    $keywords = $_POST['keywords'];
+    $productName = htmlentities($_POST['productName'], ENT_QUOTES );
+    $productDescription = htmlentities($_POST['productDescription'], ENT_QUOTES );
+    $productColor = htmlentities($_POST['productColor'], ENT_QUOTES );
+    $category = htmlentities($_POST['category'], ENT_QUOTES );
+    $price = htmlentities($_POST['price'], ENT_QUOTES );
+    $discount = htmlentities($_POST['discount'], ENT_QUOTES );
+    $tax = htmlentities($_POST['tax'], ENT_QUOTES );
+    $weight = htmlentities($_POST['weight'], ENT_QUOTES );
+    $brand = htmlentities($_POST['brand'], ENT_QUOTES );
+    $shippingClass = htmlentities($_POST['shippingClass'], ENT_QUOTES );
+    $warranty = htmlentities($_POST['warranty'], ENT_QUOTES );
+    $customFields = htmlentities($_POST['customFields'], ENT_QUOTES );
+    $releaseDate = htmlentities($_POST['releaseDate'], ENT_QUOTES );
+    $complianceInfo = htmlentities($_POST['complianceInfo'], ENT_QUOTES );
+    $metaTitle = htmlentities($_POST['metaTitle'], ENT_QUOTES );
+    $metaDescription = htmlentities($_POST['metaDescription'], ENT_QUOTES );
+    $userAuth = htmlentities($_POST['userAuth'], ENT_QUOTES );
+    $keywords = htmlentities($_POST['keywords'], ENT_QUOTES );
     $checkImgOrVideo = false;
 
     if (isset($_FILES['productImages']) && !empty($_FILES['productImages']['name'][0])) {

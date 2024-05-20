@@ -5,8 +5,8 @@ include "../../database/database.php";
 $databaseFN = new database();
 
 if (isset($_POST['submit'])) {
-    $categoryName = $_POST['categoryName'];
-    $categoryDescription = $_POST['categoryDescription'];
+    $categoryName = htmlentities($_POST['categoryName'], ENT_QUOTES );
+    $categoryDescription = htmlentities($_POST['categoryDescription'], ENT_QUOTES );
     $id = $_POST['id'];
     $updateCategoryData = ["categoryName" => $categoryName, "categoryDescription" => $categoryDescription];
     if ($databaseFN->updateData("productCatagory", $updateCategoryData, "id=$id")) {

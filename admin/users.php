@@ -4,14 +4,14 @@ include "../database/database.php";
 $databaseFN = new database();
 
 if (isset($_POST['submit'])) {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $img = $_POST['img'];
-    $pass = $_POST['pass'];
-    $conPass = $_POST['conPass'];
-    $date = $_POST['date'];
-    $userComment = $_POST['userComment'];
-    $userRoll = $_POST['userRoll'];
+    $name = htmlentities($_POST['name'], ENT_QUOTES );
+    $email = htmlentities($_POST['email'], ENT_QUOTES );
+    $img = htmlentities($_POST['img'], ENT_QUOTES );
+    $pass = htmlentities($_POST['pass'], ENT_QUOTES );
+    $conPass = htmlentities($_POST['conPass'], ENT_QUOTES );
+    $date = htmlentities($_POST['date'], ENT_QUOTES );
+    $userComment = htmlentities($_POST['userComment'], ENT_QUOTES );
+    $userRoll = htmlentities($_POST['userRoll'], ENT_QUOTES );
 
     $formData = ["name" => $name, "email" => $email, "pass" => $pass, "conPass" => $conPass, "date" => $date, "userComment" => $userComment, "userRoll" => $userRoll];
     $databaseFN->insertData("users", $formData);
@@ -175,8 +175,8 @@ if (isset($_GET['dmsg']) == "error") {
                     <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                         <img class="w-10 h-10 rounded-full" src="../upload/<?php echo ($img == null) ? 'user/user-defult-icon.png' : $img ?>" alt="<?php echo ($img == null) ? 'user-defult-icon.png' : $img ?>">
                         <div class="ps-3">
-                            <div class="text-base font-semibold"><?php echo $name; ?></div>
-                            <div class="font-normal text-gray-500"><?php echo $email; ?></div>
+                            <div class="text-base font-semibold"><?php echo html_entity_decode($name); ?></div>
+                            <div class="font-normal text-gray-500"><?php echo html_entity_decode($email); ?></div>
                         </div>
                     </th>
                     <td class="px-6 py-4">

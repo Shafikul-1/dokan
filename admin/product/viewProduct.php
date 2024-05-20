@@ -32,7 +32,7 @@ function viewProduct($id)
             </div>
 
             <div>
-              <h2 class="text-2xl font-extrabold text-gray-800"><?php echo $productName; ?></h2>
+              <h2 class="text-2xl font-extrabold text-gray-800"><?php echo html_entity_decode($productName); ?></h2>
               <div class="flex flex-wrap gap-4 mt-4">
                 <p class="text-gray-800 text-xl font-bold">$12</p>
                 <p class="text-gray-400 text-xl"><strike>$16</strike> <span class="text-sm ml-1">Tax included</span></p>
@@ -70,7 +70,7 @@ function viewProduct($id)
               <div class="mt-8">
                 <h3 class="text-lg font-bold text-gray-800">About the item</h3>
                 <ul class="space-y-3 list-disc mt-4 pl-4 text-sm text-gray-800">
-                  <p><?php echo $productDescription ?></p>
+                  <p><?php echo html_entity_decode($productDescription); ?></p>
                   <li>A gray t-shirt is a wardrobe essential because it is so versatile.</li>
                   <li>Available in a wide range of sizes, from extra small to extra large, and even in tall and petite sizes.</li>
                   <li>This is easy to care for. They can usually be machine-washed and dried on low heat.</li>

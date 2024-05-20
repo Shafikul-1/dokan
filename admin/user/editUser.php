@@ -6,11 +6,11 @@ function edituser($id)
     $data = new database();
     // echo $id."<br>";
     if (isset($_POST['submit'])) {
-        $id = $_POST['id'];
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $userRoll = $_POST['userRoll'];
-        $userComment = $_POST['userComment'];
+        $id = htmlentities($_POST['id'], ENT_QUOTES );
+        $name = htmlentities($_POST['name'], ENT_QUOTES );
+        $email = htmlentities($_POST['email'], ENT_QUOTES );
+        $userRoll = htmlentities($_POST['userRoll'], ENT_QUOTES );
+        $userComment = htmlentities($_POST['userComment'], ENT_QUOTES );
         $fileUploadComplete = false;
         
         // Check File Is Upload!

@@ -6,9 +6,9 @@ include "../../database/database.php";
 $databaseFN = new database();
 
 if(isset($_POST['submit'])){
-    $categoryName = $_POST['categoryName'];
-    $userAuth = $_POST['userAuth'];
-    $categoryDescription = $_POST['categoryDescription'];
+    $categoryName = htmlentities($_POST['categoryName'], ENT_QUOTES );
+    $userAuth = htmlentities($_POST['userAuth'], ENT_QUOTES );
+    $categoryDescription = htmlentities($_POST['categoryDescription'], ENT_QUOTES );
 
     $categoryInfo = ['categoryName'=>$categoryName,  'userAuth'=>$userAuth, 'categoryDescription'=>$categoryDescription, 'categoryQty'=>$categoryQty];
     if ($databaseFN->insertData("productCatagory", $categoryInfo)) {
