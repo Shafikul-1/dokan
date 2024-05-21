@@ -48,14 +48,16 @@ id int AUTO_INCREMENT PRIMARY KEY,
     productImages text,
     videos text,
     userAuth int,
-    productStatus varchar (300)
+    productStatus varchar (300),
+    productQty int,
+    deliveryComplete int
 )
 -- Insert Basic Product Data 
 INSERT INTO productDetails 
-(productName, productDescription, productColor, category, price, discount, tax, weight, brand, shippingClass, warranty, customFields, releaseDate, complianceInfo, metaTitle, metaDescription, keywords, productImages, videos, userAuth, productStatus)
+(productName, productDescription, productColor, category, price, discount, tax, weight, brand, shippingClass, warranty, customFields, releaseDate, complianceInfo, metaTitle, metaDescription, keywords, productImages, videos, userAuth, productStatus, productQty, deliveryComplete)
 VALUES
-('computer', ' this is product description', '#4523600', 'electronic', '53329', '2', '4.6', '45.5', 'hp', 'shipping class details', '4', 'Csutom filed desils', '21-04-2023 12:40PM', 'Compliance information Details', 'Meta title Content', 'Meta description Content', 'Computer HP', 'product photo', 'product video', '1', 'pending'),
-('rich', ' this is product description', '#4523600', 'food', '53329', '2', '4', '45', 'dell', 'shipping class details', '4', 'Csutom filed desils', '21-04-2023 12:40PM', 'Compliance information Details', 'Meta tatle Content', 'Meta description Content', 'Computer HP', 'product photo', 'product video', '2', 'done')
+('computer', ' this is product description', '#4523600', 'electronic', '53329', '2', '4.6', '45.5', 'hp', 'shipping class details', '4', 'Csutom filed desils', '21-04-2023 12:40PM', 'Compliance information Details', 'Meta title Content', 'Meta description Content', 'Computer HP', 'product photo', 'product video', '1', 'pending', '34', '6'),
+('rich', ' this is product description', '#4523600', 'food', '53329', '2', '4', '45', 'dell', 'shipping class details', '4', 'Csutom filed desils', '21-04-2023 12:40PM', 'Compliance information Details', 'Meta tatle Content', 'Meta description Content', 'Computer HP', 'product photo', 'product video', '2', 'done', ;'3', '1')
 
 
 -- Create category table

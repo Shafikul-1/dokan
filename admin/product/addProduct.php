@@ -25,6 +25,8 @@ if (isset($_POST['submit'])) {
     $metaDescription = htmlentities($_POST['metaDescription'], ENT_QUOTES );
     $userAuth = htmlentities($_POST['userAuth'], ENT_QUOTES );
     $keywords = htmlentities($_POST['keywords'], ENT_QUOTES );
+    $productQty = htmlentities($_POST['productQty'], ENT_QUOTES );
+    $productStatus = htmlentities($_POST['productStatus'], ENT_QUOTES );
     $checkImgOrVideo = false;
 
     if (isset($_FILES['productImages']) && !empty($_FILES['productImages']['name'][0])) {
@@ -55,7 +57,7 @@ if (isset($_POST['submit'])) {
     }
     // echo "$productImages <br>$videos ";
 
-    $productInfo = ['productName' => $productName, 'productDescription' => $productDescription, 'productColor' => $productColor, 'category' => $category, 'price' => $price, 'discount' => $discount, 'tax' => $tax, 'weight' => $weight, 'brand' => $brand, 'shippingClass' => $shippingClass, 'warranty' => $warranty, 'customFields' => $customFields, 'releaseDate' => $releaseDate, 'complianceInfo' => $complianceInfo, 'metaTitle' => $metaTitle, 'metaDescription' => $metaDescription, 'keywords' => $keywords, 'productImages' => $productImages, 'videos' => $videos, "userAuth" => $userAuth];
+    $productInfo = ['productName' => $productName, 'productDescription' => $productDescription, 'productColor' => $productColor, 'category' => $category, 'price' => $price, 'discount' => $discount, 'tax' => $tax, 'weight' => $weight, 'brand' => $brand, 'shippingClass' => $shippingClass, 'warranty' => $warranty, 'customFields' => $customFields, 'releaseDate' => $releaseDate, 'complianceInfo' => $complianceInfo, 'metaTitle' => $metaTitle, 'metaDescription' => $metaDescription, 'keywords' => $keywords, 'productQty' => $productQty, 'productStatus' => $productStatus, 'productImages' => $productImages, 'videos' => $videos, "userAuth" => $userAuth];
     if ($checkImgOrVideo) {
         if ($databaseFN->insertData("productdetails", $productInfo)) {
             // Update the category quantity
@@ -135,6 +137,20 @@ ob_end_flush();
                 <div class="col-span-1">
                     <label for="productColor" class="block text-sm font-medium text-gray-700">Product Color*</label>
                     <input type="color" id="productColor" name="productColor" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm input-border-animated" required>
+                </div>
+                <div class="col-span-1">
+                    <label for="productQty" class="block text-sm font-medium text-gray-700">Product Qty*</label>
+                    <input type="number" id="productQty" name="productQty" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm input-border-animated" required>
+                </div>
+                <div class="col-span-1">
+                    <label for="productStatus" class="block text-sm font-medium text-gray-700">Product Status*</label>
+                    <select id="productStatus" name="productStatus" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm input-border-animated" required>
+                        <option value="No Update">No Update</option>
+                        <option value="Urgent">Urgent</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Done">Done</option>
+                        <option value="Shipping">Shipping</option>
+                    </select>
                 </div>
                 <div class="col-span-1">
                     <label for="category" class="block text-sm font-medium text-gray-700">Category*</label>
@@ -221,7 +237,7 @@ ob_end_flush();
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('productForm');
             const submitBtn = document.getElementById('submitBtn');
-            const requiredFields = ['productName', 'productDescription', 'productColor', 'category', 'price'];
+            const requiredFields = ['productName', 'productDescription', 'productColor', 'productQty', 'category', 'price', 'productStatus'];
 
             const checkRequiredFields = () => {
                 const allFilled = requiredFields.every(id => document.getElementById(id).value.trim() !== '');
