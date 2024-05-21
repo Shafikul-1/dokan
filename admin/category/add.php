@@ -1,5 +1,5 @@
 <?php 
-session_start();
+
 ob_start();
 include "../header.php";
 include "../../database/database.php";

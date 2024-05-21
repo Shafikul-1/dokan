@@ -1,6 +1,6 @@
 <?php
 ob_start();
-session_start();
+
 include "../header.php";
 include "../../database/upload.php";
 $uploadFN = new Upload();
