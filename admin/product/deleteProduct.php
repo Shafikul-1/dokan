@@ -8,15 +8,15 @@ function fileDelete($id)
     $uploadFN = new Upload();
 
     $databaseFN->getData("productdetails", "*", null, "id = $id");
-    foreach ($databaseFN->getResult() as list("productImages" => $productImages, "videos"=>$videos)) {
+    foreach ($databaseFN->getResult() as list("productImages" => $productImages, "videos" => $videos)) {
         // echo $productImages."<br>";
-        if($uploadFN->multifileDelete($productImages)){
+        if ($uploadFN->multifileDelete($productImages)) {
             if ($uploadFN->multifileDelete($videos)) {
                 return true;
             } else {
                 return false;
             }
-        } else{
+        } else {
             return false;
         }
     }
@@ -46,8 +46,13 @@ function deleteProduct($id)
     $databaseFN = new database();
     if (getOtherData($id)) {
         if ($databaseFN->deleteData("productdetails", "id = $id")) {
-            header("Location: " . $databaseFN->mainUrl . "/admin/products.php");
-            exit();
+            if ($databaseFN->deleteData("usercomment", " postId = $id")) {
+                header("Location: " . $databaseFN->mainUrl . "/admin/products.php");
+                exit();
+            } else {
+                header("Location: " . $databaseFN->mainUrl . "/admin/products.php?msg=dbfalse");
+                exit();
+            }
         } else {
             header("Location: " . $databaseFN->mainUrl . "/admin/products.php?msg=dbfalse");
             exit();

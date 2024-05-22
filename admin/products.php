@@ -30,9 +30,9 @@ $databaseFN = new database();
     <div class="bg-white py-4 md:py-4 px-4 md:px-4 xl:px-5 dark:bg-gray-800">
         <div class="sm:flex sm:flex-wrap items-center justify-between">
             <div class="flex items-center flex-wrap sm:flex-nowrap">
-                <?php 
+                <?php
                 $currentUrl = basename($_SERVER['PHP_SELF']);
-                
+
                 ?>
                 <a class="rounded-full focus:outline-none focus:ring-2  focus:bg-indigo-50 focus:ring-indigo-800" href="<?php echo "$currentUrl?productstatus=all"; ?>">
                     <div class="bg-indigo-100 text-indigo-700 py-2 px-8 rounded-full hover:text-indigo-700 hover:bg-indigo-100">
@@ -62,7 +62,7 @@ $databaseFN = new database();
                 <tbody>
                     <?php
                     if ($databaseFN->getData("productdetails", "productdetails.id, productdetails.releaseDate, productdetails.productName, users.name, productcatagory.categoryName, productdetails.productStatus, productdetails.productQty, productdetails.deliveryComplete", null, null, " id DESC", "5", " productcatagory ON productdetails.category = productcatagory.id LEFT JOIN users ON productdetails.userAuth = users.userRoll")) {
-                        foreach ($databaseFN->getResult() as list('releaseDate' => $releaseDate, 'id' => $id, 'productName' => $productName, 'name' => $name, "categoryName" => $categoryName, 'productStatus'=>$productStatus, 'productQty'=>$productQty, 'deliveryComplete'=>$deliveryComplete)) {
+                        foreach ($databaseFN->getResult() as list('releaseDate' => $releaseDate, 'id' => $id, 'productName' => $productName, 'name' => $name, "categoryName" => $categoryName, 'productStatus' => $productStatus, 'productQty' => $productQty, 'deliveryComplete' => $deliveryComplete)) {
                     ?>
                             <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded relative">
                                 <td>
@@ -118,25 +118,27 @@ $databaseFN = new database();
                                             <path d="M4.16669 10V10.0067" stroke="#52525B" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
                                             <path d="M4.16669 15V15.0067" stroke="#52525B" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
                                         </svg>
-                                        <p class="text-sm leading-none text-gray-600 ml-2"><?php echo $productQty."/".$deliveryComplete ?></p>
+                                        <p class="text-sm leading-none text-gray-600 ml-2"><?php echo $productQty . "/" . $deliveryComplete ?></p>
                                     </div>
                                     <!-- Qty That Product -->
                                 </td>
                                 <td class="pl-5">
                                     <!-- Comment This Product -->
-                                    <div class="flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                            <path d="M3.33331 17.4998V6.6665C3.33331 6.00346 3.59671 5.36758 4.06555 4.89874C4.53439 4.4299 5.17027 4.1665 5.83331 4.1665H14.1666C14.8297 4.1665 15.4656 4.4299 15.9344 4.89874C16.4033 5.36758 16.6666 6.00346 16.6666 6.6665V11.6665C16.6666 12.3295 16.4033 12.9654 15.9344 13.4343C15.4656 13.9031 14.8297 14.1665 14.1666 14.1665H6.66665L3.33331 17.4998Z" stroke="#52525B" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            <path d="M10 9.1665V9.17484" stroke="#52525B" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            <path d="M6.66669 9.1665V9.17484" stroke="#52525B" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            <path d="M13.3333 9.1665V9.17484" stroke="#52525B" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
-                                        </svg>
-                                        <?php
-                                        if ($databaseFN->getData("usercomment", "*", null, " postId = $id")) {
-                                            echo "<p class='text-sm leading-none text-gray-600 ml-2'>" . count($databaseFN->getResult()) . "</p>";
-                                        }
-                                        ?>
-                                    </div>
+                                    <a href="<?php echo $databaseFN->mainUrl . "/admin/product/?msg=view&id=" . $id . "#comment" ?>">
+                                        <div class="flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                <path d="M3.33331 17.4998V6.6665C3.33331 6.00346 3.59671 5.36758 4.06555 4.89874C4.53439 4.4299 5.17027 4.1665 5.83331 4.1665H14.1666C14.8297 4.1665 15.4656 4.4299 15.9344 4.89874C16.4033 5.36758 16.6666 6.00346 16.6666 6.6665V11.6665C16.6666 12.3295 16.4033 12.9654 15.9344 13.4343C15.4656 13.9031 14.8297 14.1665 14.1666 14.1665H6.66665L3.33331 17.4998Z" stroke="#52525B" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path d="M10 9.1665V9.17484" stroke="#52525B" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path d="M6.66669 9.1665V9.17484" stroke="#52525B" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path d="M13.3333 9.1665V9.17484" stroke="#52525B" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            </svg>
+                                            <?php
+                                            if ($databaseFN->getData("usercomment", "*", null, " postId = $id")) {
+                                                echo "<p class='text-sm leading-none text-gray-600 ml-2'>" . count($databaseFN->getResult()) . "</p>";
+                                            }
+                                            ?>
+                                        </div>
+                                    </a>
                                     <!-- Comment That Product -->
                                 </td>
                                 <td class="pl-5">

@@ -7,20 +7,34 @@ function viewProduct($id)
   include "../../database/upload.php";
   $databaseFN = new database();
 
-  if(isset($_POST['commentSubmit'])){
+  // Insert Comment
+  if (isset($_POST['commentSubmit'])) {
     $postId = $id;
-    $name = htmlentities($_POST['name'], ENT_QUOTES );
-    $comment = htmlentities($_POST['comment'], ENT_QUOTES );
-    $time = htmlentities($_POST['time'], ENT_QUOTES );
-    $userAuth = htmlentities($_SESSION['userAuth'], ENT_QUOTES );
-    $commentData = ['name'=>$name, 'time'=>$time, 'comment'=>$comment, 'postId'=>$postId, 'userAuth'=>$userAuth];
-    if($databaseFN->insertData("usercomment", $commentData)){
+    $name = htmlentities($_POST['name'], ENT_QUOTES);
+    $comment = htmlentities($_POST['comment'], ENT_QUOTES);
+    $time = htmlentities($_POST['time'], ENT_QUOTES);
+    $userAuth = htmlentities($_SESSION['userAuth'], ENT_QUOTES);
+    $commentData = ['name' => $name, 'time' => $time, 'comment' => $comment, 'postId' => $postId, 'userAuth' => $userAuth];
+    if ($databaseFN->insertData("usercomment", $commentData)) {
       echo "<p id='message' class='text-black bg-green-500 text-center'>Comment Insert Successful</p>";
     } else {
       echo "<p id='message' class='text-white text-center bg-red-500'>Comment Insert Failed</p>";
     }
   }
 
+// Comment delete
+if(isset($_GET['did'])){
+  $did = $_GET['did'];
+  if ($databaseFN->deleteData("usercomment", "id = $did")) {
+    echo "<p id='message' class='text-black bg-green-500 text-center'>Comment Delete Successful</p>";
+  } else {
+    echo "<p id='message' class='text-black bg-green-500 text-center'>Comment Delete Unsuccessful</p>";
+  }
+  
+}
+
+
+// Get Data Product Details
   if ($databaseFN->getData("productdetails", "*", null, "id=$id")) {
     foreach ($databaseFN->getResult() as list('productName' => $productName, 'productDescription' => $productDescription, 'productColor' => $productColor, 'category' => $category, 'price' => $price, 'discount' => $discount, 'tax' => $tax, 'weight' => $weight, 'brand' => $brand, 'shippingClass' => $shippingClass, 'warranty' => $warranty, 'customFields' => $customFields, 'releaseDate' => $releaseDate, 'complianceInfo' => $complianceInfo, 'metaTitle' => $metaTitle, 'metaDescription' => $metaDescription, 'productImages' => $productImages, 'keywords' => $keywords, "userAuth" => $userAuth)) {
 
@@ -153,54 +167,68 @@ function viewProduct($id)
       </div>
 
 
-<!-- Comment -->
-<section class="w-full rounded-lg border-2 border-purple-600 p-4 my-8 mx-auto max-w-xl">
-    <h3 class="font-os font-bold text-2xl"><a href="#comment">Comments</a></h3>
-    <?php
-      if ($databaseFN->getData("userComment", "*", null, " postId = $id", " id DESC")) {
-        if ($comment = $databaseFN->getResult()) {
-          foreach ($comment as list("name" => $name, "comment" => $comment, "time" => $time)) {
-      ?>
-    <div class="flex mt-4">
-        <div class="w-14 h-14 rounded-full bg-purple-400/50 flex-shrink-0 flex items-center justify-center">
-            <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/43.jpg" alt="">
-        </div>
+      <!-- Comment -->
+      <section class="w-full rounded-lg border-2 border-purple-600 p-4 my-8 mx-auto max-w-xl">
+        <h3 class="font-os font-bold text-2xl"><a href="#comment">Comments</a></h3>
+        <?php
+        if ($databaseFN->getData("userComment", "*", null, " postId = $id", " id DESC")) {
+          if ($comment = $databaseFN->getResult()) {
+            foreach ($comment as list("name" => $name, "comment" => $comment, "time" => $time, "id" =>$commentid)) {
+        ?>
+              <div class="flex mt-4">
+                <div class="w-14 h-14 rounded-full bg-purple-400/50 flex-shrink-0 flex items-center justify-center">
+                  <img class="h-12 w-12 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/43.jpg" alt="">
+                </div>
 
-        <div class="ml-3">
-            <div class="font-medium text-purple-800"><?php  echo html_entity_decode($name); ?></div>
-            <div class="text-gray-600">Comment on <?php echo html_entity_decode($time); ?></div>
-            <div class="mt-2 text-purple-800"><?php echo html_entity_decode($comment); ?></div>
-        </div>
-        <div>
-        <a href="#"><i class="fa-solid fa-ellipsis cursor-pointer"></i></a>
-        </div>
-    </div>
-    <?php
+                <div class="ml-3">
+                  <div class="font-medium text-purple-800"><?php echo html_entity_decode($name); ?></div>
+                  <div class="text-gray-600">Comment on <?php echo html_entity_decode($time); ?></div>
+                  <div class="mt-2 text-purple-800"><?php echo html_entity_decode($comment); ?></div>
+                </div>
+                <div>
+                  <div class="comment-container">
+                    <i onclick="commentToggleBtn(event)" class="fa-solid fa-ellipsis cursor-pointer"></i>
+                    <div class="z-10 hidden commentToggle bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                      <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                        <li>
+                          <a href="<?php echo $databaseFN->mainUrl . "/admin/product/?msg=view&id=$id&did=" . $commentid . "#comment"?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
+                        </li>
+                        <li>
+                          <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Hide</a>
+                        </li>
+                      </ul>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+        <?php
+            }
+          } else {
+            echo "<p class='text-center font-bold text-xl'>No Comment This Post</p>";
           }
         } else {
-          echo "<p class='text-center font-bold text-xl'>No Comment This Post</p>";
+          echo "<p class='text-center font-bold text-xl'>Comment Load Failed In Database</p>";
         }
-      } else {
-        echo "<p class='text-center font-bold text-xl'>Comment Load Failed In Database</p>";
-      }
-      ?>
+        ?>
 
-    <form class="mt-4" action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-        <div class="mb-4">
+        <form class="mt-4" action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+          <div class="mb-4">
             <label for="name" class="block text-purple-800 font-medium">Name</label>
             <input type="text" id="name" name="name" class="border-2 border-purple-600 p-2 w-full rounded" required>
-        </div>
-<input hidden name="time" type="text" value="<?php date_default_timezone_set("Asia/Dhaka"); echo date("d-m-Y h:i:s A"); ?>">
-        <div class="mb-4">
+          </div>
+          <input hidden name="time" type="text" value="<?php date_default_timezone_set("Asia/Dhaka");
+                                                        echo date("d-m-Y h:i:s A"); ?>">
+          <div class="mb-4">
             <label for="comment" class="block text-purple-800 font-medium">Comment</label>
             <textarea id="comment" name="comment" class="border-2 border-purple-600 p-2 w-full rounded" required></textarea>
-        </div>
+          </div>
 
-        <button type="submit" name="commentSubmit" class="bg-purple-700 text-white font-medium py-2 px-4 rounded hover:bg-purple-600">Post Comment </button>
-    </form>
-</section>
+          <button type="submit" name="commentSubmit" class="bg-purple-700 text-white font-medium py-2 px-4 rounded hover:bg-purple-600">Post Comment </button>
+        </form>
+      </section>
 
-<!-- Comment -->
+      <!-- Comment -->
 <?php
     }
   }
@@ -210,12 +238,19 @@ include "../footer.php";
 
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function() {
     setTimeout(function() {
-        var messageDiv = document.getElementById('message');
-        if (messageDiv) {
-            messageDiv.style.display = 'none';
-        }
+      var messageDiv = document.getElementById('message');
+      if (messageDiv) {
+        messageDiv.style.display = 'none';
+      }
     }, 5000); // 10000 milliseconds = 10 seconds
-});
+  });
+
+  // Comment Toggle BTN
+  function commentToggleBtn(event) {
+    const commentContainer = event.target.closest('.comment-container');
+    const commentToggle = commentContainer.querySelector('.commentToggle');
+    commentToggle.classList.toggle('hidden');
+  }
 </script>

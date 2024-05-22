@@ -82,7 +82,7 @@ id int AUTO_INCREMENT PRIMARY KEY,
     name varchar (300),
     comment text,
     time varchar (600),
-    serAuth int,
+    userAuth int,
     postId int
 )
 INSERT INTO `usercomment`(`name`, `comment`, `time`, `serAuth`, `postId`) VALUES 

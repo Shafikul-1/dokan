@@ -27,6 +27,7 @@ if (isset($_POST['submit'])) {
     $keywords = htmlentities($_POST['keywords'], ENT_QUOTES );
     $productQty = htmlentities($_POST['productQty'], ENT_QUOTES );
     $productStatus = htmlentities($_POST['productStatus'], ENT_QUOTES );
+    $deliveryComplete = 0;
     $checkImgOrVideo = false;
 
     if (isset($_FILES['productImages']) && !empty($_FILES['productImages']['name'][0])) {
@@ -57,7 +58,7 @@ if (isset($_POST['submit'])) {
     }
     // echo "$productImages <br>$videos ";
 
-    $productInfo = ['productName' => $productName, 'productDescription' => $productDescription, 'productColor' => $productColor, 'category' => $category, 'price' => $price, 'discount' => $discount, 'tax' => $tax, 'weight' => $weight, 'brand' => $brand, 'shippingClass' => $shippingClass, 'warranty' => $warranty, 'customFields' => $customFields, 'releaseDate' => $releaseDate, 'complianceInfo' => $complianceInfo, 'metaTitle' => $metaTitle, 'metaDescription' => $metaDescription, 'keywords' => $keywords, 'productQty' => $productQty, 'productStatus' => $productStatus, 'productImages' => $productImages, 'videos' => $videos, "userAuth" => $userAuth];
+    $productInfo = ['productName' => $productName, 'productDescription' => $productDescription, 'productColor' => $productColor, 'category' => $category, 'price' => $price, 'discount' => $discount, 'tax' => $tax, 'weight' => $weight, 'brand' => $brand, 'shippingClass' => $shippingClass, 'warranty' => $warranty, 'customFields' => $customFields, 'releaseDate' => $releaseDate, 'complianceInfo' => $complianceInfo, 'metaTitle' => $metaTitle, 'metaDescription' => $metaDescription, 'keywords' => $keywords, 'productQty' => $productQty, 'productStatus' => $productStatus, 'productImages' => $productImages, 'videos' => $videos, "userAuth" => $userAuth, "deliveryComplete"=>$deliveryComplete];
     if ($checkImgOrVideo) {
         if ($databaseFN->insertData("productdetails", $productInfo)) {
             // Update the category quantity
