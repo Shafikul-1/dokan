@@ -22,23 +22,35 @@ function viewProduct($id)
     }
   }
 
-// Comment delete
-if(isset($_GET['did'])){
-  $did = $_GET['did'];
-  if ($databaseFN->deleteData("usercomment", "id = $did")) {
-    echo "<p id='message' class='text-black bg-green-500 text-center'>Comment Delete Successful</p>";
-  } else {
-    echo "<p id='message' class='text-black bg-green-500 text-center'>Comment Delete Unsuccessful</p>";
+  // Comment delete
+  if (isset($_GET['did'])) {
+    $did = $_GET['did'];
+    if ($databaseFN->deleteData("usercomment", "id = $did")) {
+      echo "<p id='message' class='text-black bg-green-500 text-center'>Comment Delete Successful</p>";
+    } else {
+      echo "<p id='message' class='text-black bg-green-500 text-center'>Comment Delete Unsuccessful</p>";
+    }
   }
-  
-}
 
 
-// Get Data Product Details
+  // Get Data Product Details
   if ($databaseFN->getData("productdetails", "*", null, "id=$id")) {
     foreach ($databaseFN->getResult() as list('productName' => $productName, 'productDescription' => $productDescription, 'productColor' => $productColor, 'category' => $category, 'price' => $price, 'discount' => $discount, 'tax' => $tax, 'weight' => $weight, 'brand' => $brand, 'shippingClass' => $shippingClass, 'warranty' => $warranty, 'customFields' => $customFields, 'releaseDate' => $releaseDate, 'complianceInfo' => $complianceInfo, 'metaTitle' => $metaTitle, 'metaDescription' => $metaDescription, 'productImages' => $productImages, 'keywords' => $keywords, "userAuth" => $userAuth)) {
 
 ?>
+      <style>
+        .zoomDiv {
+          width: 400px;
+          height: 400px;
+          position: absolute;
+          top: 19rem;
+          left: 51rem;
+          display: none;
+          background-repeat: no-repeat !important;
+          overflow: hidden;
+          border: 1px solid #ccc;
+        }
+      </style>
 
       <div class="font-sans">
         <div class="p-6 lg:max-w-6xl max-w-2xl mx-auto">
@@ -52,14 +64,15 @@ if(isset($_GET['did'])){
                 for ($i = 0; $i < $productImageCount; $i++) {
                   $fileExt = strtolower(pathinfo($productimageExplode[$i], PATHINFO_EXTENSION));
                   if (in_array($fileExt, $supportExt)) {
-                    echo "<img src='../../upload/product/" . trim($productimageExplode[$i]) . "' alt='" . $productimageExplode[$i] . "' class='w-full cursor-pointer rounded-sm outline' />";
+                    echo "<img onclick='changeImage(event)' src='../../upload/product/" . trim($productimageExplode[$i]) . "' alt='" . $productimageExplode[$i] . "' class='w-full cursor-pointer rounded-sm outline' />";
                   }
                 }
                 ?>
-              </div>
-              <img src="../../upload/product/<?php echo trim($productimageExplode[0]) ?>" alt="<?php echo trim($productimageExplode[0]) ?>" class="w-4/5 rounded object-cover" />
-            </div>
 
+              </div>
+              <img onmousemove="zoomImage(event)" onmouseout="zoomOutImage()" id="imgZoom" src="../../upload/product/<?php echo trim($productimageExplode[0]) ?>" alt="<?php echo trim($productimageExplode[0]) ?>" class="cursor-zoom-in changeImageSrc w-4/5 rounded object-cover" />
+            </div>
+            <div class="zoomDiv"> </div>
             <div>
               <h2 class="text-2xl font-extrabold text-gray-800"><?php echo html_entity_decode($productName); ?></h2>
               <div class="flex flex-wrap gap-4 mt-4">
@@ -173,7 +186,7 @@ if(isset($_GET['did'])){
         <?php
         if ($databaseFN->getData("userComment", "*", null, " postId = $id", " id DESC")) {
           if ($comment = $databaseFN->getResult()) {
-            foreach ($comment as list("name" => $name, "comment" => $comment, "time" => $time, "id" =>$commentid)) {
+            foreach ($comment as list("name" => $name, "comment" => $comment, "time" => $time, "id" => $commentid)) {
         ?>
               <div class="flex mt-4">
                 <div class="w-14 h-14 rounded-full bg-purple-400/50 flex-shrink-0 flex items-center justify-center">
@@ -191,7 +204,7 @@ if(isset($_GET['did'])){
                     <div class="z-10 hidden commentToggle bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                       <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
                         <li>
-                          <a href="<?php echo $databaseFN->mainUrl . "/admin/product/?msg=view&id=$id&did=" . $commentid . "#comment"?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
+                          <a href="<?php echo $databaseFN->mainUrl . "/admin/product/?msg=view&id=$id&did=" . $commentid . "#comment" ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
                         </li>
                         <li>
                           <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Hide</a>
@@ -252,5 +265,39 @@ include "../footer.php";
     const commentContainer = event.target.closest('.comment-container');
     const commentToggle = commentContainer.querySelector('.commentToggle');
     commentToggle.classList.toggle('hidden');
+  }
+
+  // Image Change
+  function changeImage(event) {
+    // console.log(event.srcElement.currentSrc);
+    const getUrl = event.srcElement.currentSrc;
+    const changeImageSrc = document.querySelector(".changeImageSrc").src = getUrl;
+  }
+
+  // Zoom Image
+  function zoomImage(event) {
+    const currentUrl = event.srcElement.currentSrc;
+    const zoomDiv = document.querySelector(".zoomDiv")
+    zoomDiv.style.backgroundImage = `url('${currentUrl}')`;
+    zoomDiv.style.display = "block";
+    let img = document.getElementById("imgZoom");
+    // let posX = event.offsetX ? (event.offsetX) : event.pageX - img.offsetLeft;
+    // let posY = event.offsetY ? (event.offsetY) : event.pageY - img.offsetTop;
+    // zoomDiv.style.backgroundPosition = (-posX * 1) + "px " + (-posY * 1) + "px";
+    let imgRect = img.getBoundingClientRect();
+    let posX = event.clientX - imgRect.left;
+    let posY = event.clientY - imgRect.top;
+
+    // Assume a zoom level, for example, 2x zoom
+    const zoomLevel = 2;
+
+    zoomDiv.style.backgroundSize = `${img.width * zoomLevel}px ${img.height * zoomLevel}px`;
+    zoomDiv.style.backgroundPosition = `${-posX * (zoomLevel - 1)}px ${-posY * (zoomLevel - 1)}px`;
+
+  }
+   // Zoom Image
+  function zoomOutImage(){
+    const zoomDiv = document.querySelector(".zoomDiv")
+    zoomDiv.style.display = "none";
   }
 </script>

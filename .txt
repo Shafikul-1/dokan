@@ -2,6 +2,9 @@ https://github.com/fajar7xx/ecommerce-template-tailwind-1/blob/main/public/index
 https://techzaa.getappui.com/techcard/?storefront=envato-elements
 https://taildash.tailwinddashboard.com/index-crm.html
 
+https://swiperjs.com/
+
+https://material-you-slider.uiinitiative.com/
 
 <?php 
 include "header.php"; ?>
