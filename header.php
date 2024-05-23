@@ -19,7 +19,9 @@ if(isset($_GET['session']) && $_GET['session'] == 'remove'){
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Dokan</title>
+
    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+   <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -73,7 +75,7 @@ if(isset($_GET['session']) && $_GET['session'] == 'remove'){
     </div>
   </div>
 </nav>
-
+<div class="px-5 py-3">
 <script>
         function showMobileMenu() {
          const MobileMenu = document.querySelector(".MobileMenu");

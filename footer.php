@@ -1,9 +1,11 @@
+</div>
+
 <!-- component -->
 <footer class="bg-gradient-to-r from-gray-100 via-[#bce1ff] to-gray-100">
   <div class="max-w-screen-xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
       <div>
-      <img src="#" class="mr-5 h-6 sm:h-9" alt="logo" />
+        <img src="#" class="mr-5 h-6 sm:h-9" alt="logo" />
         <p class="max-w-xs mt-4 text-sm text-gray-600">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, accusantium.
         </p>
@@ -95,19 +97,31 @@
 
 
 
-    <!-- copyright -->
-    <div class="bg-gray-800 py-4">
-        <div class="container flex items-center justify-between">
-            <p class="text-white">&copy; TailCommerce - All Right Reserved</p>
-            <div>
-                <img src="https://raw.githubusercontent.com/fajar7xx/ecommerce-template-tailwind-1/main/public/assets/images/methods.png" alt="methods" class="h-5">
-            </div>
-        </div>
-    </div> 
+<!-- copyright -->
+<div class="bg-gray-800 py-4">
+  <div class="container flex items-center justify-between">
+    <p class="text-white">&copy; TailCommerce - All Right Reserved</p>
+    <div>
+      <img src="https://raw.githubusercontent.com/fajar7xx/ecommerce-template-tailwind-1/main/public/assets/images/methods.png" alt="methods" class="h-5">
+    </div>
+  </div>
+</div>
 
 
-
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 <script src="https://kit.fontawesome.com/ed5a9b6893.js" crossorigin="anonymous"></script>
+<script>
+  document.addEventListener( 'DOMContentLoaded', function() {
+    var splide = new Splide( '.splide' , {
+      type: 'loop',
+      speed:500,
+      autoplay : true,
+      focus  : 'center',
+      perPage: 1,
+    })
+    splide.mount();
+  } );
+</script>
 </body>
 
 </html>

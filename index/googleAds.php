@@ -1,0 +1,1 @@
+<div class="border bg-indigo-300 w-full h-9"></div>
