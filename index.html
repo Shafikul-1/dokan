@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Slider with Tailwind CSS</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="flex items-center justify-center h-screen bg-gray-100">
+    <div class="relative w-full max-w-6xl overflow-hidden" id="slider-container">
+        <button class="absolute left-0 z-10 p-2 bg-black bg-opacity-50 text-white hover:bg-opacity-75" id="prevBtn">❮</button>
+        <div class="flex transition-transform duration-500 ease-in-out" id="slider">
+            <!-- Add your slides here -->
+            <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/4 p-2 slide bg-gray-300 border border-gray-400 text-center">Slide 1</div>
+            <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/4 p-2 slide bg-gray-300 border border-gray-400 text-center">Slide 2</div>
+            <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/4 p-2 slide bg-gray-300 border border-gray-400 text-center">Slide 3</div>
+            <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/4 p-2 slide bg-gray-300 border border-gray-400 text-center">Slide 4</div>
+            <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/4 p-2 slide bg-gray-300 border border-gray-400 text-center">Slide 5</div>
+        </div>
+        <button class="absolute right-0 z-10 p-2 bg-black bg-opacity-50 text-white hover:bg-opacity-75" id="nextBtn">❯</button>
+    </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.getElementById('slider');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    let isPaused = false;
+    let currentIndex = 0;
+    let autoSlideInterval;
+
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    // Clone the first and last slides for seamless looping
+    const firstSlideClone = slides[0].cloneNode(true);
+    const lastSlideClone = slides[totalSlides - 1].cloneNode(true);
+
+    slider.appendChild(firstSlideClone);
+    slider.insertBefore(lastSlideClone, slides[0]);
+
+    function updateSlideWidth() {
+        const screenWidth = window.innerWidth;
+        if (screenWidth >= 1024) {
+            return slider.offsetWidth / 4; // 4 slides for large screens
+        } else if (screenWidth >= 640) {
+            return slider.offsetWidth / 2; // 2 slides for medium screens
+        } else {
+            return slider.offsetWidth; // 1 slide for small screens
+        }
+    }
+
+    function moveToIndex(index) {
+        const slideWidth = updateSlideWidth();
+        slider.style.transition = 'transform 0.5s ease-in-out';
+        slider.style.transform = `translateX(-${(index + 1) * slideWidth}px)`;
+        currentIndex = index;
+
+        // Handle looping
+        if (currentIndex >= totalSlides) {
+            setTimeout(() => {
+                slider.style.transition = 'none';
+                slider.style.transform = `translateX(-${slideWidth}px)`;
+                currentIndex = 0;
+            }, 500);
+        } else if (currentIndex < 0) {
+            setTimeout(() => {
+                slider.style.transition = 'none';
+                slider.style.transform = `translateX(-${totalSlides * slideWidth}px)`;
+                currentIndex = totalSlides - 1;
+            }, 500);
+        }
+
+        resetAutoSlide();
+    }
+
+    nextBtn.addEventListener('click', function() {
+        moveToIndex(currentIndex + 1);
+    });
+
+    prevBtn.addEventListener('click', function() {
+        moveToIndex(currentIndex - 1);
+    });
+
+    slider.addEventListener('mouseenter', function() {
+        isPaused = true;
+        clearInterval(autoSlideInterval);
+    });
+
+    slider.addEventListener('mouseleave', function() {
+        isPaused = false;
+        resetAutoSlide();
+    });
+
+    let startX, initialX;
+
+    slider.addEventListener('mousedown', function(e) {
+        isPaused = true;
+        clearInterval(autoSlideInterval);
+        startX = e.pageX - slider.offsetLeft;
+        initialX = slider.offsetLeft;
+        slider.style.transition = 'none';
+        document.addEventListener('mousemove', moveSlider);
+        document.addEventListener('mouseup', endDrag);
+    });
+
+    function moveSlider(e) {
+        const x = e.pageX - slider.offsetLeft;
+        const walk = x - startX;
+        slider.style.transform = `translateX(${initialX + walk}px)`;
+    }
+
+    function endDrag() {
+        slider.style.transition = 'transform 0.5s ease-in-out';
+        document.removeEventListener('mousemove', moveSlider);
+        document.removeEventListener('mouseup', endDrag);
+        isPaused = false;
+        resetAutoSlide();
+    }
+
+    function autoSlide() {
+        if (!isPaused) {
+            moveToIndex(currentIndex + 1);
+        }
+    }
+
+    function resetAutoSlide() {
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = setInterval(autoSlide, 3000); // Change slide every 3 seconds
+    }
+
+    window.addEventListener('resize', () => {
+        const slideWidth = updateSlideWidth();
+        slider.style.transition = 'none';
+        slider.style.transform = `translateX(-${(currentIndex + 1) * slideWidth}px)`;
+    });
+
+    resetAutoSlide(); // Start the auto slide when the page loads
+});
+
+</script>
+</body>
+</html>
