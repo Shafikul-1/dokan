@@ -13,7 +13,7 @@ if(isset($_GET['session']) && $_GET['session'] == 'remove'){
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 
 <head>
    <meta charset="UTF-8">
@@ -21,7 +21,9 @@ if(isset($_GET['session']) && $_GET['session'] == 'remove'){
    <title>Dokan</title>
 
    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
-   <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<link rel="stylesheet" href="css/swiper.css">
+
 </head>
 
 <body>

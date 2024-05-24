@@ -107,20 +107,85 @@
   </div>
 </div>
 
-
-<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="https://kit.fontawesome.com/ed5a9b6893.js" crossorigin="anonymous"></script>
 <script>
-  document.addEventListener( 'DOMContentLoaded', function() {
-    var splide = new Splide( '.splide' , {
-      type: 'loop',
-      speed:500,
-      autoplay : true,
-      focus  : 'center',
-      perPage: 1,
-    })
-    splide.mount();
-  } );
+  // Category Section slider
+  var swiper = new Swiper(".categorySwiper", {
+    slidesPerView: 1,
+    spaceBetween: 10,
+    autoplay: {
+      delay: 500,
+    },
+    loop: true,
+    breakpoints: {
+      640: {
+        slidesPerView: 2,
+        spaceBetween: 20,
+      },
+      768: {
+        slidesPerView: 4,
+        spaceBetween: 40,
+      },
+      1024: {
+        slidesPerView: 5,
+        spaceBetween: 50,
+      },
+    },
+  });
+
+
+  var swiper = new Swiper(".justAdd", {
+      slidesPerView: 1,
+      loop: true,
+      spaceBetween: 10,
+      autoplay: {
+      delay: 1000,
+    },
+      pagination: {
+        // el: ".swiper-pagination",
+        clickable: true,
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        768: {
+          slidesPerView: 4,
+          spaceBetween: 40,
+        },
+        1024: {
+          slidesPerView: 5,
+          spaceBetween: 50,
+        },
+      },
+    });
+
+  // Hero section slider
+  const progressCircle = document.querySelector(".autoplay-progress svg");
+  const progressContent = document.querySelector(".autoplay-progress span");
+  var swiper = new Swiper(".mySwiper", {
+    spaceBetween: 30,
+    loop: true,
+    centeredSlides: true,
+    autoplay: {
+      delay: 2500,
+      disableOnInteraction: false
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev"
+    },
+    on: {
+      autoplayTimeLeft(s, time, progress) {
+        progressCircle.style.setProperty("--progress", 1 - progress);
+        progressContent.textContent = `${Math.ceil(time / 1000)}s`;
+      }
+    }
+  });
+
+
 </script>
 </body>
 

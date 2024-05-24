@@ -27,13 +27,13 @@ include "header.php";
 
 
 <section class="">
-    <h3 class="text-xl font-bold text-black dark:text-white ">Just Now Added Product</h3>
+    <h3 class="text-2xl font-bold text-black dark:text-white ">Just Now Added Product</h3>
     <?php include "index/justAddedProduct.php"; ?>
 </section>
 
 
-<section>
-    <h3 class="text-xl font-bold text-black dark:text-white "> Product</h3>
+<section class="mt-4">
+    <h3 class="text-2xl font-bold text-black dark:text-white "> Product Category List</h3>
     <?php include "index/categorys.php"; ?>
 </section>
 
