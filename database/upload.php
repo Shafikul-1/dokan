@@ -10,6 +10,7 @@ class Upload
     private $target_dir = "E:/Xampp/htdocs/dokan/upload/";
     private $result = [];
 
+    // get single file info
     public function uploadFile($file)
     {
         $this->name = $file['name'];
@@ -20,6 +21,7 @@ class Upload
         $this->checkFile();
     }
 
+    // single file upload functon
     private function checkFile()
     {
         $target_file = $this->target_dir . basename($this->name);
@@ -31,7 +33,7 @@ class Upload
             $this->result[] = "File is not an image.";
             $this->uploadOk = false;
         }
-        
+
         // Check if file already exists and rename it
         if (file_exists($target_file)) {
             date_default_timezone_set("Asia/Dhaka");
@@ -64,7 +66,7 @@ class Upload
             }
         }
     }
-
+    // delete file function
     public function deleteFile($fileName)
     {
         $target_file = $this->target_dir . $fileName;
@@ -82,6 +84,73 @@ class Upload
         }
     }
 
+    // Multi File Uplode
+    public function multiFileUpload($fileInfo)
+    {
+        $uploadDir =  $this->target_dir . "product/";
+
+        // Ensure the upload directory exists
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+        // Initialize the fileNames array
+        $this->result['fileNames'] = [];
+
+        foreach ($fileInfo['name'] as $key => $name) {
+            // Check if there was an upload error
+            if ($fileInfo['error'][$key] == UPLOAD_ERR_OK) {
+                $tmpName = $fileInfo['tmp_name'][$key];
+                $fileSize = $fileInfo['size'][$key];
+                $fileType = $fileInfo['type'][$key];
+
+                // Generate a unique file name if the file already exists
+                $destination = $uploadDir . basename($name);
+                if (file_exists($destination)) {
+                    $pathInfo = pathinfo($destination);
+                    date_default_timezone_set("Asia/Dhaka");
+                    $uniqueName = $pathInfo['filename'] . '_' . date("d-m-Y_h_i_s_A") . '.' . $pathInfo['extension'];
+                    $destination = $uploadDir . $uniqueName;
+                }
+
+                // Move the file to the destination
+                if (move_uploaded_file($tmpName, $destination)) {
+                    // Store the base name of the uploaded file in the fileNames array
+                    $this->result['fileNames'][] = basename($destination);
+                } else {
+                    // If file move failed, return false
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Multi File delete
+    public function multifileDelete($filesName)
+    {
+        if(!empty($filesName)){
+            $strToArr = explode(",", $filesName);
+            $fileDir = $this->target_dir . "product/";
+            $allDeleted = true; // Initialize flag to track overall deletion success
+        
+            foreach ($strToArr as $fileName) {
+                $filePath = $fileDir . trim($fileName); // Trim to remove any extra spaces
+                if (file_exists($filePath)) {
+                    if (!unlink($filePath)) {
+                        $allDeleted = false; // If any file fails to delete, set flag to false
+                    }
+                }
+            }
+            return $allDeleted;
+        }else {
+            return true;
+        }
+    }
+
+
+    // output result function
     public function getFileResult()
     {
         $val = $this->result;

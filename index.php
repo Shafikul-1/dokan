@@ -1,109 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <h1>Ecommarce</h1>
-    <pre>
-    <?php
-    include "./database/database.php";
-    $a = new database();
-    print_r($a->getResult())
-    ?>
-    </pre>
-
-    
-
-
-
-
-
-    <?php
-include "../database/database.php";
-$databaseFN = new database();
-?>
-
-<script>
-function checkForm() {
-    var name = document.getElementById("name").value;
-    var email = document.getElementById("email").value;
-    var pass = document.getElementById("pass").value;
-    var conPass = document.getElementById("conPass").value;
-    var date = document.getElementById("date").value;
-    var userComment = document.getElementById("userComment").value;
-    var userRoll = document.getElementById("userRoll").value;
-
-    if (name !== '' && email !== '' && pass !== '' && conPass !== '' && date !== '' && userComment !== '' && userRoll !== '') {
-        if (pass === conPass) {
-            return true;
-        } else {
-            alert("Password and Confirm Password do not match!");
-            return false;
-        }
-    } else {
-        alert("Please fill in all fields.");
-        return false;
-    }
-}
-</script>
-
-<form action="" method="post" onsubmit="return checkForm()">
-    <input type="text" name="name" id="name" placeholder="Name">
-    <input type="email" name="email" id="email" placeholder="Email">
-    <input type="password" name="pass" id="pass" placeholder="Password">
-    <input type="password" name="conPass" id="conPass" placeholder="Confirm Password">
-    <input type="date" name="date" id="date">
-    <textarea name="userComment" id="userComment" placeholder="Comment"></textarea>
-    <select name="userRoll" id="userRoll">
-        <option value="1">admin</option>
-        <option value="2">moderator</option>
-        <option value="3">user</option>
-    </select>
-    <input type="submit" name="submit" value="Save" id="submit" disabled>
-</form>
-
-<script>
-document.addEventListener("input", function() {
-    var name = document.getElementById("name").value;
-    var email = document.getElementById("email").value;
-    var pass = document.getElementById("pass").value;
-    var conPass = document.getElementById("conPass").value;
-    var date = document.getElementById("date").value;
-    var userComment = document.getElementById("userComment").value;
-    var userRoll = document.getElementById("userRoll").value;
-
-    if (name !== '' && email !== '' && pass !== '' && conPass !== '' && date !== '' && userComment !== '' && userRoll !== '') {
-        document.getElementById("submit").disabled = false;
-    } else {
-        document.getElementById("submit").disabled = true;
-    }
-});
-</script>
-
 <?php
-if (isset($_POST['submit'])) {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $pass = $_POST['pass'];
-    $conPass = $_POST['conPass'];
-    $date = $_POST['date'];
-    $userComment = $_POST['userComment'];
-    $userRoll = $_POST['userRoll'];
+include "header.php"; 
 
-    $formData = ["name" => $name, "email" => $email, "pass" => $pass, "date" => $date, "userComment" => $userComment, "userRoll" => $userRoll];
-    $databaseFN->insertData("users", $formData);
-}
 ?>
 
 
 
+<div class="grid grid-cols-1 md:grid-cols-6  gap-2">
+  <div class="w-full md:col-start-1 md:col-span-4 ">
+    <?php 
+    include "index/heroSection.php"; 
+    ?>
+  </div> 
+   <div class=" w-full md:col-start-5 md:col-span-6 ">
+    <div class="grid grid-cols-1"></div>
+    <?php include "index/searchProduct.php"; 
+    include "index/googleAds.php"; ?>
+   </div> 
+</div>
+
+<section class="text-gray-700 body-font">
+  <div class="container px-5 py-10 mx-auto">
+   <h3 class="text-xl font-bold text-black dark:text-white mb-5">Feture Categories</h3>
+    <?php include "index/fetureCategories.php"; ?>
+  </div>
+</section>
 
 
-</body>
+<section class="">
+    <h3 class="text-2xl font-bold text-black dark:text-white ">Just Now Added Product</h3>
+    <?php include "index/justAddedProduct.php"; ?>
+</section>
 
-</html>
+
+<section class="mt-4">
+    <h3 class="text-2xl font-bold text-black dark:text-white "> Product Category List</h3>
+    <?php include "index/categorys.php"; ?>
+</section>
+
+
+
+
+
+
+<?php include "footer.php"; ?>
