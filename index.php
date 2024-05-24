@@ -1,5 +1,6 @@
 <?php
 include "header.php"; 
+$databaseFN = new database();
 
 ?>
 
@@ -20,14 +21,20 @@ include "header.php";
 
 <section class="text-gray-700 body-font">
   <div class="container px-5 py-10 mx-auto">
+   <div class="flex justify-between">
    <h3 class="text-xl font-bold text-black dark:text-white mb-5">Feture Categories</h3>
+   <a href="<?php echo $databaseFN->mainUrl ."/category" ?>">See All Categories <i class="fa-solid fa-arrow-right-long"></i></a>
+   </div>
     <?php include "index/fetureCategories.php"; ?>
   </div>
 </section>
 
 
 <section class="">
+    <div class="flex justify-between">
     <h3 class="text-2xl font-bold text-black dark:text-white ">Just Now Added Product</h3>
+    <a href="#">See All Product <i class="fa-solid fa-arrow-right-long"></i></a>
+    </div>
     <?php include "index/justAddedProduct.php"; ?>
 </section>
 
@@ -36,7 +43,6 @@ include "header.php";
     <h3 class="text-2xl font-bold text-black dark:text-white "> Product Category List</h3>
     <?php include "index/categorys.php"; ?>
 </section>
-
 
 
 
