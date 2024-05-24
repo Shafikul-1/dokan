@@ -9,7 +9,7 @@
         <div class="swiper-slide">
             <div class="bg-gray-200 my-2 w-full">
                 <div class="bg-white rounded-lg overflow-hidden shadow-2xl  ">
-                    <img class="h-48 w-full object-cover object-end" src="../upload/product/<?php echo trim($imageNameExplde[0]) ?>" alt="<?php echo trim($imageNameExplde[0]) ?>" />
+                    <img class="h-48 w-full object-cover object-end" src="upload/product/<?php echo trim($imageNameExplde[0]) ?>" alt="<?php echo trim($imageNameExplde[0]) ?>" />
                     <div class="p-6">
                         <div class="flex items-baseline">
                             <span class="inline-block bg-teal-200 text-teal-800 py-1 px-4 text-xs rounded-full uppercase font-semibold tracking-wide">New</span>

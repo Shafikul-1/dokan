@@ -1,9 +1,9 @@
 <?php 
 session_start();
-include "./database/database.php";
+include "database/database.php";
 $databaseFN = new database();
 
-
+ 
 if(isset($_GET['session']) && $_GET['session'] == 'add'){
   $_SESSION['userAuth'] = '1';
 }
