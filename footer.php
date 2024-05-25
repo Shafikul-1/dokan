@@ -133,6 +133,29 @@
       },
     },
   });
+  // Category All show
+  var swiper = new Swiper(".AllCategory", {
+    slidesPerView: 1,
+    spaceBetween: 10,
+    autoplay: {
+      delay: 500,
+    },
+    loop: true,
+    breakpoints: {
+      640: {
+        slidesPerView: 2,
+        spaceBetween: 20,
+      },
+      768: {
+        slidesPerView: 4,
+        spaceBetween: 40,
+      },
+      1024: {
+        slidesPerView: 5,
+        spaceBetween: 50,
+      },
+    },
+  });
 
 
   var swiper = new Swiper(".justAdd", {

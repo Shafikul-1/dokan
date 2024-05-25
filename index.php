@@ -40,7 +40,7 @@ $databaseFN = new database();
 
 
 <section class="mt-4">
-    <h3 class="text-2xl font-bold text-black dark:text-white "> Product Category List</h3>
+
     <?php include "index/categorys.php"; ?>
 </section>
 
