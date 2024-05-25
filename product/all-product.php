@@ -901,6 +901,7 @@ include "../header.php";
         </div>
       </a>
     </article>
+    </div>
 </section>
 
 

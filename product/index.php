@@ -4,64 +4,44 @@ include "../database/otherFn.php";
 $otherFn = new otherFn();
 ?>
 
-<div class="grid grid-cols-2 grid-rows-1 gap-2 md:grid-cols-3 xl:grid-cols-4">
-
-    <?php
-    $databaseFN = new database();
-    if (isset($_GET['categoryid'])) {
-        $categoryid = $_GET['categoryid'];
-    }
-    if ($databaseFN->getData("productdetails", "*", null, " category = $categoryid")) {
-        foreach ($databaseFN->getResult() as list("productName" => $productName, "productDescription" => $productDescription, "productImages" => $productImages, "price"=>$price, "brand"=>$brand)) {
-            $exploadImage = explode(",", $productImages);
-    ?>
-            <div class="h-[30rem] w-[10rem] md:w-[15rem] xl:w-[15rem] relative cursor-pointer mb-5">
-                <div class="absolute inset-0 bg-transparent opacity-25 rounded-lg shadow-2xl"></div>
-                <div class="absolute inset-0 transform  hover:scale-90 transition duration-300">
-                    <div class="h-full w-full bg-transparent rounded-lg shadow-2xl">
-                        <div class="flex px-3 py-3 min-h-full">
-                            <a href="#">
-                                <div class="max-w-sm rounded overflow-hidden shadow-lg ">
-                                    <img class="max-w-full" src="../upload/product/<?php echo trim($exploadImage[0]) ?>" alt="Sunset in the mountains">
-                                    <div class="px-6 py-4">
-                                        <div class="font-bold text-md mb-2">
-                                            <?php
-                                            if (str_word_count($productName) >= 5) {
-                                                echo $otherFn->strSort($productName, 5) . "...";
-                                            } else {
-                                                echo $productName;
-                                            }
-                                            ?>
-                                        </div>
-                                        <p class="text-gray-700 text-base">
-                                            <?php
-                                            if (str_word_count($productDescription) >= 7) {
-                                                echo $otherFn->strSort($productDescription, 7) . "...";
-                                            } else {
-                                                echo $productDescription;
-                                            }
-                                            ?>
-                                        </p>
-                                    </div>
-                                    <div class="px-6 py-4 grid">
-                                        <b>Price: <?php echo $price; ?></b>
-                                        <b>Brand: <?php echo $brand; ?></b>
-                                    </div>
-                                </div>
-                        </div>
-                        </a>
+<section class="py-10 bg-gray-100">
+    <h2 class="text-center font-bold text-2xl">Category Name: </h2>
+    <div class="mx-auto grid max-w-6xl  grid-cols-1 gap-6 p-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <?php
+        $databaseFN = new database();
+        if (isset($_GET['categoryid'])) {
+            $categoryid = $_GET['categoryid'];
+        }
+        if ($databaseFN->getData("productdetails", "*", null, " category = $categoryid")) {
+            foreach ($databaseFN->getResult() as list("productName" => $productName, "productDescription" => $productDescription, "productImages" => $productImages, "price" => $price, "brand" => $brand)) {
+                $exploadImage = explode(",", $productImages);
+        ?>
+                <article class="rounded-xl bg-white p-3 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300 ">
+                    <div class="relative flex items-end overflow-hidden rounded-xl">
+                        <img src="../upload/product/<?php echo trim($exploadImage[0]); ?>" alt="Hotel Photo" />
                     </div>
-                </div>
-            </div>
-
-    <?php     }
-    } ?>
-
-</div>
-
-
-
-
+                    <div class="mt-1 p-2">
+                        <h2 class="text-slate-700 font-bold">
+                            <a href="#"> <?php echo (str_word_count($productName) >= 7) ? $otherFn->strSort($productName, 7) . "..." : $productName; ?></a>
+                        </h2>
+                        <p class="mt-1 text-sm text-slate-400"><?php echo (str_word_count($productDescription) >= 12) ? $otherFn->strSort($productDescription, 12) . "..." : $productDescription; ?></p>
+                        <div class="mt-3 flex items-end justify-between">
+                            <p class="text-lg font-bold text-blue-500">$<?php echo $price; ?></p>
+                            <div class="flex items-center space-x-1.5 rounded-lg bg-blue-500 px-4 py-1.5 text-white duration-100 hover:bg-blue-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                </svg>
+                                <button class="text-sm">Add to cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+        <?php
+            }
+        }
+        ?>
+    </div>
+</section>
 
 
 <?php
