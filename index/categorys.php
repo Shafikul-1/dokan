@@ -1,21 +1,6 @@
 <?php
 $databaseFN = new database();
-// if ($databaseFN->getData("productcatagory")) {
-//     $result = $databaseFN->getResult();
-//     for ($i = 0; $i < count($result); $i++) {
-//         // print_r($result[$i]);
-//         $categoryId = $result[$i]['id'];
-//         echo $result[$i]['id'] . " = cateogry id <br>";
-//         if ($databaseFN->getData("productdetails", "*", null, " category = $categoryId")) {
-//             $productDeails = $databaseFN->getResult();
-//             for ($j = 0; $j < count($productDeails); $j++) {
-//                 echo $productDeails[$j]['productName'] . "<br>";
-//                 echo $result[$i]['id'] . " === category id <br>";
-//                 // print_r($productDeails[$j]);
-//             }
-//         }
-//     }
-// }
+
 ?>
 
 
@@ -24,29 +9,29 @@ $databaseFN = new database();
     if ($databaseFN->getData("productcatagory")) {
         $result = $databaseFN->getResult();
         for ($i = 0; $i < count($result); $i++) {
-            // print_r($result[$i]);
+            if($result[$i]['categoryQty'] == 0){
+                continue;
+            }
             $categoryId = $result[$i]['id'];
     ?>
             <div class="flex justify-between my-4">
-                <h3 class="text-2xl font-bold text-black dark:text-white ">Category Name <?php echo $result[$i]['categoryName'] ?></h3>
-                <a href="#">Al Product</a>
+                <h3 class="text-2xl font-bold text-black dark:text-white capitalize">Category Name <?php echo $result[$i]['categoryName'] ?></h3>
+                <a href="<?php echo $databaseFN->mainUrl ?>/product?categoryid=<?php echo $categoryId; ?>" class="capitalize hover:underline hover:underline-offset-4 ">Al <?php echo $result[$i]['categoryName'] ?> Product <i class="fa-solid fa-arrow-right-long"></i></a>
             </div>
             <div class="swiper AllCategory">
                 <div class="swiper-wrapper">
                     <?php
-
                     if ($databaseFN->getData("productdetails", "*", null, " category = $categoryId")) {
                         $productDeails = $databaseFN->getResult();
                         for ($j = 0; $j < count($productDeails); $j++) {
-                            // echo $productDeails[$j]['productName'] . "<br>";
-                            // print_r($productDeails[$j]);
 
+                            $exploadImage = explode(",", $productDeails[$j]['productImages']);
                     ?>
                             <div class="swiper-slide">
-                                <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+                                <div class="w-full bg-gray-200 my-3 p-2 shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
                                     <a href="#">
-                                        <img src="https://images.unsplash.com/photo-1646753522408-077ef9839300?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8NjZ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
-                                        <div class="px-4 py-3 w-72">
+                                        <img src="upload/product/<?php echo trim($exploadImage[0]) ?>" alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
+                                        <div class="px-4 py-3 max-w-full">
                                             <span class="text-gray-400 mr-3 uppercase text-xs">Brand</span>
                                             <p class="text-lg font-bold text-black truncate block capitalize"><?php echo $productDeails[$j]['productName']; ?></p>
                                             <div class="flex items-center">

@@ -115,7 +115,7 @@
     slidesPerView: 1,
     spaceBetween: 10,
     autoplay: {
-      delay: 500,
+      delay: 1000,
     },
     loop: true,
     breakpoints: {
@@ -133,12 +133,12 @@
       },
     },
   });
-  // Category All show
+  // Category All Section
   var swiper = new Swiper(".AllCategory", {
     slidesPerView: 1,
     spaceBetween: 10,
     autoplay: {
-      delay: 500,
+      delay: 1000,
     },
     loop: true,
     breakpoints: {
@@ -157,33 +157,34 @@
     },
   });
 
-
+  // Just Add Secion Slider
   var swiper = new Swiper(".justAdd", {
-      slidesPerView: 1,
-      loop: true,
-      spaceBetween: 10,
-    //   autoplay: {
-    //   delay: 1000,
-    // },
-      pagination: {
-        // el: ".swiper-pagination",
-        clickable: true,
+    slidesPerView: 1,
+    loop: true,
+    spaceBetween: 10,
+    autoplay: {
+      delay: 1500,
+    },
+    pagination: {
+      // el: ".swiper-pagination",
+      clickable: true,
+    },
+    breakpoints: {
+      640: {
+        slidesPerView: 2,
+        spaceBetween: 20,
       },
-      breakpoints: {
-        640: {
-          slidesPerView: 2,
-          spaceBetween: 20,
-        },
-        768: {
-          slidesPerView: 4,
-          spaceBetween: 40,
-        },
-        1024: {
-          slidesPerView: 5,
-          spaceBetween: 50,
-        },
+      768: {
+        slidesPerView: 4,
+        spaceBetween: 40,
       },
-    });
+      1024: {
+        slidesPerView: 5,
+        spaceBetween: 50,
+      },
+    },
+  });
+
 
   // Hero section slider
   const progressCircle = document.querySelector(".autoplay-progress svg");
@@ -207,8 +208,6 @@
       }
     }
   });
-
-
 </script>
 </body>
 
