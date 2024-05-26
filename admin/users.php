@@ -1,7 +1,9 @@
 <?php
 include "header.php";
 include "../database/database.php";
+include "../database/otherFn.php";
 $databaseFN = new database();
+$otherFN = new otherFn();
 
 if (isset($_POST['submit'])) {
     $name = htmlentities($_POST['name'], ENT_QUOTES);
@@ -12,8 +14,9 @@ if (isset($_POST['submit'])) {
     $date = htmlentities($_POST['date'], ENT_QUOTES);
     $userComment = htmlentities($_POST['userComment'], ENT_QUOTES);
     $userRoll = htmlentities($_POST['userRoll'], ENT_QUOTES);
+    $uniqueId = $otherFN->uniqueIdCreate();
 
-    $formData = ["name" => $name, "email" => $email, "pass" => $pass, "conPass" => $conPass, "date" => $date, "userComment" => $userComment, "userRoll" => $userRoll];
+    $formData = ["name" => $name, "email" => $email, "pass" => $pass, "conPass" => $conPass, "date" => $date, "userComment" => $userComment, "userRoll" => $userRoll, "uniqueId"=>$uniqueId];
     $databaseFN->insertData("users", $formData);
 }
 if (isset($_GET['fmsg']) == "error") {

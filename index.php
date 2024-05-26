@@ -1,7 +1,7 @@
 <?php
 include "header.php"; 
 $databaseFN = new database();
-
+$_SESSION['userAuth'] = 1;
 ?>
 
 

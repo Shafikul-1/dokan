@@ -32,9 +32,17 @@ class otherFn
 
         // Get the current value from the array
         $current_value = $values[$current_key];
-        
+
         // Output the current value (or use it as needed)
         echo "Current Value: " . $current_value;
         return $current_value;
+    }
+
+    public function uniqueIdCreate()
+    {
+        $unique = uniqid();
+        date_default_timezone_set("Asia/Dhaka");
+        $timeCurrent = date("dmYhisA");
+        return $unique.$timeCurrent;
     }
 }
