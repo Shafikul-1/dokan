@@ -345,7 +345,7 @@ if (isset($_POST['commentSubmit'])) {
               </a>
               <div class="flex justify-between">
                 <p class="font-bold text-green-700">$<?php echo $price ?></p>
-                <a href="#" class="rounded-xl text-sm font-bold hover:underline hover:text-green-700 text-indigo-600">Add to Cart</a>
+                <a href="<?php  ?>" class="rounded-xl text-sm font-bold hover:underline hover:text-green-700 text-indigo-600">Add to Cart</a>
               </div>
             </div>
           </div>

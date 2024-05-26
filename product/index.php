@@ -24,14 +24,14 @@ if (!isset($_GET['categoryid'])) {
         ?>
                 <article class="rounded-xl bg-white p-3 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300 ">
                     <div class="relative flex items-end overflow-hidden rounded-xl">
-                        <img src="../upload/product/<?php echo trim($exploadImage[0]); ?>" alt="Hotel Photo" />
+                        <img src="../upload/product/<?php echo trim($exploadImage[0]); ?>" alt="<?php echo trim($exploadImage[0]); ?>" />
                     </div>
                     <div class="mt-1 p-2">
                         <a href="<?php echo $databaseFN->mainUrl . "/view.php?id=" . $id ?>">
-                            <h2 class="text-slate-700 font-bold">
+                            <h2 class="text-slate-700 font-bold hover:underline hover:underline-offset-4">
                                 <?php echo (str_word_count($productName) >= 7) ? $otherFn->strSort($productName, 7) . "..." : $productName; ?>
                             </h2>
-                            <p class="mt-1 text-sm text-slate-400"><?php echo (str_word_count($productDescription) >= 12) ? $otherFn->strSort($productDescription, 12) . "..." : $productDescription; ?></p>
+                            <p class="mt-1 text-sm text-slate-400 hover:underline hover:underline-offset-4"><?php echo (str_word_count($productDescription) >= 12) ? $otherFn->strSort($productDescription, 12) . "..." : $productDescription; ?></p>
                         </a>
                         <div class="mt-3 flex items-end justify-between">
                             <p class="text-lg font-bold text-blue-500">$<?php echo $price; ?></p>

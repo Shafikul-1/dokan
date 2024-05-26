@@ -23,7 +23,7 @@ $databaseFN = new database();
   <div class="container px-5 py-10 mx-auto">
    <div class="flex justify-between">
    <h3 class="text-xl font-bold text-black dark:text-white mb-5">Feture Categories</h3>
-   <a href="<?php echo $databaseFN->mainUrl ."/category" ?> " class="hover:underline hover:underline-offset-4">See All Categories <i class="fa-solid fa-arrow-right-long"></i></a>
+   <a href="<?php echo $databaseFN->mainUrl ."/category?show=all" ?> " class="hover:underline hover:underline-offset-4">See All Categories <i class="fa-solid fa-arrow-right-long"></i></a>
    </div>
     <?php include "index/fetureCategories.php"; ?>
   </div>
@@ -40,7 +40,6 @@ $databaseFN = new database();
 
 
 <section class="mt-4">
-
     <?php include "index/categorys.php"; ?>
 </section>
 

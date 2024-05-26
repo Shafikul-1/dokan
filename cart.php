@@ -1,145 +1,186 @@
-<?php 
+<?php
 include "header.php";
 ?>
-
-   <!-- breadcrumb -->
-   <div class="container py-4 flex items-center gap-3">
-        <a href="../index.html" class="text-primary text-base">
-            <i class="fa-solid fa-house"></i>
-        </a>
-        <span class="text-sm text-gray-400">
-            <i class="fa-solid fa-chevron-right"></i>
-        </span>
-        <p class="text-gray-600 font-medium">Checkout</p>
-    </div>
-    <!-- ./breadcrumb -->
-
-    <!-- wrapper -->
-    <div class="container grid grid-cols-12 items-start pb-16 pt-4 gap-6">
-
-        <div class="col-span-8 border border-gray-200 p-4 rounded">
-            <h3 class="text-lg font-medium capitalize mb-4">Checkout</h3>
-            <div class="space-y-4">
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label for="first-name" class="text-gray-600">First Name <span
-                                class="text-primary">*</span></label>
-                        <input type="text" name="first-name" id="first-name" class="input-box">
-                    </div>
-                    <div>
-                        <label for="last-name" class="text-gray-600">Last Name <span
-                                class="text-primary">*</span></label>
-                        <input type="text" name="last-name" id="last-name" class="input-box">
-                    </div>
-                </div>
-                <div>
-                    <label for="company" class="text-gray-600">Company</label>
-                    <input type="text" name="company" id="company" class="input-box">
-                </div>
-                <div>
-                    <label for="region" class="text-gray-600">Country/Region</label>
-                    <input type="text" name="region" id="region" class="input-box">
-                </div>
-                <div>
-                    <label for="address" class="text-gray-600">Street address</label>
-                    <input type="text" name="address" id="address" class="input-box">
-                </div>
-                <div>
-                    <label for="city" class="text-gray-600">City</label>
-                    <input type="text" name="city" id="city" class="input-box">
-                </div>
-                <div>
-                    <label for="phone" class="text-gray-600">Phone number</label>
-                    <input type="text" name="phone" id="phone" class="input-box">
-                </div>
-                <div>
-                    <label for="email" class="text-gray-600">Email address</label>
-                    <input type="email" name="email" id="email" class="input-box">
-                </div>
-                <div>
-                    <label for="company" class="text-gray-600">Company</label>
-                    <input type="text" name="company" id="company" class="input-box">
-                </div>
+<div class="font-sans">
+    <div class="grid lg:grid-cols-3">
+        <div class="lg:col-span-2 p-6 bg-white overflow-x-auto">
+            <div class="flex gap-2 border-b pb-4">
+                <h2 class="text-2xl font-bold text-black flex-1">Shopping Cart</h2>
+                <h3 class="text-xl font-bold text-black">3 Items</h3>
             </div>
 
+            <table class="mt-6 w-full border-collapse divide-y">
+                <thead class="whitespace-nowrap text-left">
+                    <tr>
+                        <th class="text-base text-black p-4">Description</th>
+                        <th class="text-base text-black p-4">Quantity</th>
+                        <th class="text-base text-black p-4">Price</th>
+                    </tr>
+                </thead>
+
+                <tbody class="whitespace-nowrap divide-y">
+                    <tr>
+                        <td class="py-6 px-4">
+                            <div class="flex items-center gap-6 w-max">
+                                <div class="h-32 shrink-0">
+                                    <img src='https://readymadeui.com/images/product6.webp' class="w-full h-full object-contain rounded" />
+                                </div>
+                                <div>
+                                    <p class="text-base font-bold text-black">Black T-Shirt</p>
+                                    <button type="button" class="mt-3 font-semibold text-red-400 text-sm">
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-6 px-4">
+                            <div class="flex divide-x border w-max rounded overflow-hidden">
+                                <button type="button" class="flex items-center justify-center bg-gray-100 w-10 h-10 font-semibold">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current" viewBox="0 0 124 124">
+                                        <path d="M112 50H12C5.4 50 0 55.4 0 62s5.4 12 12 12h100c6.6 0 12-5.4 12-12s-5.4-12-12-12z" data-original="#000000"></path>
+                                    </svg>
+                                </button>
+                                <button type="button" class="bg-transparent w-10 h-10 font-semibold text-black text-base">
+                                    1
+                                </button>
+                                <button type="button" class="flex justify-center items-center bg-gray-800 text-white w-10 h-10 font-semibold">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current" viewBox="0 0 42 42">
+                                        <path d="M37.059 16H26V4.941C26 2.224 23.718 0 21 0s-5 2.224-5 4.941V16H4.941C2.224 16 0 18.282 0 21s2.224 5 4.941 5H16v11.059C16 39.776 18.282 42 21 42s5-2.224 5-4.941V26h11.059C39.776 26 42 23.718 42 21s-2.224-5-4.941-5z" data-original="#000000"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="py-6 px-4">
+                            <h4 class="text-base font-bold text-black">$18.5</h4>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="py-6 px-4">
+                            <div class="flex items-center gap-6 w-max">
+                                <div class="h-32 shrink-0">
+                                    <img src='https://readymadeui.com/images/product3.webp' class="w-full h-full object-contain rounded" />
+                                </div>
+                                <div>
+                                    <p class="text-base font-bold text-black">Gray T-Shirt</p>
+                                    <button type="button" class="mt-3 font-semibold text-red-400 text-sm">
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-6 px-4">
+                            <div class="flex divide-x border w-max rounded overflow-hidden">
+                                <button type="button" class="flex items-center justify-center bg-gray-100 w-10 h-10 font-semibold">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current" viewBox="0 0 124 124">
+                                        <path d="M112 50H12C5.4 50 0 55.4 0 62s5.4 12 12 12h100c6.6 0 12-5.4 12-12s-5.4-12-12-12z" data-original="#000000"></path>
+                                    </svg>
+                                </button>
+                                <button type="button" class="bg-transparent w-10 h-10 font-semibold text-black text-base">
+                                    1
+                                </button>
+                                <button type="button" class="flex justify-center items-center bg-gray-800 text-white w-10 h-10 font-semibold">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current" viewBox="0 0 42 42">
+                                        <path d="M37.059 16H26V4.941C26 2.224 23.718 0 21 0s-5 2.224-5 4.941V16H4.941C2.224 16 0 18.282 0 21s2.224 5 4.941 5H16v11.059C16 39.776 18.282 42 21 42s5-2.224 5-4.941V26h11.059C39.776 26 42 23.718 42 21s-2.224-5-4.941-5z" data-original="#000000"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="py-6 px-4">
+                            <h4 class="text-base font-bold text-black">$18</h4>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="py-6 px-4">
+                            <div class="flex items-center gap-6 w-max">
+                                <div class="h-32 shrink-0">
+                                    <img src='https://readymadeui.com/images/product7.webp' class="w-full h-full object-contain rounded" />
+                                </div>
+                                <div>
+                                    <p class="text-base font-bold text-black">Black T-Shirt</p>
+                                    <button type="button" class="mt-3 font-semibold text-red-400 text-sm">
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-6 px-4">
+                            <div class="flex divide-x border w-max rounded overflow-hidden">
+                                <button type="button" class="flex items-center justify-center bg-gray-100 w-10 h-10 font-semibold">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current" viewBox="0 0 124 124">
+                                        <path d="M112 50H12C5.4 50 0 55.4 0 62s5.4 12 12 12h100c6.6 0 12-5.4 12-12s-5.4-12-12-12z" data-original="#000000"></path>
+                                    </svg>
+                                </button>
+                                <button type="button" class="bg-transparent w-10 h-10 font-semibold text-black text-base">
+                                    1
+                                </button>
+                                <button type="button" class="flex justify-center items-center bg-gray-800 text-white w-10 h-10 font-semibold">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current" viewBox="0 0 42 42">
+                                        <path d="M37.059 16H26V4.941C26 2.224 23.718 0 21 0s-5 2.224-5 4.941V16H4.941C2.224 16 0 18.282 0 21s2.224 5 4.941 5H16v11.059C16 39.776 18.282 42 21 42s5-2.224 5-4.941V26h11.059C39.776 26 42 23.718 42 21s-2.224-5-4.941-5z" data-original="#000000"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="py-6 px-4">
+                            <h4 class="text-base font-bold text-black">$15.5</h4>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="py-6 px-4">
+                            <div class="flex items-center gap-6 w-max">
+                                <div class="h-32 shrink-0">
+                                    <img src='https://readymadeui.com/images/product3.webp' class="w-full h-full object-contain rounded" />
+                                </div>
+                                <div>
+                                    <p class="text-base font-bold text-black">Gray T-Shirt</p>
+                                    <button type="button" class="mt-3 font-semibold text-red-400 text-sm">
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-6 px-4">
+                            <div class="flex divide-x border w-max rounded overflow-hidden">
+                                <button type="button" class="flex items-center justify-center bg-gray-100 w-10 h-10 font-semibold">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current" viewBox="0 0 124 124">
+                                        <path d="M112 50H12C5.4 50 0 55.4 0 62s5.4 12 12 12h100c6.6 0 12-5.4 12-12s-5.4-12-12-12z" data-original="#000000"></path>
+                                    </svg>
+                                </button>
+                                <button type="button" class="bg-transparent w-10 h-10 font-semibold text-black text-base">
+                                    1
+                                </button>
+                                <button type="button" class="flex justify-center items-center bg-gray-800 text-white w-10 h-10 font-semibold">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current" viewBox="0 0 42 42">
+                                        <path d="M37.059 16H26V4.941C26 2.224 23.718 0 21 0s-5 2.224-5 4.941V16H4.941C2.224 16 0 18.282 0 21s2.224 5 4.941 5H16v11.059C16 39.776 18.282 42 21 42s5-2.224 5-4.941V26h11.059C39.776 26 42 23.718 42 21s-2.224-5-4.941-5z" data-original="#000000"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="py-6 px-4">
+                            <h4 class="text-base font-bold text-black">$18</h4>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
-        <div class="col-span-4 border border-gray-200 p-4 rounded">
-            <h4 class="text-gray-800 text-lg mb-4 font-medium uppercase">order summary</h4>
-            <div class="space-y-2">
-                <div class="flex justify-between">
-                    <div>
-                        <h5 class="text-gray-800 font-medium">Italian shape sofa</h5>
-                        <p class="text-sm text-gray-600">Size: M</p>
-                    </div>
-                    <p class="text-gray-600">
-                        x3
-                    </p>
-                    <p class="text-gray-800 font-medium">$320</p>
-                </div>
-                <div class="flex justify-between">
-                    <div>
-                        <h5 class="text-gray-800 font-medium">Italian shape sofa</h5>
-                        <p class="text-sm text-gray-600">Size: M</p>
-                    </div>
-                    <p class="text-gray-600">
-                        x3
-                    </p>
-                    <p class="text-gray-800 font-medium">$320</p>
-                </div>
-                <div class="flex justify-between">
-                    <div>
-                        <h5 class="text-gray-800 font-medium">Italian shape sofa</h5>
-                        <p class="text-sm text-gray-600">Size: M</p>
-                    </div>
-                    <p class="text-gray-600">
-                        x3
-                    </p>
-                    <p class="text-gray-800 font-medium">$320</p>
-                </div>
-                <div class="flex justify-between">
-                    <div>
-                        <h5 class="text-gray-800 font-medium">Italian shape sofa</h5>
-                        <p class="text-sm text-gray-600">Size: M</p>
-                    </div>
-                    <p class="text-gray-600">
-                        x3
-                    </p>
-                    <p class="text-gray-800 font-medium">$320</p>
-                </div>
-            </div>
+        <div class="bg-gray-50 p-6 lg:sticky lg:top-0 lg:h-screen">
+            <h3 class="text-xl font-bold text-black border-b pb-4">Order Summary</h3>
 
-            <div class="flex justify-between border-b border-gray-200 mt-1 text-gray-800 font-medium py-3 uppercas">
-                <p>subtotal</p>
-                <p>$1280</p>
-            </div>
+            <ul class="text-black divide-y mt-6">
+                <li class="flex flex-wrap gap-4 text-base py-4">Subtotal <span class="ml-auto font-bold">$37.00</span></li>
+                <li class="flex flex-wrap gap-4 text-base py-4">Shipping <span class="ml-auto font-bold">$4.00</span></li>
+                <li class="flex flex-wrap gap-4 text-base py-4">Tax <span class="ml-auto font-bold">$4.00</span></li>
+                <li class="flex flex-wrap gap-4 text-base py-4 font-bold">Total <span class="ml-auto">$45.00</span></li>
+            </ul>
 
-            <div class="flex justify-between border-b border-gray-200 mt-1 text-gray-800 font-medium py-3 uppercas">
-                <p>shipping</p>
-                <p>Free</p>
-            </div>
-
-            <div class="flex justify-between text-gray-800 font-medium py-3 uppercas">
-                <p class="font-semibold">Total</p>
-                <p>$1280</p>
-            </div>
-
-            <div class="flex items-center mb-4 mt-2">
-                <input type="checkbox" name="aggrement" id="aggrement"
-                    class="text-primary focus:ring-0 rounded-sm cursor-pointer w-3 h-3">
-                <label for="aggrement" class="text-gray-600 ml-3 cursor-pointer text-sm">I agree to the <a href="#"
-                        class="text-primary">terms & conditions</a></label>
-            </div>
-
-            <a href="#"
-                class="block w-full py-3 px-4 text-center text-white bg-primary border border-primary rounded-md hover:bg-transparent hover:text-primary transition font-medium">Place
-                order</a>
+            <button type="button" class="mt-6 text-base px-6 py-2.5 w-full bg-gray-800 hover:bg-gray-900 text-white rounded">Check
+                out</button>
         </div>
-
     </div>
-    <!-- ./wrapper -->
-
-    
-<?php 
+</div>
+<?php
 include "footer.php";
 ?>
