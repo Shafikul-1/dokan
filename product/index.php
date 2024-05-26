@@ -1,19 +1,25 @@
 <?php
+ob_start();
 include "../header.php";
 include "../database/otherFn.php";
 $otherFn = new otherFn();
+$databaseFN = new database();
+
+if (!isset($_GET['categoryid'])) {
+    header("Location: " . $databaseFN->mainUrl);
+    exit();
+}
 ?>
 
 <section class="py-10 bg-gray-100">
-    <h2 class="text-center font-bold text-2xl">Category Name: </h2>
+    <h2 class="text-center font-bold text-2xl">Category Name: <?php echo $_GET['name'] ?></h2>
     <div class="mx-auto grid max-w-6xl  grid-cols-1 gap-6 p-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         <?php
-        $databaseFN = new database();
         if (isset($_GET['categoryid'])) {
             $categoryid = $_GET['categoryid'];
         }
         if ($databaseFN->getData("productdetails", "*", null, " category = $categoryid")) {
-            foreach ($databaseFN->getResult() as list("productName" => $productName, "productDescription" => $productDescription, "productImages" => $productImages, "price" => $price, "brand" => $brand)) {
+            foreach ($databaseFN->getResult() as list("id" => $id, "productName" => $productName, "productDescription" => $productDescription, "productImages" => $productImages, "price" => $price, "brand" => $brand)) {
                 $exploadImage = explode(",", $productImages);
         ?>
                 <article class="rounded-xl bg-white p-3 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300 ">
@@ -21,10 +27,12 @@ $otherFn = new otherFn();
                         <img src="../upload/product/<?php echo trim($exploadImage[0]); ?>" alt="Hotel Photo" />
                     </div>
                     <div class="mt-1 p-2">
-                        <h2 class="text-slate-700 font-bold">
-                            <a href="#"> <?php echo (str_word_count($productName) >= 7) ? $otherFn->strSort($productName, 7) . "..." : $productName; ?></a>
-                        </h2>
-                        <p class="mt-1 text-sm text-slate-400"><?php echo (str_word_count($productDescription) >= 12) ? $otherFn->strSort($productDescription, 12) . "..." : $productDescription; ?></p>
+                        <a href="<?php echo $databaseFN->mainUrl . "/view.php?id=" . $id ?>">
+                            <h2 class="text-slate-700 font-bold">
+                                <?php echo (str_word_count($productName) >= 7) ? $otherFn->strSort($productName, 7) . "..." : $productName; ?>
+                            </h2>
+                            <p class="mt-1 text-sm text-slate-400"><?php echo (str_word_count($productDescription) >= 12) ? $otherFn->strSort($productDescription, 12) . "..." : $productDescription; ?></p>
+                        </a>
                         <div class="mt-3 flex items-end justify-between">
                             <p class="text-lg font-bold text-blue-500">$<?php echo $price; ?></p>
                             <div class="flex items-center space-x-1.5 rounded-lg bg-blue-500 px-4 py-1.5 text-white duration-100 hover:bg-blue-600">

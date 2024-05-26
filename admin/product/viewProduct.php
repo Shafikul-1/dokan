@@ -281,14 +281,9 @@ include "../footer.php";
     zoomDiv.style.backgroundImage = `url('${currentUrl}')`;
     zoomDiv.style.display = "block";
     let img = document.getElementById("imgZoom");
-    // let posX = event.offsetX ? (event.offsetX) : event.pageX - img.offsetLeft;
-    // let posY = event.offsetY ? (event.offsetY) : event.pageY - img.offsetTop;
-    // zoomDiv.style.backgroundPosition = (-posX * 1) + "px " + (-posY * 1) + "px";
     let imgRect = img.getBoundingClientRect();
     let posX = event.clientX - imgRect.left;
     let posY = event.clientY - imgRect.top;
-
-    // Assume a zoom level, for example, 2x zoom
     const zoomLevel = 2;
 
     zoomDiv.style.backgroundSize = `${img.width * zoomLevel}px ${img.height * zoomLevel}px`;
