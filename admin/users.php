@@ -9,8 +9,10 @@ if (isset($_POST['submit'])) {
     $name = htmlentities($_POST['name'], ENT_QUOTES);
     $email = htmlentities($_POST['email'], ENT_QUOTES);
     $img = htmlentities($_POST['img'], ENT_QUOTES);
-    $pass = md5($_POST['pass']);
-    $conPass = md5($_POST['conPass']);
+    // $pass = md5($_POST['pass']);
+    // $conPass = md5($_POST['conPass']);
+    $pass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
+    $conPass = password_hash($_POST['conPass'], PASSWORD_DEFAULT);
     $date = htmlentities($_POST['date'], ENT_QUOTES);
     $userComment = htmlentities($_POST['userComment'], ENT_QUOTES);
     $userRoll = htmlentities($_POST['userRoll'], ENT_QUOTES);

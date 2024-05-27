@@ -1,7 +1,13 @@
 <?php
 include "header.php"; 
 $databaseFN = new database();
-$_SESSION['userAuth'] = 1;
+if(isset($_SESSION['userAuth'])){
+  echo "User Auth" . $_SESSION['userAuth'];
+}
+if(isset($_SESSION['uniqueId'])){
+  echo "User Auth" . $_SESSION['uniqueId'];
+}
+
 ?>
 
 

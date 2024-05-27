@@ -122,7 +122,14 @@ class database
             if ($dataResult = $this->sqli->query($sql)) {
                 $this->result = $dataResult->fetch_all(MYSQLI_ASSOC);
                 return true;
-            } else {
+            } 
+            // if ($stmt = $this->sqli->prepare($sql)) {
+            //     $stmt->execute();
+            //     $dataResult = $stmt->get_result();
+            //     $this->result = $dataResult->fetch_all(MYSQLI_ASSOC);
+            //     return true;
+            // }
+            else {
                 array_push($this->result, $this->sqli->error);
                 return false;
             }
