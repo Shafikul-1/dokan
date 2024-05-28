@@ -1,5 +1,6 @@
-<pre>
+
 <?php
+session_start();
 include "../database/database.php";
 $databaseFN = new database();
 
@@ -14,17 +15,19 @@ if (isset($_POST['login'])) {
     if ($result) {
       $user = $result[0];
       $dbPass = $user['pass'];
-      echo "getPass = $pass";
-      echo "fetch pas = $dbPass";
-      echo "<br>";
+      // echo "getPass = $pass";
+      // echo "fetch pas = $dbPass";
+      // echo "<br>";
 
       if (password_verify($pass, $dbPass)) {
         $uniqueId = $user['uniqueId'];
         $userAuth = $user['userRoll'];
         $_SESSION['uniqueId'] = $uniqueId;
         $_SESSION['userAuth'] = $userAuth;
-        echo "success";
-        // header("Location: dashboard.php");
+        // echo "success";
+        header("Location: " . $databaseFN->mainUrl);
+        // echo $uniqueId."<br>";
+        // echo $userAuth."<br>";
       } else {
         echo "Invalid password.";
       }
@@ -36,4 +39,3 @@ if (isset($_POST['login'])) {
   }
 }
 ?>
-</pre>

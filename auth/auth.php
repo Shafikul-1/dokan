@@ -1,17 +1,7 @@
-<html>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-</head>
 
 <style>
-    body {
-        font-family: "Poppins";
-    }
+  
 
     .custom-bg {
         position: relative;
@@ -51,7 +41,7 @@
     }
 </style>
 
-<body class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+<div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
     <div class="mx-auto p-5 flex justify-center items-center">
         <div class="custom-bg bg-cover w-[800px] h-[600px] text-white">
             <div class="flex form_flex  ">
@@ -296,6 +286,4 @@
             parentDiv.classList.remove("flex-row-reverse");
         });
     </script>
-</body>
-
-</html>
+</div>
