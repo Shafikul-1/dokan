@@ -61,7 +61,7 @@ $databaseFN = new database();
             <table class="w-full whitespace-nowrap">
                 <tbody>
                     <?php
-                    if ($databaseFN->getData("productdetails", "productdetails.id, productdetails.releaseDate, productdetails.productName, users.name, productcatagory.categoryName, productdetails.productStatus, productdetails.productQty, productdetails.deliveryComplete", null, null, " id DESC", "5", " productcatagory ON productdetails.category = productcatagory.id LEFT JOIN users ON productdetails.userAuth = users.userRoll")) {
+                    if ($databaseFN->getData("productdetails", "productdetails.id, productdetails.releaseDate, productdetails.productName, users.name, productcatagory.categoryName, productdetails.productStatus, productdetails.productQty, productdetails.deliveryComplete", null, null, " id DESC", "5", " productcatagory ON productdetails.category = productcatagory.id LEFT JOIN users ON productdetails.uniqueId = users.uniqueId")) {
                         foreach ($databaseFN->getResult() as list('releaseDate' => $releaseDate, 'id' => $id, 'productName' => $productName, 'name' => $name, "categoryName" => $categoryName, 'productStatus' => $productStatus, 'productQty' => $productQty, 'deliveryComplete' => $deliveryComplete)) {
                     ?>
                             <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded relative">

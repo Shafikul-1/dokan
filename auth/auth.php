@@ -1,8 +1,20 @@
+<?php 
+if(isset($_GET['error'])){
+    if($_GET['error'] == 'pass'){
+        echo "<p class='bg-red-500 text-white font-bold text-center py-3'>Password Wrong</p>";
+    }
+    if($_GET['error'] == 'email'){
+        echo "<p class='bg-red-500 text-white font-bold text-center py-3'>Email Wrong</p>";
+    }
+    if($_GET['error'] == 'dbConn'){
+        echo "<p class='bg-red-500 text-white font-bold text-center py-3'>Database Connection Error</p>";
+    }
+}
 
+?>
 
 <style>
-  
-
+   
     .custom-bg {
         position: relative;
     }

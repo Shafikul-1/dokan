@@ -24,6 +24,7 @@ if (isset($_POST['submit'])) {
     $metaTitle = htmlentities($_POST['metaTitle'], ENT_QUOTES );
     $metaDescription = htmlentities($_POST['metaDescription'], ENT_QUOTES );
     $userAuth = htmlentities($_POST['userAuth'], ENT_QUOTES );
+    $uniqueId = htmlentities($_POST['uniqueId'], ENT_QUOTES );
     $keywords = htmlentities($_POST['keywords'], ENT_QUOTES );
     $productQty = htmlentities($_POST['productQty'], ENT_QUOTES );
     $productStatus = htmlentities($_POST['productStatus'], ENT_QUOTES );
@@ -59,7 +60,7 @@ if (isset($_POST['submit'])) {
     }
     // echo "$productImages <br>$videos ";
 
-    $productInfo = ['productName' => $productName, 'productDescription' => $productDescription, 'productColor' => $productColor, 'category' => $category, 'price' => $price, 'discount' => $discount, 'tax' => $tax, 'weight' => $weight, 'brand' => $brand, 'shippingClass' => $shippingClass, 'warranty' => $warranty, 'customFields' => $customFields, 'releaseDate' => $releaseDate, 'complianceInfo' => $complianceInfo, 'metaTitle' => $metaTitle, 'metaDescription' => $metaDescription, 'keywords' => $keywords, 'productQty' => $productQty, 'productStatus' => $productStatus, 'productImages' => $productImages, 'videos' => $videos, "userAuth" => $userAuth, "deliveryComplete"=>$deliveryComplete, "previousPrice"=>$previousPrice];
+    $productInfo = ['uniqueId'=>$uniqueId, 'productName' => $productName, 'productDescription' => $productDescription, 'productColor' => $productColor, 'category' => $category, 'price' => $price, 'discount' => $discount, 'tax' => $tax, 'weight' => $weight, 'brand' => $brand, 'shippingClass' => $shippingClass, 'warranty' => $warranty, 'customFields' => $customFields, 'releaseDate' => $releaseDate, 'complianceInfo' => $complianceInfo, 'metaTitle' => $metaTitle, 'metaDescription' => $metaDescription, 'keywords' => $keywords, 'productQty' => $productQty, 'productStatus' => $productStatus, 'productImages' => $productImages, 'videos' => $videos, "userAuth" => $userAuth, "deliveryComplete"=>$deliveryComplete, "previousPrice"=>$previousPrice];
     if ($checkImgOrVideo) {
         if ($databaseFN->insertData("productdetails", $productInfo)) {
             // Update the category quantity
@@ -229,6 +230,7 @@ ob_end_flush();
                 </div>
             </div>
             <input type="text" hidden value="<?php echo $_SESSION['userAuth'] ?>" id="userAuth" name="userAuth">
+            <input type="text" hidden value="<?php echo $_SESSION['uniqueId'] ?>" id="uniqueId" name="uniqueId">
             <div class="mt-6">
                 <button type="submit" name="submit" id="submitBtn" class="w-full py-2 px-4 text-white font-semibold rounded-md" disabled>Submit</button>
             </div>

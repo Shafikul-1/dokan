@@ -15,27 +15,23 @@ if (isset($_POST['login'])) {
     if ($result) {
       $user = $result[0];
       $dbPass = $user['pass'];
-      // echo "getPass = $pass";
-      // echo "fetch pas = $dbPass";
-      // echo "<br>";
 
       if (password_verify($pass, $dbPass)) {
         $uniqueId = $user['uniqueId'];
         $userAuth = $user['userRoll'];
         $_SESSION['uniqueId'] = $uniqueId;
         $_SESSION['userAuth'] = $userAuth;
-        // echo "success";
-        header("Location: " . $databaseFN->mainUrl);
         // echo $uniqueId."<br>";
         // echo $userAuth."<br>";
+        header("Location: " . $databaseFN->mainUrl);
       } else {
-        echo "Invalid password.";
+        header("Location: " . $databaseFN->mainUrl . "/auth/?checkPoint=auth&error=pass");
       }
     } else {
-      echo "Invalid email";
+      header("Location: " . $databaseFN->mainUrl . "/auth/?checkPoint=auth&error=email");
     }
   } else {
-    echo "Error accessing the database.";
+    header("Location: " . $databaseFN->mainUrl . "/auth/?checkPoint=auth&error=dbConn");
   }
 }
 ?>

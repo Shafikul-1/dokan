@@ -42,7 +42,7 @@ if(isset($_GET['error']) && $_GET['error'] == 'dbdfalse'){
                 </thead>
                 <tbody>
                     <?php 
-                    $databaseFN->getData("productCatagory", "productCatagory.id, productCatagory.categoryName, productCatagory.categoryDescription, productCatagory.categoryQty, users.name ", " users ON productcatagory.userAuth = users.userRoll");
+                    $databaseFN->getData("productCatagory", "productCatagory.id, productCatagory.categoryName, productCatagory.categoryDescription, productCatagory.categoryQty, users.name ", " users ON productcatagory.uniqueId = users.uniqueId");
                     foreach ($databaseFN->getResult() as list("id"=>$id, "categoryName"=>$categoryName,"categoryDescription"=>$Description,"name"=>$name,  "categoryQty"=>$categoryQty)) {
                         # code...
                    

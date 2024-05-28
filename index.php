@@ -4,9 +4,9 @@ $databaseFN = new database();
 // if(isset($_SESSION['userAuth'])){
 //   echo "User Auth" . $_SESSION['userAuth'];
 // }
-// if(isset($_SESSION['uniqueId'])){
-//   echo "User Auth" . $_SESSION['uniqueId'];
-// }
+if(isset($_SESSION['uniqueId'])){
+  echo "User Auth => " . $_SESSION['uniqueId'];
+}
 
 ?>
 

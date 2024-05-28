@@ -8,9 +8,10 @@ $databaseFN = new database();
 if(isset($_POST['submit'])){
     $categoryName = htmlentities($_POST['categoryName'], ENT_QUOTES );
     $userAuth = htmlentities($_POST['userAuth'], ENT_QUOTES );
+    $uniqueId = htmlentities($_POST['uniqueId'], ENT_QUOTES );
     $categoryDescription = htmlentities($_POST['categoryDescription'], ENT_QUOTES );
 
-    $categoryInfo = ['categoryName'=>$categoryName,  'userAuth'=>$userAuth, 'categoryDescription'=>$categoryDescription, 'categoryQty'=>$categoryQty];
+    $categoryInfo = ['uniqueId'=>$uniqueId, 'categoryName'=>$categoryName,  'userAuth'=>$userAuth, 'categoryDescription'=>$categoryDescription, 'categoryQty'=>$categoryQty];
     if ($databaseFN->insertData("productCatagory", $categoryInfo)) {
        header("Location: " . $databaseFN->mainUrl . "/admin/category");
        exit();
@@ -40,6 +41,7 @@ if(isset($_GET['error'])){
             <label for="userAuth" class="block text-gray-700 font-semibold mb-2">User Auth</label>
             <input  type="number" id="userAuth" value="<?php echo $_SESSION['userAuth'] ?>" name="userAuth" class="w-full p-3 border border-gray-300 rounded-lg" required>
         </div>
+        <input  type="text" id="uniqueId" hidden  value="<?php echo $_SESSION['uniqueId'] ?>" name="uniqueId" class="w-full p-3 border border-gray-300 rounded-lg" required>
         <input type="number" hidden name="categoryQty" id="categoryQty">
         <div>
             <button type="submit" name="submit" class="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600">Add Category</button>
