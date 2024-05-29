@@ -19,7 +19,7 @@ if (isset($_GET['cart'])) {
 
      // Log start of cart operation
 
-    if ($databaseFN->getData("cart", "*", null, " uniqueId = '$uniqueId'")) {
+    if ($databaseFN->getData("cart", "*", null, " productId = '$getId'")) {
       $increment =  ['Qty' => 1];
       $result = $databaseFN->getResult();
 
