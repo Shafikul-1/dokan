@@ -52,16 +52,17 @@ $databaseFN = new database();
             <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Pricing</a>
           </li>
           <?php
-          if (isset($_SESSION['userAuth']) == 1) {
+          if (isset($_SESSION['userAuth'])) {
             $checkUsers = $_SESSION['userAuth'];
+            $uniqueId = $_SESSION['uniqueId'];
             if ($checkUsers == 1) {
               echo "<li><a href='$databaseFN->mainUrl/admin' class='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent capitalize'>Admin</a></li>";
             } else if ($checkUsers == 2) {
-              echo "<li><a href='$databaseFN->mainUrl/profile?view=manager' class='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent capitalize'>manager</a></li>";
+              echo "<li><a href='$databaseFN->mainUrl/profile?view=manager&msg=".$uniqueId."' class='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent capitalize'>profile</a></li>";
             } else if ($checkUsers == 3) {
-              echo "<li><a href='$databaseFN->mainUrl/profile?view=employee' class='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent capitalize'>employee</a></li>";
+              echo "<li><a href='$databaseFN->mainUrl/profile?view=employee&msg=".$uniqueId."' class='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent capitalize'>profile</a></li>";
             } else if ($checkUsers == 4) {
-              echo "<li><a href='$databaseFN->mainUrl/profile?view=users' class='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent capitalize'>users</a></li>";
+              echo "<li><a href='$databaseFN->mainUrl/profile?view=users&msg=".$uniqueId."' class='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent capitalize'>profile</a></li>";
             }
           }
 
