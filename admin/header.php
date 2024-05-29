@@ -1,13 +1,13 @@
-<?php 
+<?php
 session_start();
 
 if (!$_SESSION['userAuth']) {
-   include "../database/database.php";
-$databaseFN = new database();
+   // include "../database/database.php";
+   $databaseFN = new database();
    header("Location: " . $databaseFN->mainUrl);
 }
 
-$actual_link = 'http://'.$_SERVER['HTTP_HOST']."/dokan";
+$actual_link = 'http://' . $_SERVER['HTTP_HOST'] . "/dokan";
 ?>
 
 <!DOCTYPE html>
@@ -171,4 +171,3 @@ $actual_link = 'http://'.$_SERVER['HTTP_HOST']."/dokan";
    <!-- Admin Right Side Content Part Start -->
    <div class="p-4 sm:ml-64  bg-white dark:bg-gray-800">
       <div class="p-4 border-2 border-gray-700 border-dashed rounded-lg dark:border-gray-200 mt-14">
-         

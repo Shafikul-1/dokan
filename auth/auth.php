@@ -9,6 +9,13 @@ if(isset($_GET['error'])){
     if($_GET['error'] == 'dbConn'){
         echo "<p class='bg-red-500 text-white font-bold text-center py-3'>Database Connection Error</p>";
     }
+    if($_GET['error'] == 'emailexist'){
+        echo "<p class='bg-red-500 text-white font-bold text-center py-3'>Email Already Exist</p>";
+    }
+    if($_GET['error'] == 'geterror'){
+        echo "<p class='bg-red-500 text-white font-bold text-center py-3'>Someting Is Wrong</p>";
+    }
+    
 }
 
 ?>
@@ -186,7 +193,7 @@ if(isset($_GET['error'])){
                                             <i class="fa-solid fa-lock"></i>
                                         </span>
                                     </div>
-                                   
+                                    <input name="date" hidden value="<?php date_default_timezone_set("Asia/Dhaka"); echo date("d-m-Y h:i:s A"); ?>" id="date" type="text" >
                                 </div>
                                 <div class="mb-5">
                                     <button class="w-full text-center text-white bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded p-2 text-sm" type="submit" name="signUp">

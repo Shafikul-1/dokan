@@ -18,8 +18,19 @@ if (isset($_POST['submit'])) {
     $userRoll = htmlentities($_POST['userRoll'], ENT_QUOTES);
     $uniqueId = $otherFN->uniqueIdCreate();
 
-    $formData = ["name" => $name, "email" => $email, "pass" => $pass, "conPass" => $conPass, "date" => $date, "userComment" => $userComment, "userRoll" => $userRoll, "uniqueId"=>$uniqueId];
-    $databaseFN->insertData("users", $formData);
+    $formData = ["name" => $name, "email" => $email, "pass" => $pass, "conPass" => $conPass, "date" => $date, "userComment" => $userComment, "userRoll" => $userRoll, "uniqueId" => $uniqueId];
+    if ($databaseFN->getData("users", "email", null, " email = '$email'")) {
+        $dbresult = $databaseFN->getResult();
+        if (count($dbresult) > 0) {
+            echo "<p id='message' class='font-bold text-white bg-red-800 py-2 text-center'>Email Already Exist</p>";
+        } else {
+            if ($databaseFN->insertData("users", $formData)) {
+                echo "<p id='message' class='text-black bg-green-500 text-center'>User Insert Successful</p>";
+            } else {
+                echo "<p id='message' class='text-white text-center bg-red-500'>User Insert Failed</p>";
+            }
+        }
+    }
 }
 if (isset($_GET['fmsg']) == "error") {
     echo "<b style='background:red;color:white; padding:5px;'>File Delete Failed</b>";
@@ -308,5 +319,14 @@ if (isset($_GET['dmsg']) == "error") {
 </section>
 <!-- User Add Section End -->
 <script src="./js/users.js"></script>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        setTimeout(function() {
+            var messageDiv = document.getElementById('message');
+            if (messageDiv) {
+                messageDiv.style.display = 'none';
+            }
+        }, 5000); // 10000 milliseconds = 10 seconds
+    });
+</script>
 <?php include "footer.php"; ?>
