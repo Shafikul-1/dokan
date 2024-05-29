@@ -12,6 +12,40 @@ if (!isset($_GET['id'])) {
   $getId = $_GET['id'];
 }
 
+if (isset($_GET['cart'])) {
+  if (isset($_SESSION['userAuth'])) {
+    $uniqueId = $_SESSION['uniqueId'];
+    $getId = intval($_GET['id']); // Sanitize input
+
+     // Log start of cart operation
+    //  error_log("Cart operation started for product ID: $getId");
+
+    if ($databaseFN->getData("cart", "*", null, " productId = $getId")) {
+      $increment =  ['Qty' => 1];
+      $result = $databaseFN->getResult();
+      // error_log("Database query result count: " . count($result));
+
+      if (count($result) > 0) {
+        if ($databaseFN->incrementOrDecrement("cart", $increment, " productId = $getId", "+")) {
+          echo "<p id='message' class='text-center bg-green-500 py-3 capitalize'>Product Qty + 1 Update</p>";
+          // error_log("Product Qty incremented by 1 for product ID: $getId");
+        }
+
+      } else {
+        $collectData = ['uniqueId' => $uniqueId, "productId" => $getId];
+        if ($databaseFN->insertData("cart", $collectData)) {
+          echo "<p id='message'  class='text-center bg-green-500 py-3 capitalize'>Product add successful</p>";
+          // error_log("Product added successfully for product ID: $getId");
+        }
+      }
+    } else {
+      echo "<p class='text-center bg-green-500 py-3 capitalize'>Someting is wrong</p>";
+      // error_log("Error: Product ID: $getId check failed.");
+    }
+  } else {
+    header("Location: " . $databaseFN->mainUrl . "/auth/?checkPoint=auth");
+  }
+}
 
 // Insert Comment
 if (isset($_POST['commentSubmit'])) {
@@ -95,7 +129,9 @@ if (isset($_POST['commentSubmit'])) {
 
               <div class="flex flex-wrap gap-4 mt-10">
                 <button type="button" class="min-w-[200px] px-4 py-3 bg-[#333] hover:bg-[#111] text-white text-sm font-semibold rounded">Buy now</button>
-                <button type="button" class="min-w-[200px] px-4 py-2.5 border border-[#333] bg-transparent hover:bg-gray-50 text-[#333] text-sm font-semibold rounded">Add to cart</button>
+                <button type="button" class="min-w-[200px] px-4 py-2.5 border border-[#333] bg-transparent hover:bg-gray-50 text-[#333] text-sm font-semibold rounded">
+                  <a href="<?php echo basename($_SERVER['PHP_SELF']) . '?id=' . $getId . '&cart=add' ?>">Add to cart</a>
+                </button>
               </div>
             </div>
           </div>
