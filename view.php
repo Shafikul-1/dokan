@@ -18,29 +18,24 @@ if (isset($_GET['cart'])) {
     $getId = intval($_GET['id']); // Sanitize input
 
      // Log start of cart operation
-    //  error_log("Cart operation started for product ID: $getId");
 
-    if ($databaseFN->getData("cart", "*", null, " productId = $getId")) {
+    if ($databaseFN->getData("cart", "*", null, " uniqueId = '$uniqueId'")) {
       $increment =  ['Qty' => 1];
       $result = $databaseFN->getResult();
-      // error_log("Database query result count: " . count($result));
 
       if (count($result) > 0) {
         if ($databaseFN->incrementOrDecrement("cart", $increment, " productId = $getId", "+")) {
           echo "<p id='message' class='text-center bg-green-500 py-3 capitalize'>Product Qty + 1 Update</p>";
-          // error_log("Product Qty incremented by 1 for product ID: $getId");
         }
 
       } else {
         $collectData = ['uniqueId' => $uniqueId, "productId" => $getId];
         if ($databaseFN->insertData("cart", $collectData)) {
           echo "<p id='message'  class='text-center bg-green-500 py-3 capitalize'>Product add successful</p>";
-          // error_log("Product added successfully for product ID: $getId");
         }
       }
     } else {
       echo "<p class='text-center bg-green-500 py-3 capitalize'>Someting is wrong</p>";
-      // error_log("Error: Product ID: $getId check failed.");
     }
   } else {
     header("Location: " . $databaseFN->mainUrl . "/auth/?checkPoint=auth");

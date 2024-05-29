@@ -1,5 +1,13 @@
 <?php
+ob_start();
 include "header.php";
+if(!isset($_SESSION['userAuth'])){
+    header("Location: " . $databaseFN->mainUrl);
+} else {
+    $uniqueId = $_SESSION['uniqueId'];
+    echo $uniqueId;
+}
+
 ?>
 <div class="font-sans">
     <div class="grid lg:grid-cols-3">
@@ -19,6 +27,9 @@ include "header.php";
                 </thead>
 
                 <tbody class="whitespace-nowrap divide-y">
+                    <?php 
+                    // if($databaseFN->getData("cart", "productdetails.id, productdetails.productName, productdetails.productDescription, productdetails.price, productdetails.productImages, cart.Qty", null, " ", " id DESC", null, " productdetails ON cart.productId = productdetails.id"))
+                    ?>
                     <tr>
                         <td class="py-6 px-4">
                             <div class="flex items-center gap-6 w-max">

@@ -81,7 +81,6 @@ class database
             }
             $sql = "UPDATE $table SET " . implode(", ", $incrementDecrementClauses) . " WHERE $where";
             // echo $sql;
-            // error_log("Executing SQL: $sql");
             if ($this->sqli->query($sql)) {
                 array_push($this->result, $this->sqli->affected_rows);
                 return true;
