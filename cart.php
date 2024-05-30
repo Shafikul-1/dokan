@@ -7,35 +7,75 @@ if (!isset($_SESSION['userAuth'])) {
     header("Location: " . $databaseFN->mainUrl);
 } else {
     $uniqueId = $_SESSION['uniqueId'];
+    // echo $uniqueId;
 }
+
+if (isset($_GET['qty']) && isset($_GET['id'])) {
+    $getId = $_GET['id'];
+
+    // Product Qty Plus
+    if ($_GET['qty'] == 'plus') {
+        $increment =  ['Qty' => 1];
+        if ($databaseFN->incrementOrDecrement("cart", $increment, " productId = $getId AND uniqueId = '$uniqueId'", "+")) {
+            header("Location: " . basename($_SERVER['PHP_SELF']));
+        } else {
+            echo "<p class='text-center bg-green-500 py-3 capitalize'>Someting is wrong Qty Added</p>";
+        }
+    }
+
+    // Product Qty Minus
+    if ($_GET['qty'] == 'minus') {
+        $increment =  ['Qty' => 1];
+        if ($databaseFN->incrementOrDecrement("cart", $increment, " productId = $getId AND uniqueId = '$uniqueId'", "-")) {
+            header("Location: " . basename($_SERVER['PHP_SELF']));
+        } else {
+            echo "<p class='text-center bg-green-500 py-3 capitalize'>Someting is wrong Qty Added</p>";
+        }
+    }
+}
+
+// Product Remove
+if (isset($_GET['product']) && isset($_GET['id'])) {
+    $getId = $_GET['id'];
+    if($databaseFN->deleteData("cart", " productId = $getId AND uniqueId = '$uniqueId'")){
+        header("Location: " . basename($_SERVER['PHP_SELF']));
+    }
+}
+
 ?>
 <div class="font-sans">
-    <div class="grid lg:grid-cols-3">
-        <div class="lg:col-span-2 p-6 bg-white overflow-x-auto">
-            <div class="flex gap-2 border-b pb-4">
-                <h2 class="text-2xl font-bold text-black flex-1">Shopping Cart</h2>
-                <h3 class="text-xl font-bold text-black">3 Items</h3>
-            </div>
+    <?php
+    $cartUrl = basename($_SERVER['PHP_SELF']);
 
-            <table class="mt-6 w-full border-collapse divide-y">
-                <thead class="whitespace-nowrap text-left">
-                    <tr>
-                        <th class="text-base text-black p-4">Description</th>
-                        <th class="text-base text-black p-4">Quantity</th>
-                        <th class="text-base text-black p-4">Price</th>
-                    </tr>
-                </thead>
+    if ($databaseFN->getData("cart", "cart.Qty, cart.productId, productdetails.price, productdetails.productName, productdetails.productImages, productdetails.id", null, " cart.uniqueId = '$uniqueId'", " id DESC", null, " productdetails ON cart.productId = productdetails.id")) {
+        $cartResult = $databaseFN->getResult();
+        $countProduct = count($cartResult);
+    ?>
+        <div class="grid lg:grid-cols-3">
+            <div class="lg:col-span-2 p-6 bg-white overflow-x-auto">
+                <div class="flex gap-2 border-b pb-4">
+                    <h2 class="text-2xl font-bold text-black flex-1">Shopping Cart</h2>
+                    <h3 class="text-xl font-bold text-black"><?php echo $countProduct; ?> Items</h3>
+                </div>
 
-                <tbody class="whitespace-nowrap divide-y">
-                    <?php
-                    if ($databaseFN->getData("cart", "cart.Qty, cart.productId, productdetails.price, productdetails.productName, productdetails.productImages, productdetails.id", null, " cart.uniqueId = '$uniqueId'", " id DESC", null, " productdetails ON cart.productId = productdetails.id")) {
-                        $cartResult = $databaseFN->getResult();
+                <table class="mt-6 w-full border-collapse divide-y">
+                    <thead class="whitespace-nowrap text-left">
+                        <tr>
+                            <th class="text-base text-black p-4">Description</th>
+                            <th class="text-base text-black p-4">Quantity</th>
+                            <th class="text-base text-black p-4">Price</th>
+                        </tr>
+                    </thead>
 
-                        // Get Data Cart table, check the user unique id
-                        if (count($cartResult) > 0) {
+                    <tbody class="whitespace-nowrap divide-y">
+                        <?php
+                        // All price push this array
+                        $allPrice = array();
+
+                        if ($countProduct > 0) {
                             foreach ($cartResult as list("id" => $id, "productName" => $productName, "price" => $price, "productId" => $productId, "Qty" => $Qty, "productImages" => $productImages)) {
                                 $singleImage = explode(",", $productImages);
-                    ?>
+                        ?>
                                 <tr>
                                     <td class="py-6 px-4">
                                         <div class="flex items-center gap-6 w-max">
@@ -46,58 +86,69 @@ if (!isset($_SESSION['userAuth'])) {
                                                 <p class="text-base font-bold text-black">
                                                     <a href="<?php echo $databaseFN->mainUrl . "/view.php?id=$id" ?>"> <?php echo (str_word_count($productName) >= 3) ? $otherFN->strSort($productName, 3) . "..." : $productName; ?></a>
                                                 </p>
-                                                <button type="button" class="mt-3 font-semibold text-red-400 text-sm">
+                                                <a href="<?php echo $cartUrl . "?product=remove&id=$id" ?>" type="button" class="mt-3 font-semibold text-red-400 text-sm">
                                                     Remove
-                                                </button>
+                                                </a>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="py-6 px-4">
                                         <div class="flex divide-x border w-max rounded overflow-hidden">
-                                            <button type="button" class="flex items-center justify-center bg-gray-100 w-10 h-10 font-semibold">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current" viewBox="0 0 124 124">
-                                                    <path d="M112 50H12C5.4 50 0 55.4 0 62s5.4 12 12 12h100c6.6 0 12-5.4 12-12s-5.4-12-12-12z" data-original="#000000"></path>
-                                                </svg>
-                                            </button>
+
+                                            <a href="<?php echo $cartUrl . "?qty=minus&id=$id" ?>" type="button" class="<?php echo ($Qty > 1) ? '' : 'cursor-not-allowed opacity-35 pointer-events-none' ; ?>  flex items-center justify-center bg-gray-100 w-10 h-10 font-semibold">
+                                                <i class="fa-solid fa-minus w-3 fill-current"></i>
+                                            </a>
                                             <button type="button" class="bg-transparent w-10 h-10 font-semibold text-black text-base">
                                                 <?php echo $Qty; ?>
                                             </button>
-                                            <button type="button" class="flex justify-center items-center bg-gray-800 text-white w-10 h-10 font-semibold">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current" viewBox="0 0 42 42">
-                                                    <path d="M37.059 16H26V4.941C26 2.224 23.718 0 21 0s-5 2.224-5 4.941V16H4.941C2.224 16 0 18.282 0 21s2.224 5 4.941 5H16v11.059C16 39.776 18.282 42 21 42s5-2.224 5-4.941V26h11.059C39.776 26 42 23.718 42 21s-2.224-5-4.941-5z" data-original="#000000"></path>
-                                                </svg>
-                                            </button>
+                                            <a href="<?php echo $cartUrl . "?qty=plus&id=$id" ?>" type="button" class="flex justify-center items-center bg-gray-800 text-white w-10 h-10 font-semibold">
+                                                <i class="fa-solid fa-plus w-3 fill-current"></i>
+                                            </a>
                                         </div>
                                     </td>
                                     <td class="py-6 px-4">
-                                        <h4 class="text-base font-bold text-black">$ <?php echo $price * $Qty; ?></h4>
+                                        <h4 class="text-base font-bold text-black">
+                                            $<?php
+                                                $countPrice = $price * $Qty;
+                                                echo $countPrice;
+                                                array_push($allPrice, $countPrice);
+                                                ?>
+                                        </h4>
                                     </td>
                                 </tr>
-                    <?php
+                        <?php
                             }
                         } else {
                             echo "<p class='text-center font-bold bg-blue-500 text-white py-4 '>You have no added any data to the cart.</p>";
                         }
-                    }
-                    ?>
+                        ?>
+                    </tbody>
+                </table>
+            </div>
 
-                </tbody>
-            </table>
+            <!-- Summury Price -->
+            <div class="bg-gray-50 p-6 lg:sticky lg:top-0 lg:h-screen">
+                <h3 class="text-xl font-bold text-black border-b pb-4">Order Summary</h3>
+
+                <ul class="text-black divide-y mt-6">
+                    <li class="flex flex-wrap gap-4 text-base py-4">Subtotal <span class="ml-auto font-bold">
+                            $<?php
+                                $subTotalPrice = array_sum($allPrice);
+                                echo $subTotalPrice;
+                                ?>
+                        </span>
+                    </li>
+                    <li class="flex flex-wrap gap-4 text-base py-4">Shipping <span class="ml-auto font-bold">$4.00</span></li>
+                    <li class="flex flex-wrap gap-4 text-base py-4">Tax <span class="ml-auto font-bold">$4.00</span></li>
+                    <li class="flex flex-wrap gap-4 text-base py-4 font-bold">Total <span class="ml-auto">$45.00</span></li>
+                </ul>
+
+                <button type="button" class="mt-6 text-base px-6 py-2.5 w-full bg-gray-800 hover:bg-gray-900 text-white rounded">Check out</button>
+            </div>
         </div>
-
-        <div class="bg-gray-50 p-6 lg:sticky lg:top-0 lg:h-screen">
-            <h3 class="text-xl font-bold text-black border-b pb-4">Order Summary</h3>
-
-            <ul class="text-black divide-y mt-6">
-                <li class="flex flex-wrap gap-4 text-base py-4">Subtotal <span class="ml-auto font-bold">$37.00</span></li>
-                <li class="flex flex-wrap gap-4 text-base py-4">Shipping <span class="ml-auto font-bold">$4.00</span></li>
-                <li class="flex flex-wrap gap-4 text-base py-4">Tax <span class="ml-auto font-bold">$4.00</span></li>
-                <li class="flex flex-wrap gap-4 text-base py-4 font-bold">Total <span class="ml-auto">$45.00</span></li>
-            </ul>
-
-            <button type="button" class="mt-6 text-base px-6 py-2.5 w-full bg-gray-800 hover:bg-gray-900 text-white rounded">Check out</button>
-        </div>
-    </div>
+    <?php
+    }
+    ?>
 </div>
 <?php
 include "footer.php";
