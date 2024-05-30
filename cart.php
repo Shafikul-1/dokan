@@ -1,13 +1,13 @@
 <?php
 ob_start();
 include "header.php";
-if(!isset($_SESSION['userAuth'])){
+include "database/otherFn.php";
+$otherFN = new otherFn();
+if (!isset($_SESSION['userAuth'])) {
     header("Location: " . $databaseFN->mainUrl);
 } else {
     $uniqueId = $_SESSION['uniqueId'];
-    echo $uniqueId;
 }
-
 ?>
 <div class="font-sans">
     <div class="grid lg:grid-cols-3">
@@ -27,46 +27,60 @@ if(!isset($_SESSION['userAuth'])){
                 </thead>
 
                 <tbody class="whitespace-nowrap divide-y">
-                    <?php 
-                    // if($databaseFN->getData("cart", "productdetails.id, productdetails.productName, productdetails.productDescription, productdetails.price, productdetails.productImages, cart.Qty", null, " ", " id DESC", null, " productdetails ON cart.productId = productdetails.id"))
-                    ?>
-                    <tr>
-                        <td class="py-6 px-4">
-                            <div class="flex items-center gap-6 w-max">
-                                <div class="h-32 shrink-0">
-                                    <img src='https://readymadeui.com/images/product6.webp' class="w-full h-full object-contain rounded" />
-                                </div>
-                                <div>
-                                    <p class="text-base font-bold text-black">Black T-Shirt</p>
-                                    <button type="button" class="mt-3 font-semibold text-red-400 text-sm">
-                                        Remove
-                                    </button>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="py-6 px-4">
-                            <div class="flex divide-x border w-max rounded overflow-hidden">
-                                <button type="button" class="flex items-center justify-center bg-gray-100 w-10 h-10 font-semibold">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current" viewBox="0 0 124 124">
-                                        <path d="M112 50H12C5.4 50 0 55.4 0 62s5.4 12 12 12h100c6.6 0 12-5.4 12-12s-5.4-12-12-12z" data-original="#000000"></path>
-                                    </svg>
-                                </button>
-                                <button type="button" class="bg-transparent w-10 h-10 font-semibold text-black text-base">
-                                    1
-                                </button>
-                                <button type="button" class="flex justify-center items-center bg-gray-800 text-white w-10 h-10 font-semibold">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current" viewBox="0 0 42 42">
-                                        <path d="M37.059 16H26V4.941C26 2.224 23.718 0 21 0s-5 2.224-5 4.941V16H4.941C2.224 16 0 18.282 0 21s2.224 5 4.941 5H16v11.059C16 39.776 18.282 42 21 42s5-2.224 5-4.941V26h11.059C39.776 26 42 23.718 42 21s-2.224-5-4.941-5z" data-original="#000000"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </td>
-                        <td class="py-6 px-4">
-                            <h4 class="text-base font-bold text-black">$18.5</h4>
-                        </td>
-                    </tr>
+                    <?php
+                    if ($databaseFN->getData("cart", "cart.Qty, cart.productId, productdetails.price, productdetails.productName, productdetails.productImages, productdetails.id", null, " cart.uniqueId = '$uniqueId'", " id DESC", null, " productdetails ON cart.productId = productdetails.id")) {
+                        $cartResult = $databaseFN->getResult();
 
-                    
+                        // Get Data Cart table, check the user unique id
+                        if (count($cartResult) > 0) {
+                            foreach ($cartResult as list("id" => $id, "productName" => $productName, "price" => $price, "productId" => $productId, "Qty" => $Qty, "productImages" => $productImages)) {
+                                $singleImage = explode(",", $productImages);
+                    ?>
+                                <tr>
+                                    <td class="py-6 px-4">
+                                        <div class="flex items-center gap-6 w-max">
+                                            <div class="h-32 shrink-0">
+                                                <img src="upload/product/<?php echo $singleImage[0] ?>" alt="<?php echo $singleImage[0] ?>" class="w-full h-full object-contain rounded" />
+                                            </div>
+                                            <div>
+                                                <p class="text-base font-bold text-black">
+                                                    <a href="<?php echo $databaseFN->mainUrl . "/view.php?id=$id" ?>"> <?php echo (str_word_count($productName) >= 3) ? $otherFN->strSort($productName, 3) . "..." : $productName; ?></a>
+                                                </p>
+                                                <button type="button" class="mt-3 font-semibold text-red-400 text-sm">
+                                                    Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-6 px-4">
+                                        <div class="flex divide-x border w-max rounded overflow-hidden">
+                                            <button type="button" class="flex items-center justify-center bg-gray-100 w-10 h-10 font-semibold">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current" viewBox="0 0 124 124">
+                                                    <path d="M112 50H12C5.4 50 0 55.4 0 62s5.4 12 12 12h100c6.6 0 12-5.4 12-12s-5.4-12-12-12z" data-original="#000000"></path>
+                                                </svg>
+                                            </button>
+                                            <button type="button" class="bg-transparent w-10 h-10 font-semibold text-black text-base">
+                                                <?php echo $Qty; ?>
+                                            </button>
+                                            <button type="button" class="flex justify-center items-center bg-gray-800 text-white w-10 h-10 font-semibold">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current" viewBox="0 0 42 42">
+                                                    <path d="M37.059 16H26V4.941C26 2.224 23.718 0 21 0s-5 2.224-5 4.941V16H4.941C2.224 16 0 18.282 0 21s2.224 5 4.941 5H16v11.059C16 39.776 18.282 42 21 42s5-2.224 5-4.941V26h11.059C39.776 26 42 23.718 42 21s-2.224-5-4.941-5z" data-original="#000000"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td class="py-6 px-4">
+                                        <h4 class="text-base font-bold text-black">$ <?php echo $price * $Qty; ?></h4>
+                                    </td>
+                                </tr>
+                    <?php
+                            }
+                        } else {
+                            echo "<p class='text-center font-bold bg-blue-500 text-white py-4 '>You have no added any data to the cart.</p>";
+                        }
+                    }
+                    ?>
+
                 </tbody>
             </table>
         </div>

@@ -17,21 +17,31 @@ if (isset($_GET['cart'])) {
     $uniqueId = $_SESSION['uniqueId'];
     $getId = intval($_GET['id']); // Sanitize input
 
-     // Log start of cart operation
-
-    if ($databaseFN->getData("cart", "*", null, " productId = '$getId'")) {
+    // Get Data Cart table with check product id
+    if ($databaseFN->getData("cart", "*", null, " productId = $getId  AND uniqueId = '$uniqueId'")) {
       $increment =  ['Qty' => 1];
       $result = $databaseFN->getResult();
+      $qty = 1;
+      $collectData = ['uniqueId' => $uniqueId, "productId" => $getId, "Qty" =>$qty];
 
+      // Check Cart table Result already exist
       if (count($result) > 0) {
-        if ($databaseFN->incrementOrDecrement("cart", $increment, " productId = $getId", "+")) {
-          echo "<p id='message' class='text-center bg-green-500 py-3 capitalize'>Product Qty + 1 Update</p>";
-        }
 
+        // Current User cart tabel exist then update qty
+        if ($databaseFN->incrementOrDecrement("cart", $increment, " productId = $getId AND uniqueId = '$uniqueId'", "+")) {
+          echo "<p id='message' class='text-center bg-green-500 py-3 capitalize'>Product Qty + 1 Update</p>";
+          header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=$getId");
+        } else {
+          echo "<p class='text-center bg-green-500 py-3 capitalize'>Someting is wrong Increment</p>";
+        }
       } else {
-        $collectData = ['uniqueId' => $uniqueId, "productId" => $getId];
+
+        // Current User Does not cart tabel exist then insert data
         if ($databaseFN->insertData("cart", $collectData)) {
           echo "<p id='message'  class='text-center bg-green-500 py-3 capitalize'>Product add successful</p>";
+          header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=$getId");
+        } else {
+          echo "<p class='text-center bg-green-500 py-3 capitalize'>Someting is wrong Insert data</p>";
         }
       }
     } else {
