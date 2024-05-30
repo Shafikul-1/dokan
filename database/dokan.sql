@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 30, 2024 at 03:58 AM
+-- Generation Time: May 30, 2024 at 10:59 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -45,7 +45,15 @@ INSERT INTO `cart` (`id`, `uniqueId`, `productId`, `Qty`) VALUES
 (28, '6656570f3ad2b29052024041335AM', 69, 2),
 (29, '6656570f3ad2b29052024041335AM', 71, 1),
 (30, '66567000ebe4a29052024060000AM', 69, 1),
-(31, '66567000ebe4a29052024060000AM', 74, 1);
+(31, '66567000ebe4a29052024060000AM', 74, 1),
+(32, '665656fb1c4d729052024041315AM', 71, 3),
+(34, '665656fb1c4d729052024041315AM', 75, 1),
+(35, '665656fb1c4d729052024041315AM', 64, 1),
+(37, '6656576d2500329052024041509AM', 76, 6),
+(38, '6656576d2500329052024041509AM', 61, 4),
+(39, '66583cdcc3f4b30052024024620PM', 69, 2),
+(40, '66583cdcc3f4b30052024024620PM', 61, 1),
+(42, '66583cdcc3f4b30052024024620PM', 56, 1);
 
 -- --------------------------------------------------------
 
@@ -164,7 +172,8 @@ INSERT INTO `usercomment` (`id`, `name`, `comment`, `time`, `userAuth`, `postId`
 (40, 'shaifku;l', 'IOther COmmnet', '26-05-2024 11:56:11 AM', 1, 65),
 (41, 'shaifku;l', 'IOther COmmnet', '26-05-2024 11:56:11 AM', 1, 65),
 (42, 'Runjila1', 'sdfgsd', '27-05-2024 07:21:44 AM', 1, 71),
-(43, 'Runjila', 'fsdaf', '27-05-2024 07:22:25 AM', 1, 62);
+(43, 'Runjila', 'fsdaf', '27-05-2024 07:22:25 AM', 1, 62),
+(44, 'Md shafikul', 'Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua.', '30-05-2024 02:48:15 PM', 4, 76);
 
 -- --------------------------------------------------------
 
@@ -203,7 +212,8 @@ INSERT INTO `users` (`id`, `name`, `pass`, `conPass`, `date`, `userComment`, `us
 (63, 'users', '$2y$10$bv6g7Mgr8jvQRBxHiIdrKeMhektbHax5NkUt9l7Bf3aQUnykj7boq', '$2y$10$I2qM5ePVFxrBVenrbflxGuf4xNOnkXZCWHihUF/3LFzGaZFdHbYJK', '29-05-2024 04:15:09 AM', 'users', 4, 'users@gmail.com', NULL, '6656577e967bb29052024041526AM'),
 (64, 'Roholamin', '$2y$10$5xNxAiJhUqEsjiHwP3XV.uGO909qOghd.W4mSGljgFczV5ZebuI1S', '$2y$10$8pxlgtICtJACU2tsUgsyHOKbUjK2.ue6Mi01Sodf8jcUW5HZn4CGu', '29-05-2024 05:00:15 AM', '', 4, 'roholamin@gmail.com', NULL, '665662152d40f29052024050037AM'),
 (65, 'Runjila1', '$2y$10$NYDLQ/63CKLiV2jHE7eMf.9pRXNxTxmxKCLbz4wyb24pj8/g5O1ke', '$2y$10$ra8Sq6oLzwcj2bM45mTEjetJ8yKx9gYGK2U3VwP9M7A1wSIzj0rve', '29-05-2024 05:59:44 AM', '', 4, 'Runjila1@gmail.com', NULL, '66567000ebe4a29052024060000AM'),
-(66, 'Arifa', '$2y$10$DgSoSk5h2ESihLHW4n9srOJGNsBx/nJd.lqawjCrcnjtwnQEodmsu', '$2y$10$QXJA/c0GLV91tFTr2jf41efytVe05qtS6ymW.Fd18gpbaMfu1d/u6', '29-05-2024 06:03:41 AM', 'OutSide User', 4, 'Arifa@gmail.com', NULL, '665670ed2aa4529052024060357AM');
+(66, 'Arifa', '$2y$10$DgSoSk5h2ESihLHW4n9srOJGNsBx/nJd.lqawjCrcnjtwnQEodmsu', '$2y$10$QXJA/c0GLV91tFTr2jf41efytVe05qtS6ymW.Fd18gpbaMfu1d/u6', '29-05-2024 06:03:41 AM', 'OutSide User', 4, 'Arifa@gmail.com', NULL, '665670ed2aa4529052024060357AM'),
+(67, 'covera8036', '$2y$10$CjbgmIORzZquTFlJv.tA/eVNEVfuk.2gAubijM/JGjQ9v4sOFcHL.', '$2y$10$LLH/2GmyeQS4Di5gYtVBOO/2i04uiX.KyxZFPLE3dfsxOiA4TtIZG', '30-05-2024 02:45:45 PM', 'OutSide User', 4, 'covera8036@acuxi.com', NULL, '66583cdcc3f4b30052024024620PM');
 
 --
 -- Indexes for dumped tables
@@ -247,7 +257,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `productcatagory`
@@ -265,13 +275,13 @@ ALTER TABLE `productdetails`
 -- AUTO_INCREMENT for table `usercomment`
 --
 ALTER TABLE `usercomment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
