@@ -143,7 +143,7 @@ if (isset($_GET['product']) && isset($_GET['id'])) {
                     <li class="flex flex-wrap gap-4 text-base py-4 font-bold">Total <span class="ml-auto">$45.00</span></li>
                 </ul>
 
-                <button type="button" class="mt-6 text-base px-6 py-2.5 w-full bg-gray-800 hover:bg-gray-900 text-white rounded"><a href="<?php echo $databaseFN->mainUrl . "/checkout.php"?>">Check out</a></button>
+                <button type="button" class="mt-6 text-base px-6 py-2.5 w-full bg-gray-800 hover:bg-gray-900 text-white rounded"><a href="<?php echo $databaseFN->mainUrl . "/checkout.php?sbp=$subTotalPrice"?>">Check out</a></button>
             </div>
         </div>
     <?php
