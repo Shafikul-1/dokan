@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 30, 2024 at 10:59 AM
+-- Generation Time: Jun 01, 2024 at 11:41 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -49,11 +49,33 @@ INSERT INTO `cart` (`id`, `uniqueId`, `productId`, `Qty`) VALUES
 (32, '665656fb1c4d729052024041315AM', 71, 3),
 (34, '665656fb1c4d729052024041315AM', 75, 1),
 (35, '665656fb1c4d729052024041315AM', 64, 1),
-(37, '6656576d2500329052024041509AM', 76, 6),
-(38, '6656576d2500329052024041509AM', 61, 4),
-(39, '66583cdcc3f4b30052024024620PM', 69, 2),
-(40, '66583cdcc3f4b30052024024620PM', 61, 1),
-(42, '66583cdcc3f4b30052024024620PM', 56, 1);
+(37, '6656576d2500329052024041509AM', 76, 4),
+(38, '6656576d2500329052024041509AM', 61, 5),
+(39, '66583cdcc3f4b30052024024620PM', 69, 3),
+(40, '66583cdcc3f4b30052024024620PM', 61, 2),
+(42, '66583cdcc3f4b30052024024620PM', 56, 1),
+(43, '6656576d2500329052024041509AM', 59, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orderdetails`
+--
+
+CREATE TABLE `orderdetails` (
+  `id` int(11) NOT NULL,
+  `orderId` int(11) DEFAULT NULL,
+  `confirmDate` varchar(200) DEFAULT NULL,
+  `totalPrice` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orderdetails`
+--
+
+INSERT INTO `orderdetails` (`id`, `orderId`, `confirmDate`, `totalPrice`, `status`) VALUES
+(1, 2561623, '02-03-2024', 343, 2);
 
 -- --------------------------------------------------------
 
@@ -226,6 +248,12 @@ ALTER TABLE `cart`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `orderdetails`
+--
+ALTER TABLE `orderdetails`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `productcatagory`
 --
 ALTER TABLE `productcatagory`
@@ -257,7 +285,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+
+--
+-- AUTO_INCREMENT for table `orderdetails`
+--
+ALTER TABLE `orderdetails`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `productcatagory`
