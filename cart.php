@@ -37,7 +37,7 @@ if (isset($_GET['qty']) && isset($_GET['id'])) {
 // Product Remove
 if (isset($_GET['product']) && isset($_GET['id'])) {
     $getId = $_GET['id'];
-    if($databaseFN->deleteData("cart", " productId = $getId AND uniqueId = '$uniqueId'")){
+    if ($databaseFN->deleteData("cart", " productId = $getId AND uniqueId = '$uniqueId'")) {
         header("Location: " . basename($_SERVER['PHP_SELF']));
     }
 }
@@ -51,10 +51,16 @@ if (isset($_GET['product']) && isset($_GET['id'])) {
         $cartResult = $databaseFN->getResult();
         $countProduct = count($cartResult);
     ?>
-        <div class="grid lg:grid-cols-3">
+        <div class="flex justify-between py-2 bg-gray-400 ml-5 text-center">
+            <h2 onclick="currentCart()" class="text-2xl font-bold text-black flex-1 cursor-pointer hover:bg-gray-500 transition-all rounded-md">Shopping Cart</h2>
+            <h2 onclick="previousOrders()" class="text-2xl font-bold text-black flex-1 capitalize cursor-pointer hover:bg-gray-500 transition-all rounded-md">Previes order </h2>
+        </div>
+        <div class="grid lg:grid-cols-3 " id="AllProductCart">
+
             <div class="lg:col-span-2 p-6 bg-white overflow-x-auto">
                 <div class="flex gap-2 border-b pb-4">
-                    <h2 class="text-2xl font-bold text-black flex-1">Shopping Cart</h2>
+                    <h2 class="text-xl font-medium text-black flex-1">All Product Cart</h2>
+
                     <h3 class="text-xl font-bold text-black"><?php echo $countProduct; ?> Items</h3>
                 </div>
 
@@ -95,7 +101,7 @@ if (isset($_GET['product']) && isset($_GET['id'])) {
                                     <td class="py-6 px-4">
                                         <div class="flex divide-x border w-max rounded overflow-hidden">
 
-                                            <a href="<?php echo $cartUrl . "?qty=minus&id=$id" ?>" type="button" class="<?php echo ($Qty > 1) ? '' : 'cursor-not-allowed opacity-35 pointer-events-none' ; ?>  flex items-center justify-center bg-gray-100 w-10 h-10 font-semibold">
+                                            <a href="<?php echo $cartUrl . "?qty=minus&id=$id" ?>" type="button" class="<?php echo ($Qty > 1) ? '' : 'cursor-not-allowed opacity-35 pointer-events-none'; ?>  flex items-center justify-center bg-gray-100 w-10 h-10 font-semibold">
                                                 <i class="fa-solid fa-minus w-3 fill-current"></i>
                                             </a>
                                             <button type="button" class="bg-transparent w-10 h-10 font-semibold text-black text-base">
@@ -143,13 +149,54 @@ if (isset($_GET['product']) && isset($_GET['id'])) {
                     <li class="flex flex-wrap gap-4 text-base py-4 font-bold">Total <span class="ml-auto">$45.00</span></li>
                 </ul>
 
-                <button type="button" class="mt-6 text-base px-6 py-2.5 w-full bg-gray-800 hover:bg-gray-900 text-white rounded"><a href="<?php echo $databaseFN->mainUrl . "/checkout.php?sbp=$subTotalPrice"?>">Check out</a></button>
+                <button onclick="checkout()" type="button" class="mt-6 text-base px-6 py-2.5 w-full bg-gray-800 hover:bg-gray-900 text-white rounded">
+                    Check out
+                </button>
             </div>
         </div>
     <?php
     }
     ?>
 </div>
+
+<!-- Checkout page Inculd -->
+<div id="checkOutSection" class="hidden">
+    <?php include "checkout.php"; ?>
+</div>
+
+<!-- Checkout page Inculd -->
+<div id="previousOrderShow" class="hidden">
+    <?php include "previousOrder.php"; ?>
+</div>
+
+<script>
+    function checkout() {
+        const AllProductCart = document.getElementById("AllProductCart");
+        const checkOutSection = document.getElementById("checkOutSection");
+        AllProductCart.classList.add("hidden");
+        checkOutSection.classList.remove("hidden");
+    }
+
+    function previousOrders() {
+        const AllProductCart = document.getElementById("AllProductCart");
+        const previousOrderShow = document.getElementById("previousOrderShow");
+        const checkOutSection = document.getElementById("checkOutSection");
+        checkOutSection.classList.add("hidden");
+        AllProductCart.classList.add("hidden");
+        previousOrderShow.classList.remove("hidden");
+    }
+
+    function currentCart(){
+        const AllProductCart = document.getElementById("AllProductCart");
+        const previousOrderShow = document.getElementById("previousOrderShow");
+        const checkOutSection = document.getElementById("checkOutSection");
+        AllProductCart.classList.remove("hidden");
+        previousOrderShow.classList.add("hidden");
+        checkOutSection.classList.add("hidden");
+    }
+</script>
+
 <?php
+
 include "footer.php";
 ?>

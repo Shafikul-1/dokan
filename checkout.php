@@ -1,17 +1,12 @@
 <?php 
-
-include "header.php"; 
-
-
+echo $subTotalPrice;
 ?>
-
 <div class="font-sans bg-white p-4">
   <div class="max-w-4xl mx-auto">
     <div class="text-center">
       <h2 class="text-3xl font-extrabold text-gray-800 inline-block border-b-[3px] border-gray-800 pb-1">Checkout</h2>
     </div>
     <form action="pricecut.php" method="post">
-    <input type="text" hidden name="price" value="<?php echo $_GET['sbp'] ?>" id="">
       <div class="mt-12">
         <div class="grid md:grid-cols-3 gap-4">
           <div>
@@ -95,4 +90,3 @@ include "header.php";
     </form>
   </div>
 </div>
-<?php include "footer.php"; ?>

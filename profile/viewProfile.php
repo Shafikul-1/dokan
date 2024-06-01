@@ -16,7 +16,7 @@ function viewProfile($msg)
           </div>
           <div class="flex gap-3 flex-wrap">
             <span class="rounded-sm bg-yellow-100 px-3 py-1 text-xs font-medium text-yellow-800 capitalize"><a href="<?php echo $databaseFN->mainUrl . "/cart.php" ?>">check to cart</a></span>
-            <span class="rounded-sm bg-green-100 px-3 py-1 text-xs font-medium text-green-800">Design</span>
+            <span class="rounded-sm bg-green-100 px-3 py-1 text-xs font-medium text-green-800"><a href="<?php echo $databaseFN->mainUrl . "/order.php" ?>">Order</a></span>
             <span class="rounded-sm bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800">Managements</span>
             <span class="rounded-sm bg-indigo-100 px-3 py-1 text-xs font-medium text-indigo-800">Projects</span>
           </div>
