@@ -1,6 +1,5 @@
-<?php 
-echo $subTotalPrice;
-?>
+
+
 <div class="font-sans bg-white p-4">
   <div class="max-w-4xl mx-auto">
     <div class="text-center">
@@ -13,7 +12,7 @@ echo $subTotalPrice;
             <h3 class="text-3xl font-bold text-gray-300">01</h3>
             <h3 class="text-xl font-bold text-gray-800 mt-1">Personal Details</h3>
           </div>
-
+          <input type="number" hidden name="order_total_price" value="<?php echo $allTotalPrice ?>" id="">
           <div class="md:col-span-2">
             <div class="grid sm:grid-cols-2 gap-4">
               <input type="text" name="order_user_first_name" placeholder="First name" class="px-4 py-3 bg-white text-gray-800 w-full text-sm border-2 rounded-md focus:border-blue-500 outline-none" />
@@ -50,7 +49,7 @@ echo $subTotalPrice;
             <div class="grid gap-4 sm:grid-cols-2">
               <!-- card -->
               <div class="flex items-center">
-                <input type="radio" class="w-5 h-5 cursor-pointer" name="order_user_payment_method" value="1" id="cash_on_delivery" checked/>
+                <input type="radio" class="w-5 h-5 cursor-pointer" name="order_user_payment_method" value="1" id="cash_on_delivery" checked />
                 <label for="cash_on_delivery" class="ml-4 flex gap-2 cursor-pointer">
                   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiAjJXei-eVRVm7e-d50oi6cYXC4wILvqddw&s" class="w-20" alt="paypalCard" />
                 </label>

@@ -1,7 +1,7 @@
 <?php
 
 
-if ($databaseFN->getData("orderdetails")) {
+if ($databaseFN->getData("oldorder")) {
 
 
 ?>
