@@ -5,7 +5,7 @@ include "./database/otherFn.php";
 $databaseFN = new database();
 $otherFN = new otherFn();
 
-$order_unique_id = "#" . $otherFN->uniqueIdCreate();
+$order_unique_id = $otherFN->uniqueIdCreate();
 $user_unique_id = $_SESSION['uniqueId'];
 
 if (isset($_POST['order_submit'])) {
@@ -22,6 +22,9 @@ if (isset($_POST['order_submit'])) {
     $order_user_exp = htmlentities($_POST['order_user_exp'], ENT_QUOTES);
     $order_user_cvv = htmlentities($_POST['order_user_cvv'], ENT_QUOTES);
     $order_total_price = htmlentities($_POST['order_total_price'], ENT_QUOTES);
+    $all_product_id = htmlentities($_POST['all_product_id'], ENT_QUOTES);
+    $user_order_time = htmlentities($_POST['user_order_time'], ENT_QUOTES);
+    
 
     $insertUserInfo = [
         'order_user_first_name' => $order_user_first_name,
@@ -38,15 +41,18 @@ if (isset($_POST['order_submit'])) {
         'order_user_cvv' => $order_user_cvv,
         'order_unique_id' => $order_unique_id,
         'order_total_price' => $order_total_price,
-        'user_unique_id' => $user_unique_id
+        'all_product_id' => $all_product_id,
+        'user_unique_id' => $user_unique_id,
+        'user_order_time' => $user_order_time,
+        'status' => 1
     ];
 // echo "<pre>";
 // print_r($insertUserInfo);
 // echo "</pre>";
     if ($databaseFN->insertData("orderdetails", $insertUserInfo)) {
-        header("Location: " . $databaseFN->mainUrl . "/cart.php?msg=pending");
+        header("Location: " . $databaseFN->mainUrl . "/cart.php");
     } else {
-        header("Location: " . $databaseFN->mainUrl . "/cart.php?msg=dberror");
+        header("Location: " . $databaseFN->mainUrl . "/cart.php?msg=email");
     }
 } else {
     header("Location: " . $databaseFN->mainUrl . "/cart.php");

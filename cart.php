@@ -44,7 +44,11 @@ if (isset($_GET['product']) && isset($_GET['id'])) {
 
 // Order database Data save error
 if (isset($_GET['msg']) && $_GET['msg'] == 'dberror') {
-    echo "<p id='message' class='bg-red-400 text-white text-center font-bold capitalize py-4'>error database data insert failed</p>";
+    echo "<p id='message' class='bg-red-400 text-white text-center font-bold capitalize py-4'>please Check your provide informationo</p>";
+}
+// database email already exists
+if (isset($_GET['msg']) && $_GET['msg'] == 'email') {
+    echo "<p id='message' class='bg-red-400 text-white text-center font-bold capitalize py-4'>please Check your provide informationo</p>";
 }
 
 // Order Pending
@@ -56,7 +60,7 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'pending') {
 <div class="font-sans">
     <?php
     $cartUrl = basename($_SERVER['PHP_SELF']);
-
+    $allProductId = array();
 
 
     if ($databaseFN->getData("cart", "cart.Qty, cart.productId, productdetails.price, productdetails.productName, productdetails.productImages, productdetails.id", null, " cart.uniqueId = '$uniqueId'", " id DESC", null, " productdetails ON cart.productId = productdetails.id")) {
@@ -71,7 +75,7 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'pending') {
 
             <div class="lg:col-span-2 p-6 bg-white overflow-x-auto">
                 <div class="flex gap-2 border-b pb-4">
-                    <h2 class="text-xl font-medium text-black flex-1">All Product Cart</h2>
+                    <h2 class="text-xl font-medium text-black flex-1"><a class="hover:underline underline-offset-4" href="<?php echo $databaseFN->mainUrl ?>">Go All Product </a></h2>
 
                     <h3 class="text-xl font-bold text-black"><?php echo $countProduct; ?> Items</h3>
                 </div>
@@ -93,7 +97,7 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'pending') {
                         if ($countProduct > 0) {
                             foreach ($cartResult as list("id" => $id, "productName" => $productName, "price" => $price, "productId" => $productId, "Qty" => $Qty, "productImages" => $productImages)) {
                                 $singleImage = explode(",", $productImages);
-                               
+                                array_push($allProductId, $id);
                         ?>
                                 <tr>
                                     <td class="py-6 px-4">

@@ -1,7 +1,7 @@
 <?php
 
 
-if ($databaseFN->getData("oldorder")) {
+if ($databaseFN->getData("orderdetails")) {
 
 
 ?>
@@ -23,15 +23,15 @@ if ($databaseFN->getData("oldorder")) {
                         </thead>
                         <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
                             <?php
-                            foreach ($databaseFN->getResult() as list("id" => $id, "orderId" => $orderId, "confirmDate" => $confirmDate, "totalPrice" => $totalPrice, "status" => $status)) {
+                            foreach ($databaseFN->getResult() as list("id" => $id, "order_unique_id" => $order_unique_id, "user_order_time" => $user_order_time, "order_total_price" => $order_total_price, "status" => $status)) {
                                 # code...
 
                             ?>
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200"><?php echo $id ?></td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm  text-gray-800 dark:text-neutral-200">#<?php echo $orderId ?></td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200"><?php echo $confirmDate ?></td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">$<?php echo $totalPrice ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm  text-gray-800 dark:text-neutral-200">#<?php echo $order_unique_id ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200"><?php echo substr($user_order_time, 0 , 10) ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">$<?php echo $order_total_price ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
                                         <button type="button" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center capitalize <?php
                                         if($status == 0){
@@ -56,7 +56,7 @@ if ($databaseFN->getData("oldorder")) {
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                                         <button type="button" class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent disabled:opacity-50 disabled:pointer-events-none  flex gap-3">
-                                            <i class="fa-solid fa-eye"></i>
+                                            <a href="<?php echo $databaseFN->mainUrl . "/previousOrderProduct.php?id=$order_unique_id"?>"><i class="fa-solid fa-eye"></i></a>
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </td>
