@@ -48,7 +48,7 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'dberror') {
 }
 // database email already exists
 if (isset($_GET['msg']) && $_GET['msg'] == 'email') {
-    echo "<p id='message' class='bg-red-400 text-white text-center font-bold capitalize py-4'>please Check your provide informationo</p>";
+    echo "<p id='message' class='bg-red-700 text-white text-center font-bold capitalize py-4'>please Check your provide information</p>";
 }
 
 // Order Pending
@@ -67,9 +67,9 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'pending') {
         $cartResult = $databaseFN->getResult();
         $countProduct = count($cartResult);
     ?>
-        <div class="flex justify-between  bg-gray-400 ml-5 text-center">
-            <h2 onclick="currentCart()" class="text-2xl font-bold text-black flex-1 cursor-pointer hover:bg-gray-500 transition-all rounded-md py-2">Shopping Cart</h2>
-            <h2 onclick="previousOrders()" class="text-2xl font-bold text-black flex-1 capitalize cursor-pointer hover:bg-gray-500 transition-all rounded-md py-2">Previes order </h2>
+        <div class="flex justify-between  bg-gray-400 ml-5 text-center"> 
+            <h2 class="text-2xl font-bold text-black flex-1 cursor-pointer hover:bg-gray-500 transition-all rounded-md py-2"><a href="<?php echo $databaseFN->mainUrl."/cart.php" ?>">Shopping Cart</a> </h2>
+            <h2 class="text-2xl font-bold text-black flex-1 capitalize cursor-pointer hover:bg-gray-500 transition-all rounded-md py-2"><a href="<?php echo $databaseFN->mainUrl."/previousOrder.php" ?>">Previes order</a> </h2>
         </div>
         <div class="grid lg:grid-cols-3 " id="AllProductCart">
 
@@ -89,7 +89,7 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'pending') {
                         </tr>
                     </thead>
 
-                    <tbody class="whitespace-nowrap divide-y">
+                    <tbody class="whitespace-nowrap divide-y relative">
                         <?php
                         // All price push this array
                         $allPrice = array();
@@ -142,7 +142,8 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'pending') {
                         <?php
                             }
                         } else {
-                            echo "<p class='text-center font-bold bg-blue-500 text-white py-4 '>You have no added any data to the cart.</p>";
+                            // echo "<p class='text-center font-bold bg-blue-500 text-white py-4 '>You have no added any data to the cart.</p>";
+                            echo "<img class='absolute top-[17rem] left-3' src='./upload/icon/no product found.webp'/>";
                         }
                         ?>
                     </tbody>
@@ -186,10 +187,7 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'pending') {
     <?php include "checkout.php"; ?>
 </div>
 
-<!-- Checkout page Inculd -->
-<div id="previousOrderShow" class="hidden">
-    <?php include "previousOrder.php"; ?>
-</div>
+
 
 <script>
     function checkout() {
@@ -197,24 +195,6 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'pending') {
         const checkOutSection = document.getElementById("checkOutSection");
         AllProductCart.classList.add("hidden");
         checkOutSection.classList.remove("hidden");
-    }
-
-    function previousOrders() {
-        const AllProductCart = document.getElementById("AllProductCart");
-        const previousOrderShow = document.getElementById("previousOrderShow");
-        const checkOutSection = document.getElementById("checkOutSection");
-        checkOutSection.classList.add("hidden");
-        AllProductCart.classList.add("hidden");
-        previousOrderShow.classList.remove("hidden");
-    }
-
-    function currentCart() {
-        const AllProductCart = document.getElementById("AllProductCart");
-        const previousOrderShow = document.getElementById("previousOrderShow");
-        const checkOutSection = document.getElementById("checkOutSection");
-        AllProductCart.classList.remove("hidden");
-        previousOrderShow.classList.add("hidden");
-        checkOutSection.classList.add("hidden");
     }
 
     document.addEventListener("DOMContentLoaded", function() {

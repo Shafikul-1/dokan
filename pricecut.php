@@ -24,7 +24,6 @@ if (isset($_POST['order_submit'])) {
     $order_total_price = htmlentities($_POST['order_total_price'], ENT_QUOTES);
     $all_product_id = htmlentities($_POST['all_product_id'], ENT_QUOTES);
     $user_order_time = htmlentities($_POST['user_order_time'], ENT_QUOTES);
-    
 
     $insertUserInfo = [
         'order_user_first_name' => $order_user_first_name,
@@ -46,11 +45,22 @@ if (isset($_POST['order_submit'])) {
         'user_order_time' => $user_order_time,
         'status' => 1
     ];
-// echo "<pre>";
-// print_r($insertUserInfo);
-// echo "</pre>";
+    // echo "<pre>";
+    // print_r($insertUserInfo);
+    // echo "</pre>";
+   
+    // All product id str to arr
+    $deleteCartProduct = explode(",", $all_product_id);
+
     if ($databaseFN->insertData("orderdetails", $insertUserInfo)) {
-        header("Location: " . $databaseFN->mainUrl . "/cart.php");
+        
+        // delete product User unique id And Product id
+        for ($i = 0; $i < count($deleteCartProduct); $i++) {
+            $databaseFN->deleteData("cart", " productId = $deleteCartProduct[$i] AND uniqueId = '$user_unique_id'");
+            // echo "delete";
+       }
+
+       header("Location: " . $databaseFN->mainUrl . "/cart.php");
     } else {
         header("Location: " . $databaseFN->mainUrl . "/cart.php?msg=email");
     }

@@ -15,10 +15,10 @@
           <input hidden name="user_order_time" type="text" value="<?php date_default_timezone_set("Asia/Dhaka"); echo date("d-m-Y h:i:s A"); ?>">
           <div class="md:col-span-2">
             <div class="grid sm:grid-cols-2 gap-4">
-              <input type="text" name="order_user_first_name" placeholder="First name" class="px-4 py-3 bg-white text-gray-800 w-full text-sm border-2 rounded-md focus:border-blue-500 outline-none" />
-              <input type="text" name="order_user_last_name" placeholder="Last name" class="px-4 py-3 bg-white text-gray-800 w-full text-sm border-2 rounded-md focus:border-blue-500 outline-none" />
-              <input type="email" name="order_user_email" placeholder="Email address" class="px-4 py-3 bg-white text-gray-800 w-full text-sm border-2 rounded-md focus:border-blue-500 outline-none" />
-              <input type="number" name="order_user_number" placeholder="Phone number" class="px-4 py-3 bg-white text-gray-800 w-full text-sm border-2 rounded-md focus:border-blue-500 outline-none" />
+              <input type="text" name="order_user_first_name" placeholder="First name" class="px-4 py-3 bg-white text-gray-800 w-full text-sm border-2 rounded-md focus:border-blue-500 outline-none" required/>
+              <input type="text" name="order_user_last_name" placeholder="Last name" class="px-4 py-3 bg-white text-gray-800 w-full text-sm border-2 rounded-md focus:border-blue-500 outline-none" required/>
+              <input type="email" name="order_user_email" placeholder="Email address" class="px-4 py-3 bg-white text-gray-800 w-full text-sm border-2 rounded-md focus:border-blue-500 outline-none" required/>
+              <input type="number" name="order_user_number" placeholder="Phone number" class="px-4 py-3 bg-white text-gray-800 w-full text-sm border-2 rounded-md focus:border-blue-500 outline-none" required/>
             </div>
           </div>
         </div>
@@ -31,10 +31,10 @@
 
           <div class="md:col-span-2">
             <div class="grid sm:grid-cols-2 gap-4">
-              <input type="text" name="order_user_street_address" placeholder="Street address" class="px-4 py-3 bg-white text-gray-800 w-full text-sm border-2 rounded-md focus:border-blue-500 outline-none" />
-              <input type="text" name="order_user_city" placeholder="City" class="px-4 py-3 bg-white text-gray-800 w-full text-sm border-2 rounded-md focus:border-blue-500 outline-none" />
-              <input type="text" name="order_user_state" placeholder="State" class="px-4 py-3 bg-white text-gray-800 w-full text-sm border-2 rounded-md focus:border-blue-500 outline-none" />
-              <input type="number" name="order_user_zip_code" placeholder="Zip Code" class="px-4 py-3 bg-white text-gray-800 w-full text-sm border-2 rounded-md focus:border-blue-500 outline-none" />
+              <input type="text" name="order_user_street_address" placeholder="Street address" class="px-4 py-3 bg-white text-gray-800 w-full text-sm border-2 rounded-md focus:border-blue-500 outline-none" required/>
+              <input type="text" name="order_user_city" placeholder="City" class="px-4 py-3 bg-white text-gray-800 w-full text-sm border-2 rounded-md focus:border-blue-500 outline-none" required/>
+              <input type="text" name="order_user_state" placeholder="State" class="px-4 py-3 bg-white text-gray-800 w-full text-sm border-2 rounded-md focus:border-blue-500 outline-none" required/>
+              <input type="number" name="order_user_zip_code" placeholder="Zip Code" class="px-4 py-3 bg-white text-gray-800 w-full text-sm border-2 rounded-md focus:border-blue-500 outline-none" required/>
             </div>
           </div>
         </div>
@@ -83,7 +83,7 @@
         </div>
 
         <div class="flex flex-wrap justify-end gap-4 mt-12">
-          <button type="submit" name="order_submit" class="px-6 py-3 text-sm font-semibold tracking-wide bg-blue-600 text-white rounded-md hover:bg-blue-700">Pay now</button>
+          <button type="submit" name="order_submit" class="px-6 py-3 text-sm font-semibold tracking-wide bg-blue-600 text-white rounded-md hover:bg-blue-700">Submit</button>
         </div>
       </div>
     </form>

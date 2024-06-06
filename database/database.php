@@ -176,7 +176,7 @@ class database
             if ($where != null) {
                 $sql .= "$where";
             }
-            // echo $sql;
+            // echo $sql . "<br>";
             if ($this->sqli->query($sql)) {
                 array_push($this->result, $this->sqli->affected_rows);
                 return true;
