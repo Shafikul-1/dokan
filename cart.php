@@ -19,7 +19,7 @@ if (isset($_GET['qty']) && isset($_GET['id'])) {
         if ($databaseFN->incrementOrDecrement("cart", $increment, " productId = $getId AND uniqueId = '$uniqueId'", "+")) {
             header("Location: " . basename($_SERVER['PHP_SELF']));
         } else {
-            echo "<p class='text-center bg-green-500 py-3 capitalize'>Someting is wrong Qty Added</p>";
+            echo "<p id='message' class='text-center bg-red-500 py-3 capitalize'>Someting is wrong Qty Added</p>";
         }
     }
 
@@ -29,7 +29,7 @@ if (isset($_GET['qty']) && isset($_GET['id'])) {
         if ($databaseFN->incrementOrDecrement("cart", $increment, " productId = $getId AND uniqueId = '$uniqueId'", "-")) {
             header("Location: " . basename($_SERVER['PHP_SELF']));
         } else {
-            echo "<p class='text-center bg-green-500 py-3 capitalize'>Someting is wrong Qty Added</p>";
+            echo "<p id='message' class='text-center bg-red-500 py-3 capitalize'>Someting is wrong Qty Added</p>";
         }
     }
 }
@@ -39,6 +39,8 @@ if (isset($_GET['product']) && isset($_GET['id'])) {
     $getId = $_GET['id'];
     if ($databaseFN->deleteData("cart", " productId = $getId AND uniqueId = '$uniqueId'")) {
         header("Location: " . basename($_SERVER['PHP_SELF']));
+    } else {
+        header("Location: " . basename($_SERVER['PHP_SELF']) . "?msg=dfalse");
     }
 }
 
@@ -50,10 +52,9 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'dberror') {
 if (isset($_GET['msg']) && $_GET['msg'] == 'email') {
     echo "<p id='message' class='bg-red-700 text-white text-center font-bold capitalize py-4'>please Check your provide information</p>";
 }
-
-// Order Pending
-if (isset($_GET['msg']) && $_GET['msg'] == 'pending') {
-    echo "<p id='message' class='bg-green-400 text-center font-bold capitalize py-4'>Your Product is pending</p>";
+// Cart add Product delete failed in database
+if (isset($_GET['msg']) && $_GET['msg'] == 'dfalse') {
+    echo "<p id='message' class='bg-red-700 text-white text-center font-bold capitalize py-4'>product delete failed in database</p>";
 }
 
 ?>
