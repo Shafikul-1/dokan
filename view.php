@@ -5,24 +5,26 @@ include "header.php";
 include "database/otherFn.php";
 $otherFn = new otherFn();
 $databaseFN = new database();
+
 if (!isset($_GET['id'])) {
   header("Location: " . $databaseFN->mainUrl);
   exit();
 } else {
   $getId = $_GET['id'];
 }
+$getId = intval($_GET['id']); // Sanitize input
 
-if (isset($_GET['cart'])) {
-  if (isset($_SESSION['userAuth'])) {
-    $uniqueId = $_SESSION['uniqueId'];
-    $getId = intval($_GET['id']); // Sanitize input
+//  check user login
+if (isset($_SESSION['userAuth'])) {
+  $uniqueId = $_SESSION['uniqueId'];
 
+  if (isset($_GET['cart'])) {
     // Get Data Cart table with check product id
     if ($databaseFN->getData("cart", "*", null, " productId = $getId  AND uniqueId = '$uniqueId'")) {
       $increment =  ['Qty' => 1];
       $result = $databaseFN->getResult();
       $qty = 1;
-      $collectData = ['uniqueId' => $uniqueId, "productId" => $getId, "Qty" =>$qty];
+      $collectData = ['uniqueId' => $uniqueId, "productId" => $getId, "Qty" => $qty];
 
       // Check Cart table Result already exist
       if (count($result) > 0) {
@@ -45,11 +47,34 @@ if (isset($_GET['cart'])) {
         }
       }
     } else {
-      echo "<p class='text-center bg-green-500 py-3 capitalize'>Someting is wrong</p>";
+      echo "<p  id='message' class='text-center bg-green-500 py-3 capitalize'>Someting is wrong</p>";
     }
-  } else {
-    header("Location: " . $databaseFN->mainUrl . "/auth/?checkPoint=auth");
   }
+
+  // Which list Add or remove
+  if (isset($_GET['whichlist'])) {
+
+    // Added whichlist
+    if ($_GET['whichlist'] == 'add') {
+      $whichlistarr = ['uniqueId' => $uniqueId, 'productId' => $getId];
+      if ($databaseFN->insertData('whichlist', $whichlistarr)) {
+        header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=$getId");
+      } else {
+        echo "<p id='message' class='text-center bg-red-500 py-3 capitalize'>Someting is wrong Which list added</p>";
+      }
+    }
+
+    // Remove whichlist
+    if ($_GET['whichlist'] == 'remove') {
+      if($databaseFN->deleteData('whichlist', " uniqueId = '$uniqueId' AND productId = $getId")){
+        header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=$getId");
+      }else{
+        echo "<p id='message' class='text-center bg-red-500 py-3 capitalize'>Someting is wrong Which list delete</p>";
+      }
+    }
+  }
+} else {
+  header("Location: " . $databaseFN->mainUrl . "/auth/?checkPoint=auth");
 }
 
 // Insert Comment
@@ -91,7 +116,16 @@ if (isset($_POST['commentSubmit'])) {
               <div class="px-4 py-10 rounded-xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] relative">
                 <img onmousemove="zoomImage(event)" onmouseout="zoomOutImage()" id="imgZoom" src="upload/product/<?php echo trim($singleImgName[0]) ?>" alt="Product" class="changeImageSrc w-4/5 rounded object-cover" />
                 <button type="button" class="absolute top-4 right-4">
-                  <i class="fa-regular fa-heart"></i>
+                  <?php
+                  if ($databaseFN->getData('whichlist', "*", null, " uniqueId = '$uniqueId' AND productId = $getId")){
+                    $whichlistcheck = $databaseFN->getResult();
+                    if(count($whichlistcheck) > 0){
+                      echo "<a href='".basename($_SERVER['PHP_SELF'])."?id=".$getId."&whichlist=remove'><i class='fa-solid fa-heart'></i></a>";
+                    } else{
+                      echo "<a href='".basename($_SERVER['PHP_SELF'])."?id=".$getId."&whichlist=add'><i class='fa-regular fa-heart'></i></a>";
+                    }
+                  }
+                  ?>
                 </button>
               </div>
 

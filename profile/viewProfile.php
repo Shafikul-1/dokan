@@ -15,10 +15,11 @@ function viewProfile($msg)
             <p class="text-sm text-gray-600">@<?php echo $name; ?></p>
           </div>
           <div class="flex gap-3 flex-wrap">
-            <span class="rounded-sm bg-yellow-100 px-3 py-1 text-xs font-medium text-yellow-800 capitalize"><a href="<?php echo $databaseFN->mainUrl . "/cart.php" ?>">check to cart</a></span>
-            <span class="rounded-sm bg-green-100 px-3 py-1 text-xs font-medium text-green-800"><a href="<?php echo $databaseFN->mainUrl . "/order.php" ?>">Order</a></span>
-            <span class="rounded-sm bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800">Managements</span>
-            <span class="rounded-sm bg-indigo-100 px-3 py-1 text-xs font-medium text-indigo-800">Projects</span>
+            <span class="rounded-sm bg-yellow-100 px-3 py-1 text-xs font-medium text-yellow-800 capitalize"><a href="<?php echo $databaseFN->mainUrl . "/cart.php" ?>"> cart</a></span>
+            <span class="rounded-sm bg-green-100 px-3 py-1 text-xs font-medium text-green-800"><a href="<?php echo $databaseFN->mainUrl . "/previousOrder.php" ?>">Order</a></span>
+            <span class="rounded-sm bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800 capitalize">which list</span>
+            <span class="rounded-sm bg-orange-200 px-3 py-1 text-xs font-medium text-indigo-800 capitalize"><a href="<?php echo $databaseFN->mainUrl . "/product/all-product.php" ?>">all product</a></span>
+            <span class="rounded-sm bg-indigo-100 px-3 py-1 text-xs font-medium text-indigo-800 capitalize">Edit profile</span>
           </div>
           <div class="flex gap-2">
             <button type="button" class="inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center space-x-1 rounded border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-800 transition hover:border-gray-300 active:bg-white hover:bg-gray-100 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300">Send Message</button>
