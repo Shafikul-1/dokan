@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 01, 2024 at 11:41 AM
+-- Generation Time: Jun 11, 2024 at 11:29 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -39,22 +39,44 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `uniqueId`, `productId`, `Qty`) VALUES
-(25, '665656eb2ea9b29052024041259AM', 62, 2),
-(26, '665656eb2ea9b29052024041259AM', 69, 3),
 (27, '6656570f3ad2b29052024041335AM', 76, 2),
 (28, '6656570f3ad2b29052024041335AM', 69, 2),
 (29, '6656570f3ad2b29052024041335AM', 71, 1),
 (30, '66567000ebe4a29052024060000AM', 69, 1),
 (31, '66567000ebe4a29052024060000AM', 74, 1),
-(32, '665656fb1c4d729052024041315AM', 71, 3),
-(34, '665656fb1c4d729052024041315AM', 75, 1),
-(35, '665656fb1c4d729052024041315AM', 64, 1),
-(37, '6656576d2500329052024041509AM', 76, 4),
-(38, '6656576d2500329052024041509AM', 61, 5),
 (39, '66583cdcc3f4b30052024024620PM', 69, 3),
 (40, '66583cdcc3f4b30052024024620PM', 61, 2),
 (42, '66583cdcc3f4b30052024024620PM', 56, 1),
-(43, '6656576d2500329052024041509AM', 59, 1);
+(45, '665656fb1c4d729052024041315AM', 73, 1),
+(46, '665656fb1c4d729052024041315AM', 69, 1),
+(47, '665656fb1c4d729052024041315AM', 63, 1),
+(53, '665656eb2ea9b29052024041259AM', 69, 1),
+(54, '6656576d2500329052024041509AM', 69, 1),
+(57, '6656576d2500329052024041509AM', 64, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oldorder`
+--
+
+CREATE TABLE `oldorder` (
+  `id` int(11) NOT NULL,
+  `orderId` int(11) DEFAULT NULL,
+  `confirmDate` varchar(200) DEFAULT NULL,
+  `totalPrice` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `order_unique_id` text NOT NULL,
+  `user_unique_id` text NOT NULL,
+  `all_product_id` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `oldorder`
+--
+
+INSERT INTO `oldorder` (`id`, `orderId`, `confirmDate`, `totalPrice`, `status`, `order_unique_id`, `user_unique_id`, `all_product_id`) VALUES
+(1, 2561623, '02-03-2024', 343, 2, '', '', '');
 
 -- --------------------------------------------------------
 
@@ -64,18 +86,37 @@ INSERT INTO `cart` (`id`, `uniqueId`, `productId`, `Qty`) VALUES
 
 CREATE TABLE `orderdetails` (
   `id` int(11) NOT NULL,
-  `orderId` int(11) DEFAULT NULL,
-  `confirmDate` varchar(200) DEFAULT NULL,
-  `totalPrice` int(11) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL
+  `order_total_price` int(11) NOT NULL,
+  `order_user_first_name` varchar(200) NOT NULL,
+  `order_user_last_name` varchar(200) NOT NULL,
+  `order_user_number` int(11) NOT NULL,
+  `order_user_street_address` varchar(200) NOT NULL,
+  `order_user_city` varchar(200) NOT NULL,
+  `order_user_state` varchar(200) NOT NULL,
+  `order_user_zip_code` int(11) NOT NULL,
+  `order_user_payment_method` int(11) NOT NULL,
+  `order_user_card_number` int(11) NOT NULL,
+  `order_user_exp` int(11) NOT NULL,
+  `order_user_cvv` int(11) NOT NULL,
+  `order_unique_id` varchar(200) NOT NULL,
+  `user_unique_id` text NOT NULL,
+  `all_product_id` text NOT NULL,
+  `user_order_time` varchar(300) NOT NULL,
+  `order_delivery_time` varchar(300) NOT NULL,
+  `status` int(11) NOT NULL,
+  `order_user_email` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orderdetails`
 --
 
-INSERT INTO `orderdetails` (`id`, `orderId`, `confirmDate`, `totalPrice`, `status`) VALUES
-(1, 2561623, '02-03-2024', 343, 2);
+INSERT INTO `orderdetails` (`id`, `order_total_price`, `order_user_first_name`, `order_user_last_name`, `order_user_number`, `order_user_street_address`, `order_user_city`, `order_user_state`, `order_user_zip_code`, `order_user_payment_method`, `order_user_card_number`, `order_user_exp`, `order_user_cvv`, `order_unique_id`, `user_unique_id`, `all_product_id`, `user_order_time`, `order_delivery_time`, `status`, `order_user_email`) VALUES
+(10, 133600, 'Md shafikul ', 'islam', 1756867220, 'Mohadevpur', 'Bangladesh', 'naogan', 6580, 1, 0, 0, 0, '665eee4488ee804062024043652PM', '665656fb1c4d729052024041315AM', '73,69,63', '04-06-2024 04:36:33 PM', '', 1, ''),
+(13, 522400, 'Md shafikul ', 'islam', 156867502, 'Mohadevpur', 'Bangladesh', 'naogan', 234534, 1, 0, 0, 0, '66618390778a806062024033824PM', '6656576d2500329052024041509AM', '76,61,59', '06-06-2024 03:38:08 PM', '', 1, ''),
+(22, 527000, 'Md shafikul ', 'islam', 1756867220, 'Mohadevpur', 'Bangladesh', 'naogan', 56752, 1, 0, 0, 0, '66618bf67da1506062024041414PM', '6656576d2500329052024041509AM', '76,69,61,59,56', '06-06-2024 04:13:54 PM', '', 1, ''),
+(23, 53900, 'Shifat Hossain', 'Hossain', 1882161359, 'Mohadevpur', 'Bangladesh', 'naogan', 6580, 1, 0, 0, 0, '66618f8cb1f4406062024042932PM', '665656eb2ea9b29052024041259AM', '69,62', '06-06-2024 04:29:05 PM', '', 1, ''),
+(24, 123400, 'Shifat hossain', 'Shifat hossain', 1758767220, 'Mohadevpur', 'Bangladesh', '35dgd', 6580, 1, 0, 0, 0, '666190ae6540e06062024043422PM', '665656eb2ea9b29052024041259AM', '73,72,59', '06-06-2024 04:33:48 PM', '', 1, 'shifat@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -97,7 +138,7 @@ CREATE TABLE `productcatagory` (
 --
 
 INSERT INTO `productcatagory` (`id`, `categoryName`, `categoryQty`, `categoryDescription`, `userAuth`, `uniqueId`) VALUES
-(19, 'Accessories', 5, 'accessories Category Description', 1, ''),
+(19, 'Accessories', 4, 'accessories Category Description', 1, ''),
 (20, 'Camera', 2, 'Camera Category Description', 1, ''),
 (21, 'Computer', 3, 'Computer', 1, '6653e69a69bd127052024074914AM'),
 (22, 'Laptop', 0, 'Laptop', 1, '6653e69a69bd127052024074914AM'),
@@ -158,7 +199,6 @@ INSERT INTO `productdetails` (`id`, `productName`, `productDescription`, `produc
 (66, 'HONOR Pad X8 3GB RAM 32GB Storage 10.1&quot; Tablet', 'Model: Pad X8\r\nDisplay: 10.1&quot; FHD+ (1920 x 1200)\r\nCPU: MediaTek MT8786 (12nm)\r\nRAM: 3GB, Storage: 32GB\r\nBattery: 5100 mAh, Li-ion Polymer\r\n', '#000000', 17, 34000, 0, 0, 0, '', '', 0, '', '25-05-2024 11:11:20 AM', '', '', '', '', 'pad-x8-neo-mint-01-500x500.webp, ideapad-1-15amn7-sand-01-500x500_25-05-2024_11_11_59_AM.webp, h100-01-500x500_25-05-2024_11_11_59_AM.webp', '', 1, 23, 'No Update', 0, 0, ''),
 (67, 'HONOR Pad X8 3GB RAM 32GB Storage 10.1&quot; Tablet', 'Key Features\r\nModel: Pad X8\r\nDisplay: 10.1&quot; FHD+ (1920 x 1200)\r\nCPU: MediaTek MT8786 (12nm)\r\nRAM: 3GB, Storage: 32GB\r\nBattery: 5100 mAh, Li-ion Polymer\r\n', '#000000', 17, 34700, 0, 0, 0, '', '', 0, '', '25-05-2024 11:14:07 AM', '', '', '', '', 'pad-x8-neo-mint-01-500x500_25-05-2024_11_14_26_AM.webp, ideapad-1-15amn7-sand-01-500x500_25-05-2024_11_14_26_AM.webp, h100-01-500x500_25-05-2024_11_14_26_AM.webp', '', 1, 67, 'Pending', 0, 0, ''),
 (68, 'Hallo H100 Music', 'Model: H100 Music\r\nDisplay: 1.77&quot; TFT Color Display\r\nCamera: Digital Camera\r\nBattery: Li-Ion 1000mAh, removable\r\nFeatures: 3.5mm Jack, Torch Light, Bluetooth', '#000000', 17, 45600, 0, 0, 0, '', '', 0, '', '25-05-2024 11:14:47 AM', '', '', '', '', 'h100-music-500x500.webp, pad-x8-neo-mint-01-500x500_25-05-2024_11_15_07_AM.webp, macbook-air-13-3-inch-500x500_25-05-2024_11_15_07_AM.webp', '', 1, 23, 'Done', 0, 0, ''),
-(69, 'Cheerlux C9 2800 Lumens Mini Projector with Built-in TV Card', 'Model: Cheerlux C9\r\nLCD Panel + LED Lamp\r\nResolution: 1280 x 720\r\nBrightness: 2800 lumens\r\nContrast Ratio: 2000:1\r\n', '#000000', 19, 2300, 0, 0, 0, '', '', 0, '', '26-05-2024 12:02:15 PM', '', '', '', '', 'c9-500x500.jpg, imou-ranger-2-500x500.jpg, ryzen-5-2400g-desktop-pc02-500x500.webp', '', 1, 34, 'Urgent', 0, 0, ''),
 (70, 'Epson Perfection V39 II Photo and Document Flatbed Scanner', 'MPN: B11B232501\r\nModel: Epson Perfection V39\r\nType: Flatbed Color Image Scanner\r\nScan Area:8.5 inch x 11.7 inch\r\nResolution: 4800 x 4800 dpi\r\nConnectivity: Hi-Speed USB\r\n', '#000000', 17, 8500, 0, 0, 0, '', '', 0, '', '26-05-2024 12:15:59 PM', '', '', '', '', 'perfection-v39-01-500x500.webp, c9-500x500_26-05-2024_12_16_35_PM.jpg', '', 1, 7657, 'Pending', 0, 0, ''),
 (71, 'fdgsdfg', 'sdfgsdfg', '#000000', 19, 345345, 0, 0, 0, '', '', 0, '', '27-05-2024 07:21:15 AM', '', '', '', '', 'athlon-3000g-budget-desktop-pc-01-500x500.webp, user-defult-icon.png', '', 1, 345, 'Shipping', 0, 0, ''),
 (72, 'Desktop PC Core i7 3rd Gen 16GB RAM 256GB SSD', 'The lowest price of Desktop pc core i7 3rd gen 16gb ram 256gb ssd in Bangladesh is Tk-19,500/= only. Buy from Dhaka City at low price in Bdstall. There is currently 1 seller.\r\n\r\n', '#000000', 21, 34000, 0, 0, 0, '', '', 0, '', '29-05-2024 04:00:27 AM', '', '', '', '', 'giant_270649.png, perfection-v39-01-500x500_29-05-2024_04_01_13_AM.webp, c9-500x500_29-05-2024_04_01_13_AM.jpg', '', 1, 45, 'Pending', 0, 0, ''),
@@ -237,6 +277,30 @@ INSERT INTO `users` (`id`, `name`, `pass`, `conPass`, `date`, `userComment`, `us
 (66, 'Arifa', '$2y$10$DgSoSk5h2ESihLHW4n9srOJGNsBx/nJd.lqawjCrcnjtwnQEodmsu', '$2y$10$QXJA/c0GLV91tFTr2jf41efytVe05qtS6ymW.Fd18gpbaMfu1d/u6', '29-05-2024 06:03:41 AM', 'OutSide User', 4, 'Arifa@gmail.com', NULL, '665670ed2aa4529052024060357AM'),
 (67, 'covera8036', '$2y$10$CjbgmIORzZquTFlJv.tA/eVNEVfuk.2gAubijM/JGjQ9v4sOFcHL.', '$2y$10$LLH/2GmyeQS4Di5gYtVBOO/2i04uiX.KyxZFPLE3dfsxOiA4TtIZG', '30-05-2024 02:45:45 PM', 'OutSide User', 4, 'covera8036@acuxi.com', NULL, '66583cdcc3f4b30052024024620PM');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `whichlist`
+--
+
+CREATE TABLE `whichlist` (
+  `id` int(11) NOT NULL,
+  `uniqueId` text DEFAULT NULL,
+  `productId` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `whichlist`
+--
+
+INSERT INTO `whichlist` (`id`, `uniqueId`, `productId`) VALUES
+(7, '6653e69a69bd127052024074914AM', 73),
+(8, '6653e69a69bd127052024074914AM', 72),
+(9, '66567000ebe4a29052024060000AM', 75),
+(10, '66567000ebe4a29052024060000AM', 62),
+(22, '665656fb1c4d729052024041315AM', 73),
+(23, '665656fb1c4d729052024041315AM', 75);
+
 --
 -- Indexes for dumped tables
 --
@@ -245,6 +309,12 @@ INSERT INTO `users` (`id`, `name`, `pass`, `conPass`, `date`, `userComment`, `us
 -- Indexes for table `cart`
 --
 ALTER TABLE `cart`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `oldorder`
+--
+ALTER TABLE `oldorder`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -278,6 +348,12 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `whichlist`
+--
+ALTER TABLE `whichlist`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -285,13 +361,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+
+--
+-- AUTO_INCREMENT for table `oldorder`
+--
+ALTER TABLE `oldorder`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `orderdetails`
 --
 ALTER TABLE `orderdetails`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `productcatagory`
@@ -316,6 +398,12 @@ ALTER TABLE `usercomment`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+
+--
+-- AUTO_INCREMENT for table `whichlist`
+--
+ALTER TABLE `whichlist`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

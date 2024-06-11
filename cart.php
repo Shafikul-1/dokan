@@ -1,8 +1,11 @@
 <?php
 ob_start();
 include "header.php";
+include "database/whichlist.php";
 include "database/otherFn.php";
 $otherFN = new otherFn();
+$whichlist = new whichlist();
+
 if (!isset($_SESSION['userAuth'])) {
     header("Location: " . $databaseFN->mainUrl);
 } else {
@@ -44,6 +47,16 @@ if (isset($_GET['product']) && isset($_GET['id'])) {
     }
 }
 
+// Whichlist Product remove
+if (isset($_GET['whichlist']) && $_GET['whichlist'] == 'remove') {
+    $whichListId = $_GET['id'];
+    if ($whichlist->remove($whichListId, $uniqueId)) {
+        header("Location: " . basename($_SERVER['PHP_SELF']));
+    } else {
+        echo "<p id='message' class='text-center bg-red-500 py-3 capitalize'>Someting is wrong Which list delete</p>";
+    }
+}
+
 // Order database Data save error
 if (isset($_GET['msg']) && $_GET['msg'] == 'dberror') {
     echo "<p id='message' class='bg-red-400 text-white text-center font-bold capitalize py-4'>please Check your provide informationo</p>";
@@ -57,6 +70,11 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'dfalse') {
     echo "<p id='message' class='bg-red-700 text-white text-center font-bold capitalize py-4'>product delete failed in database</p>";
 }
 
+
+
+
+
+
 ?>
 <div class="font-sans">
     <?php
@@ -68,9 +86,9 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'dfalse') {
         $cartResult = $databaseFN->getResult();
         $countProduct = count($cartResult);
     ?>
-        <div class="flex justify-between  bg-gray-400 ml-5 text-center"> 
-            <h2 class="text-2xl font-bold text-black flex-1 cursor-pointer hover:bg-gray-500 transition-all rounded-md py-2"><a href="<?php echo $databaseFN->mainUrl."/cart.php" ?>">Shopping Cart</a> </h2>
-            <h2 class="text-2xl font-bold text-black flex-1 capitalize cursor-pointer hover:bg-gray-500 transition-all rounded-md py-2"><a href="<?php echo $databaseFN->mainUrl."/previousOrder.php" ?>">Previes order</a> </h2>
+        <div class="flex justify-between  bg-gray-400 ml-5 text-center">
+            <h2 class="text-2xl font-bold text-black flex-1 cursor-pointer hover:bg-gray-500 transition-all rounded-md py-2"><a href="<?php echo $databaseFN->mainUrl . "/cart.php" ?>">Shopping Cart</a> </h2>
+            <h2 class="text-2xl font-bold text-black flex-1 capitalize cursor-pointer hover:bg-gray-500 transition-all rounded-md py-2"><a href="<?php echo $databaseFN->mainUrl . "/previousOrder.php" ?>">Previes order</a> </h2>
         </div>
         <div class="grid lg:grid-cols-3 " id="AllProductCart">
 
@@ -166,11 +184,11 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'dfalse') {
                     <li class="flex flex-wrap gap-4 text-base py-4">Shipping <span class="ml-auto font-bold">$4.00</span></li>
                     <li class="flex flex-wrap gap-4 text-base py-4">Tax <span class="ml-auto font-bold">$4.00</span></li>
                     <li class="flex flex-wrap gap-4 text-base py-4 font-bold">Total <span class="ml-auto">
-                        $<?php 
-                        $allTotalPrice = $subTotalPrice;
-                        echo $allTotalPrice;    
-                        ?>
-                    </span></li>
+                            $<?php
+                                $allTotalPrice = $subTotalPrice;
+                                echo $allTotalPrice;
+                                ?>
+                        </span></li>
                 </ul>
 
                 <button onclick="checkout()" type="button" class="mt-6 text-base px-6 py-2.5 w-full bg-gray-800 hover:bg-gray-900 text-white rounded">
@@ -188,7 +206,61 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'dfalse') {
     <?php include "checkout.php"; ?>
 </div>
 
-
+<!-- Which list product -->
+<div class="">
+    <h2 class="text-xl font-bold">Your Which list product</h2>
+    <div class="flex flex-wrap gap-2">
+        <?php
+        if (isset($_SESSION)) {
+            if ($databaseFN->getData('whichlist', "*", null, " uniqueId = '$uniqueId'")) {
+                $whichlistResult = $databaseFN->getResult();
+                $whichlistResultCount = count($whichlistResult);
+                if ($whichlistResultCount > 0) {
+                    for ($i = 0; $i < $whichlistResultCount; $i++) {
+                        $whichlistId = $whichlistResult[$i]['productId'];
+                        if ($databaseFN->getData('productdetails', "*", null, " id =  $whichlistId")) {
+                            foreach ($databaseFN->getResult() as list("productName" => $productName, 'productImages' => $productImages, 'productDescription' => $productDescription)) {
+                                $whichlistSingleImage = explode(",", $productImages);
+        ?>
+                                <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                                    <div class="relative">
+                                        <div class="absolute top-1 right-3 text-xl">
+                                            <?php $whichlist->check($whichlistId, $uniqueId); ?>
+                                        </div>
+                                        <img src="upload/product/<?php echo $whichlistSingleImage[0] ?>" alt="<?php echo $singleImage[0] ?>" />
+                                    </div>
+                                    <div class="p-5">
+                                        <a href="<?php echo $databaseFN->mainUrl . "/view.php?id=$whichlistId" ?>">
+                                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                                <?php echo (str_word_count($productName) >= 5) ? $otherFN->strSort($productName, 5) . "..." : $productName; ?>
+                                            </h5>
+                                        </a>
+                                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                                            <?php echo (str_word_count($productDescription) >= 15) ? $otherFN->strSort($productDescription, 15) . "..." : $productDescription; ?>
+                                        </p>
+                                        <a href="<?php echo $databaseFN->mainUrl . "/view.php?id=$whichlistId" ?>" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            Read more
+                                            <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+        <?php
+                            }
+                        } else {
+                            echo "<p class='font-bold text-xl'>Something want wrong</p>";
+                        }
+                    }
+                } else {
+                    echo "<img class='' src='./upload/icon/no product found.webp'/>";
+                }
+            } else {
+                echo "<p class='font-bold text-xl'>please reflesh website</p>";
+            }
+        } ?>
+    </div>
+</div>
 
 <script>
     function checkout() {

@@ -3,8 +3,10 @@
 ob_start();
 include "header.php";
 include "database/otherFn.php";
-$otherFn = new otherFn();
+include "database/whichlist.php";
 $databaseFN = new database();
+$otherFn = new otherFn();
+$whichlist = new whichlist();
 
 if (!isset($_GET['id'])) {
   header("Location: " . $databaseFN->mainUrl);
@@ -56,19 +58,18 @@ if (isset($_SESSION['userAuth'])) {
 
     // Added whichlist
     if ($_GET['whichlist'] == 'add') {
-      $whichlistarr = ['uniqueId' => $uniqueId, 'productId' => $getId];
-      if ($databaseFN->insertData('whichlist', $whichlistarr)) {
-        header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=$getId");
+      if ($whichlist->add($getId, $uniqueId)) {
+        header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=" . $getId);
       } else {
-        echo "<p id='message' class='text-center bg-red-500 py-3 capitalize'>Someting is wrong Which list added</p>";
+        echo "<p id='message' class='text-center bg-red-500 py-3 capitalize'>Someting is wrong Which list delete</p>";
       }
     }
 
     // Remove whichlist
     if ($_GET['whichlist'] == 'remove') {
-      if($databaseFN->deleteData('whichlist', " uniqueId = '$uniqueId' AND productId = $getId")){
-        header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=$getId");
-      }else{
+      if ($whichlist->remove($getId, $uniqueId)) {
+        header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=" . $getId);
+      } else {
         echo "<p id='message' class='text-center bg-red-500 py-3 capitalize'>Someting is wrong Which list delete</p>";
       }
     }
@@ -117,13 +118,10 @@ if (isset($_POST['commentSubmit'])) {
                 <img onmousemove="zoomImage(event)" onmouseout="zoomOutImage()" id="imgZoom" src="upload/product/<?php echo trim($singleImgName[0]) ?>" alt="Product" class="changeImageSrc w-4/5 rounded object-cover" />
                 <button type="button" class="absolute top-4 right-4">
                   <?php
-                  if ($databaseFN->getData('whichlist', "*", null, " uniqueId = '$uniqueId' AND productId = $getId")){
-                    $whichlistcheck = $databaseFN->getResult();
-                    if(count($whichlistcheck) > 0){
-                      echo "<a href='".basename($_SERVER['PHP_SELF'])."?id=".$getId."&whichlist=remove'><i class='fa-solid fa-heart'></i></a>";
-                    } else{
-                      echo "<a href='".basename($_SERVER['PHP_SELF'])."?id=".$getId."&whichlist=add'><i class='fa-regular fa-heart'></i></a>";
-                    }
+                  if (!$_SESSION['uniqueId']) {
+                    echo "<a href='" . basename($_SERVER['PHP_SELF']) . "?id=" . $getId . "&whichlist=add'><i class='fa-regular fa-heart'></i></a>";
+                  } else {
+                    $whichlist->check($getId, $uniqueId);
                   }
                   ?>
                 </button>
