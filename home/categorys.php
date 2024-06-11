@@ -6,7 +6,7 @@ $databaseFN = new database();
     if ($databaseFN->getData("productcatagory")) {
         $result = $databaseFN->getResult();
         for ($i = 0; $i < count($result); $i++) {
-            if($result[$i]['categoryQty'] == 0){
+            if ($result[$i]['categoryQty'] == 0) {
                 continue;
             }
             $categoryId = $result[$i]['id'];
@@ -25,9 +25,16 @@ $databaseFN = new database();
                             $exploadImage = explode(",", $productDeails[$j]['productImages']);
                     ?>
                             <div class="swiper-slide">
-                                <div class="w-full bg-gray-200 my-3 p-2 shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+                                <div class="w-full bg-gray-200 my-3 p-2 shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl relative">
                                     <a href="<?php echo $databaseFN->mainUrl . "/view.php?id=" . $productDeails[$j]['id'] ?>">
                                         <img src="upload/product/<?php echo trim($exploadImage[0]) ?>" alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
+                                        <?php 
+                                        if($productDeails[$j]['productQty'] > 0){
+                                            echo "<p class='absolute top-1 right-2 border px-2 text-sm py-1 bg-green-500 rounded-md font-bold'>Stock limit</p>";
+                                        } else {
+                                            echo "<p class='absolute top-1 right-2 border px-2 text-sm py-1 bg-[#FFDE95] rounded-md font-bold'>Stock Out</p>";
+                                        }
+                                        ?>
                                         <div class="px-4 py-3 max-w-full">
                                             <span class="text-gray-400 mr-3 uppercase text-xs"><?php echo $productDeails[$j]['brand']; ?></span>
                                             <p class="text-lg font-bold text-black truncate block capitalize"><?php echo $productDeails[$j]['productName']; ?></p>

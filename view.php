@@ -106,7 +106,7 @@ if (isset($_POST['commentSubmit'])) {
 <div class="md:grid md:grid-cols-5 md:gap-2">
   <?php
   if ($databaseFN->getData("productdetails", "*", null, " id = $getId")) {
-    foreach ($databaseFN->getResult() as list("id" => $dbId, "price" => $price, "productName" => $productName, "productImages" => $productImages, "category" => $category)) {
+    foreach ($databaseFN->getResult() as list("id" => $dbId, "productQty"=>$productQty, "price" => $price, "productName" => $productName, "productImages" => $productImages, "category" => $category)) {
       $singleImgName =  explode(",", $productImages);
   ?>
       <div class="md:col-start-1 md:col-span-4 font-sans bg-white">
@@ -167,7 +167,14 @@ if (isset($_POST['commentSubmit'])) {
               <div class="flex flex-wrap gap-4 mt-10">
                 <button type="button" class="min-w-[200px] px-4 py-3 bg-[#333] hover:bg-[#111] text-white text-sm font-semibold rounded">Buy now</button>
                 <button type="button" class="min-w-[200px] px-4 py-2.5 border border-[#333] bg-transparent hover:bg-gray-50 text-[#333] text-sm font-semibold rounded">
-                  <a href="<?php echo basename($_SERVER['PHP_SELF']) . '?id=' . $getId . '&cart=add' ?>">Add to cart</a>
+                  <?php 
+                  if($productQty > 0){
+                    echo "<a href='" . basename($_SERVER['PHP_SELF']) . "?id=". $getId ."&cart=add'>Add to cart</a>";
+                  } else {
+                    echo "<a class='capitalize pointer-events-none' href='" . basename($_SERVER['PHP_SELF']) . "?id=". $getId ."&cart=add'>stock out</a>";
+                  }
+                   ?>
+                   
                 </button>
               </div>
             </div>
