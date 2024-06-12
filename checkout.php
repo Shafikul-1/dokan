@@ -1,3 +1,15 @@
+<pre>
+
+<?php 
+$result = '';
+foreach ($productIdQty as $subArray) {
+  foreach ($subArray as $key => $value) {
+      $result .= "$key,$value/";
+  }
+}
+
+?>
+</pre>
 <div class="font-sans bg-white p-4">
   <div class="max-w-4xl mx-auto">
     <div class="text-center">
@@ -12,6 +24,7 @@
           </div>
           <input type="number" hidden name="order_total_price" value="<?php echo $allTotalPrice ?>" id="">
           <input type="text" hidden name="all_product_id" value="<?php echo implode(",", $allProductId) ?>" id="">
+          <input type="text" hidden name="user_order_id_qty" value="<?php echo $result ?>" id="">
           <input hidden name="user_order_time" type="text" value="<?php date_default_timezone_set("Asia/Dhaka"); echo date("d-m-Y h:i:s A"); ?>">
           <div class="md:col-span-2">
             <div class="grid sm:grid-cols-2 gap-4">

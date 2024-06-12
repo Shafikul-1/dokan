@@ -122,7 +122,7 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'dfalse') {
                         <?php
                         // All price push this array
                         $allPrice = array();
-
+                        $productIdQty = array();
                         if ($countProduct > 0) {
                             foreach ($cartResult as list("id" => $id, "productName" => $productName, "price" => $price, "productId" => $productId, "Qty" => $Qty, "productImages" => $productImages)) {
                                 $singleImage = explode(",", $productImages);
@@ -151,7 +151,10 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'dfalse') {
                                                 <i class="fa-solid fa-minus w-3 fill-current"></i>
                                             </a>
                                             <button type="button" class="bg-transparent w-10 h-10 font-semibold text-black text-base">
-                                                <?php echo $Qty; ?>
+                                                <?php
+                                                echo $Qty;
+                                                array_push($productIdQty, [$id => $Qty]);
+                                                ?>
                                             </button>
                                             <a href="<?php echo $cartUrl . "?qty=plus&id=$id" ?>" type="button" class="flex justify-center items-center bg-gray-800 text-white w-10 h-10 font-semibold">
                                                 <i class="fa-solid fa-plus w-3 fill-current"></i>
@@ -171,7 +174,6 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'dfalse') {
                         <?php
                             }
                         } else {
-                            // echo "<p class='text-center font-bold bg-blue-500 text-white py-4 '>You have no added any data to the cart.</p>";
                             echo "<img class='absolute top-[17rem] left-3' src='./upload/icon/no product found.webp'/>";
                         }
                         ?>

@@ -24,6 +24,7 @@ if (isset($_POST['order_submit'])) {
     $order_total_price = htmlentities($_POST['order_total_price'], ENT_QUOTES);
     $all_product_id = htmlentities($_POST['all_product_id'], ENT_QUOTES);
     $user_order_time = htmlentities($_POST['user_order_time'], ENT_QUOTES);
+    $user_order_id_qty = htmlentities($_POST['user_order_id_qty'], ENT_QUOTES);
 
     $insertUserInfo = [
         'order_user_first_name' => $order_user_first_name,
@@ -43,27 +44,39 @@ if (isset($_POST['order_submit'])) {
         'all_product_id' => $all_product_id,
         'user_unique_id' => $user_unique_id,
         'user_order_time' => $user_order_time,
+        'user_order_id_qty' => $user_order_id_qty,
         'status' => 1
     ];
     // echo "<pre>";
     // print_r($insertUserInfo);
     // echo "</pre>";
-   
+
     // All product id str to arr
     $deleteCartProduct = explode(",", $all_product_id);
 
+    // product id and qty
+    $userOrderIdQtyArr = explode("/", $user_order_id_qty);
+
     if ($databaseFN->insertData("orderdetails", $insertUserInfo)) {
-        
-        // delete product User unique id And Product id
+
+        // delete product User unique id And Product id cart table
         for ($i = 0; $i < count($deleteCartProduct); $i++) {
             $databaseFN->deleteData("cart", " productId = $deleteCartProduct[$i] AND uniqueId = '$user_unique_id'");
-            // echo "delete";
-       }
+        }
 
-       header("Location: " . $databaseFN->mainUrl . "/cart.php");
+        // Product qty minus product details table
+        foreach ($userOrderIdQtyArr as $key => $value) {
+            $idQty = explode(",", $value);
+            $idQtyCount = count($idQty);
+            if ($idQtyCount != 2) {
+                continue;
+            }
+            $decrement = ['productQty' => $idQty[1]];
+            $databaseFN->incrementOrDecrement("productdetails", $decrement, " id = " . $idQty[0], "-");
+        }
+
+        header("Location: " . $databaseFN->mainUrl . "/cart.php");
     } else {
         header("Location: " . $databaseFN->mainUrl . "/cart.php?msg=email");
     }
-} else {
-    header("Location: " . $databaseFN->mainUrl . "/cart.php");
 }
