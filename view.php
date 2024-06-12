@@ -1,12 +1,13 @@
 <?php
-
 ob_start();
 include "header.php";
 include "database/otherFn.php";
 include "database/whichlist.php";
+include "database/cart.php";
 $databaseFN = new database();
 $otherFn = new otherFn();
 $whichlist = new whichlist();
+$cart = new cart();
 
 if (!isset($_GET['id'])) {
   header("Location: " . $databaseFN->mainUrl);
@@ -16,49 +17,28 @@ if (!isset($_GET['id'])) {
 }
 $getId = intval($_GET['id']); // Sanitize input
 
-//  check user login
-if (isset($_SESSION['userAuth'])) {
-  $uniqueId = $_SESSION['uniqueId'];
 
-  if (isset($_GET['cart'])) {
-    // Get Data Cart table with check product id
-    if ($databaseFN->getData("cart", "*", null, " productId = $getId  AND uniqueId = '$uniqueId'")) {
-      $increment =  ['Qty' => 1];
-      $result = $databaseFN->getResult();
-      $qty = 1;
-      $collectData = ['uniqueId' => $uniqueId, "productId" => $getId, "Qty" => $qty];
+// Cart Add product
+if (isset($_GET['cart'])) {
+  if (isset($_SESSION['uniqueId'])) {
 
-      // Check Cart table Result already exist
-      if (count($result) > 0) {
-
-        // Current User cart tabel exist then update qty
-        if ($databaseFN->incrementOrDecrement("cart", $increment, " productId = $getId AND uniqueId = '$uniqueId'", "+")) {
-          echo "<p id='message' class='text-center bg-green-500 py-3 capitalize'>Product Qty + 1 Update</p>";
-          header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=$getId");
-        } else {
-          echo "<p class='text-center bg-green-500 py-3 capitalize'>Someting is wrong Increment</p>";
-        }
-      } else {
-
-        // Current User Does not cart tabel exist then insert data
-        if ($databaseFN->insertData("cart", $collectData)) {
-          echo "<p id='message'  class='text-center bg-green-500 py-3 capitalize'>Product add successful</p>";
-          header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=$getId");
-        } else {
-          echo "<p class='text-center bg-green-500 py-3 capitalize'>Someting is wrong Insert data</p>";
-        }
-      }
+    if ($cart->cart($getId, $_SESSION['uniqueId'])) {
+      header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=" . $getId);
     } else {
-      echo "<p  id='message' class='text-center bg-green-500 py-3 capitalize'>Someting is wrong</p>";
+      header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=" . $getId . "&msg=cartfalse");
     }
+  } else {
+    header("Location: " . $databaseFN->mainUrl . "/auth/?checkPoint=auth");
   }
+}
 
-  // Which list Add or remove
-  if (isset($_GET['whichlist'])) {
+// Which list Add or remove
+if (isset($_GET['whichlist'])) {
+  if (isset($_SESSION['uniqueId'])) {
 
     // Added whichlist
     if ($_GET['whichlist'] == 'add') {
-      if ($whichlist->add($getId, $uniqueId)) {
+      if ($whichlist->add($getId, $_SESSION['uniqueId'])) {
         header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=" . $getId);
       } else {
         echo "<p id='message' class='text-center bg-red-500 py-3 capitalize'>Someting is wrong Which list delete</p>";
@@ -67,29 +47,32 @@ if (isset($_SESSION['userAuth'])) {
 
     // Remove whichlist
     if ($_GET['whichlist'] == 'remove') {
-      if ($whichlist->remove($getId, $uniqueId)) {
+      if ($whichlist->remove($getId, $_SESSION['uniqueId'])) {
         header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=" . $getId);
       } else {
         echo "<p id='message' class='text-center bg-red-500 py-3 capitalize'>Someting is wrong Which list delete</p>";
       }
     }
+  } else {
+    header("Location: " . $databaseFN->mainUrl . "/auth/?checkPoint=auth");
   }
-} else {
-  header("Location: " . $databaseFN->mainUrl . "/auth/?checkPoint=auth");
 }
 
 // Insert Comment
 if (isset($_POST['commentSubmit'])) {
-  $postId = $getId;
-  $name = htmlentities($_POST['name'], ENT_QUOTES);
-  $comment = htmlentities($_POST['comment'], ENT_QUOTES);
-  $time = htmlentities($_POST['time'], ENT_QUOTES);
-  $userAuth = htmlentities($_SESSION['userAuth'], ENT_QUOTES);
-  $commentData = ['name' => $name, 'time' => $time, 'comment' => $comment, 'postId' => $postId, 'userAuth' => $userAuth];
-  if ($databaseFN->insertData("usercomment", $commentData)) {
-    echo "<p id='message' class='text-black bg-green-500 text-center'>Comment Insert Successful</p>";
+  if (isset($_SESSION['uniqueId'])) {
+    $name = htmlentities($_POST['name'], ENT_QUOTES);
+    $comment = htmlentities($_POST['comment'], ENT_QUOTES);
+    $time = htmlentities($_POST['time'], ENT_QUOTES);
+    $userAuth = htmlentities($_SESSION['userAuth'], ENT_QUOTES);
+    $commentData = ['name' => $name, 'time' => $time, 'comment' => $comment, 'postId' => $getId, 'userAuth' => $userAuth, 'uniqueId' => $_SESSION['uniqueId']];
+    if ($databaseFN->insertData("usercomment", $commentData)) {
+      echo "<p id='message' class='text-black bg-green-500 text-center'>Comment Insert Successful</p>";
+    } else {
+      echo "<p id='message' class='text-white text-center bg-red-500'>Comment Insert Failed</p>";
+    }
   } else {
-    echo "<p id='message' class='text-white text-center bg-red-500'>Comment Insert Failed</p>";
+    header("Location: " . $databaseFN->mainUrl . "/auth/?checkPoint=auth");
   }
 }
 
@@ -106,7 +89,7 @@ if (isset($_POST['commentSubmit'])) {
 <div class="md:grid md:grid-cols-5 md:gap-2">
   <?php
   if ($databaseFN->getData("productdetails", "*", null, " id = $getId")) {
-    foreach ($databaseFN->getResult() as list("id" => $dbId, "productQty"=>$productQty, "price" => $price, "productName" => $productName, "productImages" => $productImages, "category" => $category)) {
+    foreach ($databaseFN->getResult() as list("id" => $dbId, "productQty" => $productQty, "price" => $price, "productName" => $productName, "productImages" => $productImages, "category" => $category)) {
       $singleImgName =  explode(",", $productImages);
   ?>
       <div class="md:col-start-1 md:col-span-4 font-sans bg-white">
@@ -118,10 +101,10 @@ if (isset($_POST['commentSubmit'])) {
                 <img onmousemove="zoomImage(event)" onmouseout="zoomOutImage()" id="imgZoom" src="upload/product/<?php echo trim($singleImgName[0]) ?>" alt="Product" class="changeImageSrc w-4/5 rounded object-cover" />
                 <button type="button" class="absolute top-4 right-4">
                   <?php
-                  if (!$_SESSION['uniqueId']) {
-                    echo "<a href='" . basename($_SERVER['PHP_SELF']) . "?id=" . $getId . "&whichlist=add'><i class='fa-regular fa-heart'></i></a>";
-                  } else {
+                  if (isset($_SESSION['uniqueId'])) {
                     $whichlist->check($getId, $uniqueId);
+                  } else {
+                    echo "<a href='" . basename($_SERVER['PHP_SELF']) . "?id=" . $getId . "&whichlist=add'><i class='fa-regular fa-heart'></i></a>";
                   }
                   ?>
                 </button>
@@ -167,14 +150,14 @@ if (isset($_POST['commentSubmit'])) {
               <div class="flex flex-wrap gap-4 mt-10">
                 <button type="button" class="min-w-[200px] px-4 py-3 bg-[#333] hover:bg-[#111] text-white text-sm font-semibold rounded">Buy now</button>
                 <button type="button" class="min-w-[200px] px-4 py-2.5 border border-[#333] bg-transparent hover:bg-gray-50 text-[#333] text-sm font-semibold rounded">
-                  <?php 
-                  if($productQty > 0){
-                    echo "<a href='" . basename($_SERVER['PHP_SELF']) . "?id=". $getId ."&cart=add'>Add to cart</a>";
+                  <?php
+                  if ($productQty > 0) {
+                    echo "<a href='" . basename($_SERVER['PHP_SELF']) . "?id=" . $getId . "&cart=add'>Add to cart</a>";
                   } else {
-                    echo "<a class='capitalize pointer-events-none' href='" . basename($_SERVER['PHP_SELF']) . "?id=". $getId ."&cart=add'>stock out</a>";
+                    echo "<a class='capitalize pointer-events-none' href='" . basename($_SERVER['PHP_SELF']) . "?id=" . $getId . "&cart=add'>stock out</a>";
                   }
-                   ?>
-                   
+                  ?>
+
                 </button>
               </div>
             </div>

@@ -3,8 +3,10 @@ ob_start();
 include "header.php";
 include "database/whichlist.php";
 include "database/otherFn.php";
+include "database/cart.php";
 $otherFN = new otherFn();
 $whichlist = new whichlist();
+$cart = new cart();
 
 if (!isset($_SESSION['userAuth'])) {
     header("Location: " . $databaseFN->mainUrl);
@@ -18,8 +20,7 @@ if (isset($_GET['qty']) && isset($_GET['id'])) {
 
     // Product Qty Plus
     if ($_GET['qty'] == 'plus') {
-        $increment =  ['Qty' => 1];
-        if ($databaseFN->incrementOrDecrement("cart", $increment, " productId = $getId AND uniqueId = '$uniqueId'", "+")) {
+        if ($cart->increment($getId, $uniqueId, 1)) {
             header("Location: " . basename($_SERVER['PHP_SELF']));
         } else {
             echo "<p id='message' class='text-center bg-red-500 py-3 capitalize'>Someting is wrong Qty Added</p>";
@@ -28,11 +29,10 @@ if (isset($_GET['qty']) && isset($_GET['id'])) {
 
     // Product Qty Minus
     if ($_GET['qty'] == 'minus') {
-        $increment =  ['Qty' => 1];
-        if ($databaseFN->incrementOrDecrement("cart", $increment, " productId = $getId AND uniqueId = '$uniqueId'", "-")) {
+        if ($cart->decrement($getId, $uniqueId, 1)) {
             header("Location: " . basename($_SERVER['PHP_SELF']));
         } else {
-            echo "<p id='message' class='text-center bg-red-500 py-3 capitalize'>Someting is wrong Qty Added</p>";
+            echo "<p id='message' class='text-center bg-red-500 py-3 capitalize'>Someting is wrong Qty Minus</p>";
         }
     }
 }
@@ -54,6 +54,16 @@ if (isset($_GET['whichlist']) && $_GET['whichlist'] == 'remove') {
         header("Location: " . basename($_SERVER['PHP_SELF']));
     } else {
         echo "<p id='message' class='text-center bg-red-500 py-3 capitalize'>Someting is wrong Which list delete</p>";
+    }
+}
+
+// Cart Add product
+if (isset($_GET['cart']) && $_GET['cart'] == 'add') {
+    $cartId = $_GET['id'];
+    if ($cart->cart($cartId, $uniqueId)) {
+        header("Location: " . basename($_SERVER['PHP_SELF']));
+    } else {
+        echo "<p id='message' class='text-center bg-red-500 py-3 capitalize'>Someting is wrong Product Add</p>";
     }
 }
 
@@ -238,12 +248,12 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'dfalse') {
                                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
                                             <?php echo (str_word_count($productDescription) >= 15) ? $otherFN->strSort($productDescription, 15) . "..." : $productDescription; ?>
                                         </p>
-                                        <a href="<?php echo $databaseFN->mainUrl . "/view.php?id=$whichlistId" ?>" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                            Read more
-                                            <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                                            </svg>
-                                        </a>
+                                        <div class="flex justify-between">
+                                            <a href="<?php echo $databaseFN->mainUrl . "/view.php?id=$whichlistId" ?>" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Read more
+                                                <i class="ml-2 fa-solid fa-arrow-right-long"></i>
+                                            </a>
+                                            <a href="<?php echo basename($_SERVER['PHP_SELF']) . "?cart=add&id=" . $whichlistId ?>" class="capitalize bg-indigo-300 py-2 px-3 rounded-md font-bold hover:bg-gray-500 hover:text-white transition-all">add to cart</a>
+                                        </div>
                                     </div>
                                 </div>
         <?php
