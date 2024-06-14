@@ -1,5 +1,14 @@
 <?php
+ob_start();
 include "header.php";
+
+
+if (!isset($_SESSION['uniqueId'])) {
+   header("Location: " . $databaseFN->mainUrl);
+
+} 
+
+
 $user_unique_id = $_SESSION['uniqueId'];
 ?>
 <div class="flex justify-between  bg-gray-400 ml-5 text-center">

@@ -75,6 +75,17 @@ if (isset($_POST['order_submit'])) {
             $databaseFN->incrementOrDecrement("productdetails", $decrement, " id = " . $idQty[0], "-");
         }
 
+         // Product qty Add product details table
+         foreach ($userOrderIdQtyArr as $key => $value) {
+            $idQty = explode(",", $value);
+            $idQtyCount = count($idQty);
+            if ($idQtyCount != 2) {
+                continue;
+            }
+            $increment = ['deliveryComplete' => $idQty[1]];
+            $databaseFN->incrementOrDecrement("productdetails", $increment, " id = " . $idQty[0], "+");
+        }
+
         header("Location: " . $databaseFN->mainUrl . "/cart.php");
     } else {
         header("Location: " . $databaseFN->mainUrl . "/cart.php?msg=email");

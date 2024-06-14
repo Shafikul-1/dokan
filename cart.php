@@ -193,8 +193,8 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'dfalse') {
                                 ?>
                         </span>
                     </li>
-                    <li class="flex flex-wrap gap-4 text-base py-4">Shipping <span class="ml-auto font-bold">$4.00</span></li>
-                    <li class="flex flex-wrap gap-4 text-base py-4">Tax <span class="ml-auto font-bold">$4.00</span></li>
+                    <li class="flex flex-wrap gap-4 text-base py-4">Shipping <span class="ml-auto font-bold">$0.00</span></li>
+                    <li class="flex flex-wrap gap-4 text-base py-4">Tax <span class="ml-auto font-bold">$0.00</span></li>
                     <li class="flex flex-wrap gap-4 text-base py-4 font-bold">Total <span class="ml-auto">
                             $<?php
                                 $allTotalPrice = $subTotalPrice;
