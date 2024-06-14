@@ -58,6 +58,10 @@ if (isset($_GET['whichlist'])) {
   }
 }
 
+if (isset($_GET['msg']) && $_GET['msg'] == 'cartfalse') {
+  echo "<p id='message' class='text-center bg-red-500 py-3 capitalize font-bold'>Please check cart</p>";
+}
+
 // Insert Comment
 if (isset($_POST['commentSubmit'])) {
   if (isset($_SESSION['uniqueId'])) {

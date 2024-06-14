@@ -8,20 +8,20 @@ class cart
     {
         $databaseFN = new database();
         if ($databaseFN->getData("cart", "*", null, " productId = $productId  AND uniqueId = '$uniqueId'")) {
-            $increment =  ['Qty' => 1];
             $result = $databaseFN->getResult();
             $qty = 1;
             $collectData = ['uniqueId' => $uniqueId, "productId" => $productId, "Qty" => $qty];
 
             // result 0 thake besi ki na?
             if (count($result) > 0) {
+                return false;
 
                 // Current User cart tabel exist then update qty
-                if ($databaseFN->incrementOrDecrement("cart", $increment, " productId = $productId AND uniqueId = '$uniqueId'", "+")) {
-                    return true;
-                } else {
-                    return false;
-                }
+                // if ($databaseFN->incrementOrDecrement("cart", $increment, " productId = $productId AND uniqueId = '$uniqueId'", "+")) {
+                //     return true;
+                // } else {
+                //     return false;
+                // }
             } else {
 
                 // Current User Does not cart tabel exist then insert data

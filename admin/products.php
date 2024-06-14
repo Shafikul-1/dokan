@@ -29,30 +29,7 @@ $databaseFN = new database();
     </div>
     <div class="bg-white py-4 md:py-4 px-4 md:px-4 xl:px-5 dark:bg-gray-800">
         <div class="sm:flex sm:flex-wrap items-center justify-between">
-            <div class="flex items-center flex-wrap sm:flex-nowrap">
-                <?php
-                $currentUrl = basename($_SERVER['PHP_SELF']);
-
-                ?>
-                <a class="rounded-full focus:outline-none focus:ring-2  focus:bg-indigo-50 focus:ring-indigo-800" href="<?php echo "$currentUrl?productstatus=all"; ?>">
-                    <div class="bg-indigo-100 text-indigo-700 py-2 px-8 rounded-full hover:text-indigo-700 hover:bg-indigo-100">
-                        <p>All</p>
-                    </div>
-                </a>
-                <a class="rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8" href="<?php echo "$currentUrl?productstatus=done"; ?>">
-                    <div class="py-2 px-8 text-gray-600 hover:text-indigo-700 hover:bg-indigo-100 rounded-full ">
-                        <p>Done</p>
-                    </div>
-                </a>
-                <a class="rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8" href="<?php echo "$currentUrl?productstatus=pending"; ?>">
-                    <div class="py-2 px-8 text-gray-600 hover:text-indigo-700 hover:bg-indigo-100 rounded-full ">
-                        <p>Pending</p>
-                    </div>
-                </a>
-            </div>
-            <a href="<?php echo $databaseFN->mainUrl . "/admin/category" ?>" class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded">
-                <p class="text-sm font-medium leading-none text-white">View Category</p>
-            </a>
+           
             <a href="<?php echo $databaseFN->mainUrl . "/admin/product?msg=add" ?>" class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded">
                 <p class="text-sm font-medium leading-none text-white">Add Product</p>
             </a>
@@ -61,8 +38,8 @@ $databaseFN = new database();
             <table class="w-full whitespace-nowrap">
                 <tbody>
                     <?php
-                    if ($databaseFN->getData("productdetails", "productdetails.id, productdetails.releaseDate, productdetails.productName, users.name, productcatagory.categoryName, productdetails.productStatus, productdetails.productQty, productdetails.deliveryComplete", null, null, " id DESC", "5", " productcatagory ON productdetails.category = productcatagory.id LEFT JOIN users ON productdetails.uniqueId = users.uniqueId")) {
-                        foreach ($databaseFN->getResult() as list('releaseDate' => $releaseDate, 'id' => $id, 'productName' => $productName, 'name' => $name, "categoryName" => $categoryName, 'productStatus' => $productStatus, 'productQty' => $productQty, 'deliveryComplete' => $deliveryComplete)) {
+                    if ($databaseFN->getData("productdetails", "productdetails.id, productdetails.releaseDate, productdetails.productName, users.name, productcatagory.categoryName, productdetails.productQty, productdetails.deliveryComplete", null, null, " id DESC", "5", " productcatagory ON productdetails.category = productcatagory.id LEFT JOIN users ON productdetails.uniqueId = users.uniqueId")) {
+                        foreach ($databaseFN->getResult() as list('releaseDate' => $releaseDate, 'id' => $id, 'productName' => $productName, 'name' => $name, "categoryName" => $categoryName,  'productQty' => $productQty, 'deliveryComplete' => $deliveryComplete)) {
                     ?>
                             <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded relative">
                                 <td>
@@ -96,17 +73,7 @@ $databaseFN = new database();
                                     <p class="focus:ring-2 focus:ring-offset-2 focus:ring-red-300 text-sm leading-none text-gray-600 py-3 px-5 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none"> <?php echo (html_entity_decode($categoryName)) ? html_entity_decode($categoryName) : "Uncategory" ; ?> </p>
                                     <!-- That Product Category Name -->
                                 </td>
-                                <td class="pl-24">
-                                    <!-- This Product Status -->
-                                    <div class="flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                            <path d="M9.16667 2.5L16.6667 10C17.0911 10.4745 17.0911 11.1922 16.6667 11.6667L11.6667 16.6667C11.1922 17.0911 10.4745 17.0911 10 16.6667L2.5 9.16667V5.83333C2.5 3.99238 3.99238 2.5 5.83333 2.5H9.16667" stroke="#52525B" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            <circle cx="7.50004" cy="7.49967" r="1.66667" stroke="#52525B" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></circle>
-                                        </svg>
-                                        <p class="text-sm leading-none text-gray-600 ml-2"><?php echo $productStatus; ?></p>
-                                    </div>
-                                    <!-- That Product Status -->
-                                </td>
+                               
                                 <td class="pl-5">
                                     <!-- Qty This Product -->
                                     <div class="flex items-center">
