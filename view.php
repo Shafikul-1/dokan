@@ -428,12 +428,6 @@ if (isset($_POST['commentSubmit'])) {
 
 
 
-
-<?php
-
-include "footer.php";
-?>
-
 <script>
   // Comment Insert Show notic
   document.addEventListener("DOMContentLoaded", function() {
@@ -445,3 +439,8 @@ include "footer.php";
     }, 5000); // 10000 milliseconds = 10 seconds
   });
 </script>
+
+<?php
+
+include "footer.php";
+?>

@@ -67,7 +67,7 @@ if ($databaseFN->getData("orderdetails")) {
                             <td class="px-6 py-4 text-right">
                                 <div class="flex justify-between">
                                     <i class="fa-solid fa-eye hover:border-gray-400 p-2 hover:bg-blue-400 rounded-full hover:text-white transition-all cursor-pointer"></i>
-                                    <i class="fa-solid fa-check rounded-full hover:text-white hover:border-gray-400 p-2 hover:bg-blue-400 transition-all cursor-pointer"></i>
+                                    <i class="fa-solid fa-check rounded-full hover:text-white hover:border-gray-400 p-2 hover:bg-green-400 transition-all cursor-pointer"></i>
                                 </div>
                             </td>
                         </tr>

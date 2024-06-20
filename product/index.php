@@ -12,7 +12,7 @@ if (!isset($_GET['categoryid'])) {
 ?>
 
 <section class="py-10 bg-gray-100">
-    <h2 class="text-center font-bold text-2xl">Category Name: <?php echo $_GET['name'] ?></h2>
+    <h2 class="text-center font-bold text-2xl capitalize">Category Name: <?php echo $_GET['name'] ?></h2>
     <div class="mx-auto grid max-w-6xl  grid-cols-1 gap-6 p-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         <?php
         if (isset($_GET['categoryid'])) {
