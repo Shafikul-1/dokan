@@ -1,9 +1,6 @@
 <?php
-
-
 function viewProduct($id)
 {
-  include "../header.php";
   include "../../database/upload.php";
   $databaseFN = new database();
 
@@ -246,7 +243,7 @@ function viewProduct($id)
     }
   }
 }
-include "../footer.php";
+
 ?>
 
 

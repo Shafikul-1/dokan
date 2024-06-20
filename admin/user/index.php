@@ -1,7 +1,8 @@
 
 <?php
-include "../../database/database.php";
-$obj = new database();
+ob_start();
+include "../header.php";
+
 
 if (isset($_GET['did'])) {
     include "./deleteUser.php";
@@ -13,7 +14,7 @@ if (isset($_GET['did'])) {
     include "./userView.php";
     viewUser($_GET['vid']);
 } else {
-    header("Location: " . $obj->mainUrl . "/admin/users.php");
+    header("Location: " . $databaseFN->mainUrl . "/admin/users.php");
 }
 
 ?>

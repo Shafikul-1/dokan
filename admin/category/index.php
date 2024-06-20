@@ -1,8 +1,5 @@
 <?php 
-
 include "../header.php";
-include "../../database/database.php";
-$databaseFN = new database();
 
 if(isset($_GET['error']) && $_GET['error'] == 'dbdfalse'){
     echo '<p class="text-center bg-red-500 text-white">Database Data not delete</p>';

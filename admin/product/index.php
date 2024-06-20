@@ -1,6 +1,7 @@
 <?php 
-include "../../database/database.php";
-$databaseFN = new database();
+ob_start();
+include "../header.php";
+
 // print_r($_GET['msg']);
 if (isset($_GET['msg']) && $_GET['msg'] == 'add') {
     include "./addProduct.php";
@@ -19,4 +20,6 @@ if (isset($_GET['msg']) && $_GET['msg'] == 'add') {
 } else {
     header("Location: ". $databaseFN->mainUrl ."/admin/products.php");
 }
+
+include "../footer.php";
 ?>

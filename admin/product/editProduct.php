@@ -1,10 +1,6 @@
 <?php
-ob_start();
-
-
 function editProduct($id)
 {
-    include "../header.php";
     include "../../database/upload.php";
     $databaseFN = new database();
     if ($databaseFN->getData("productdetails", "*", null, "id=$id")) {
@@ -179,5 +175,5 @@ function editProduct($id)
         # code...
     }
 }
-include "../footer.php";
+
 ?>

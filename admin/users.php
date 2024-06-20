@@ -1,9 +1,5 @@
 <?php
 include "header.php";
-include "../database/database.php";
-include "../database/otherFn.php";
-$databaseFN = new database();
-$otherFN = new otherFn();
 
 if (isset($_POST['submit'])) {
     $name = htmlentities($_POST['name'], ENT_QUOTES);

@@ -1,7 +1,6 @@
 <?php
 ob_start();
 
-include "../header.php";
 include "../../database/upload.php";
 $uploadFN = new Upload();
 $databaseFN = new database();
@@ -263,6 +262,3 @@ ob_end_flush();
     </script>
 </div>
 
-<?php
-include "../footer.php";
-?>

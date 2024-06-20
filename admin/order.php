@@ -1,7 +1,6 @@
 <?php
 include "header.php";
-include "../database/database.php";
-$databaseFN = new database();
+
 
 if ($databaseFN->getData("orderdetails")) {
     $orderResult = $databaseFN->getResult();

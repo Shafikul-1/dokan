@@ -1,10 +1,7 @@
 <?php
-ob_start(); // Start output buffering
 function edituser($id)
 {
-    include "../header.php";
     $data = new database();
-    // echo $id."<br>";
     if (isset($_POST['submit'])) {
         $id = htmlentities($_POST['id'], ENT_QUOTES );
         $name = htmlentities($_POST['name'], ENT_QUOTES );

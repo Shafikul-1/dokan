@@ -1,8 +1,6 @@
 <?php
 ob_start();
 include "../header.php";
-include "../../database/database.php";
-$databaseFN = new database();
 
 if (isset($_POST['submit'])) {
     $categoryName = htmlentities($_POST['categoryName'], ENT_QUOTES );

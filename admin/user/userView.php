@@ -1,8 +1,7 @@
 <?php 
 function viewUser($id)
 {
-    include "../header.php";
-    // include "../../database/database.php";
+
     $databaseFN = new database();
     $databaseFN->getData("users", "*", null, "id = $id", null, null);
     $data = $databaseFN->getResult();
