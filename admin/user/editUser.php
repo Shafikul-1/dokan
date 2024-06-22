@@ -14,7 +14,7 @@ function edituser($id)
         if (isset($_FILES['newImg']) && $_FILES['newImg']['error'] == UPLOAD_ERR_OK) {
             include "../../database/upload.php";
             $fileObj = new upload();
-            $fileObj->uploadFile($_FILES['newImg']);
+            $fileObj->uploadFile($_FILES['newImg'], 'user');
             $fileResult = $fileObj->getFileResult();
             if (isset($fileResult['fileName']) && !empty($fileResult['fileName'])) {
                 $img = $fileResult['fileName'];
@@ -115,7 +115,7 @@ function edituser($id)
                     <div>
                         <input type="text" name="oldImg" hidden value="<?php echo $img ?>">
                         <input type="text" name="id" hidden value="<?php echo $id ?>">
-                        <img id="profileImage" class="w-[5rem] rounded-full" src="../../upload/<?php echo ($img == null) ? 'user/user-defult-icon.png' : $img  ?>" alt="<?php echo ($img == null) ? 'user-defult-icon.png' : $img  ?>">
+                        <img id="profileImage" class="w-[5rem] rounded-full" src="../../upload/user/<?php echo ($img == null) ? 'icon/user-defult-icon.png' : $img  ?>" alt="<?php echo ($img == null) ? 'user-defult-icon.png' : $img  ?>">
                     </div>
                 </div>
                 <div class="flex justify-end mt-6">

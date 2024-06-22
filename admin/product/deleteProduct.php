@@ -10,8 +10,8 @@ function fileDelete($id)
     $databaseFN->getData("productdetails", "*", null, "id = $id");
     foreach ($databaseFN->getResult() as list("productImages" => $productImages, "videos" => $videos)) {
         // echo $productImages."<br>";
-        if ($uploadFN->multifileDelete($productImages)) {
-            if ($uploadFN->multifileDelete($videos)) {
+        if ($uploadFN->multifileDelete($productImages, 'product')) {
+            if ($uploadFN->multifileDelete($videos, 'product')) {
                 return true;
             } else {
                 return false;

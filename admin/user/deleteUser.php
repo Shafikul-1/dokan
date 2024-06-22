@@ -7,9 +7,9 @@ function deleteUser($id)
     $fileDelete = false;
     if ($databaseFN->getData("users", "*", null, "id= $id")) {
         foreach ($databaseFN->getResult() as list("img" => $img)) {
-            echo $img."<br>";
+            // echo $img."<br>";
             $uploadFN = new Upload();
-            if ($uploadFN->deleteFile($img)) {
+            if ($uploadFN->deleteFile($img, 'user')) {
                 $fileDelete = true;
             } else {
                 $fileDelete = false;

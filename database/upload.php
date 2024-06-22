@@ -11,20 +11,27 @@ class Upload
     private $result = [];
 
     // get single file info
-    public function uploadFile($file)
+    public function uploadFile($file, $folderName)
     {
         $this->name = $file['name'];
         $this->type = $file['type'];
         $this->tmp_name = $file['tmp_name'];
         $this->error = $file['error'];
         $this->size = $file['size'];
-        $this->checkFile();
+        $this->checkFile($folderName);
     }
 
     // single file upload functon
-    private function checkFile()
+    private function checkFile($folderName)
     {
-        $target_file = $this->target_dir . basename($this->name);
+        $uploadDir =  $this->target_dir . $folderName . "/";
+
+        // Ensure the upload directory exists
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+        
+        $target_file = $this->target_dir . $folderName . "/" . basename($this->name);
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
         // Check if file is an actual image
@@ -38,7 +45,7 @@ class Upload
         if (file_exists($target_file)) {
             date_default_timezone_set("Asia/Dhaka");
             $this->name = pathinfo($this->name, PATHINFO_FILENAME) . '_' . date("d-m-Y h_i_s_A") . '.' . $imageFileType;
-            $target_file = $this->target_dir . $this->name;
+            $target_file = $this->target_dir . $folderName . "/" . $this->name;
         }
 
         // Check file size
@@ -67,9 +74,9 @@ class Upload
         }
     }
     // delete file function
-    public function deleteFile($fileName)
+    public function deleteFile($fileName, $folderName)
     {
-        $target_file = $this->target_dir . $fileName;
+        $target_file = $this->target_dir . $folderName . "/" . $fileName;
         if (empty($fileName)) {
             return true;
         }
@@ -85,9 +92,9 @@ class Upload
     }
 
     // Multi File Uplode
-    public function multiFileUpload($fileInfo)
+    public function multiFileUpload($fileInfo, $folderName)
     {
-        $uploadDir =  $this->target_dir . "product/";
+        $uploadDir =  $this->target_dir . $folderName . "/";
 
         // Ensure the upload directory exists
         if (!is_dir($uploadDir)) {
@@ -128,11 +135,11 @@ class Upload
     }
 
     // Multi File delete
-    public function multifileDelete($filesName)
+    public function multifileDelete($filesName, $folderName)
     {
         if(!empty($filesName)){
             $strToArr = explode(",", $filesName);
-            $fileDir = $this->target_dir . "product/";
+            $fileDir = $this->target_dir . $folderName . "/";
             $allDeleted = true; // Initialize flag to track overall deletion success
         
             foreach ($strToArr as $fileName) {

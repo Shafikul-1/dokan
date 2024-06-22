@@ -31,7 +31,7 @@ if (isset($_POST['submit'])) {
     $checkImgOrVideo = false;
 
     if (isset($_FILES['productImages']) && !empty($_FILES['productImages']['name'][0])) {
-        if ($uploadFN->multiFileUpload($_FILES['productImages'])) {
+        if ($uploadFN->multiFileUpload($_FILES['productImages'], 'product')) {
             $getFileName = $uploadFN->getFileResult();
             $nameStr = implode(", ", $getFileName['fileNames']);
             $productImages = "$nameStr";
@@ -44,7 +44,7 @@ if (isset($_POST['submit'])) {
         $checkImgOrVideo = true;
     }
     if (isset($_FILES['videos']) && !empty($_FILES['videos']['name'][0])) {
-        if ($uploadFN->multiFileUpload($_FILES['videos'])) {
+        if ($uploadFN->multiFileUpload($_FILES['videos'], 'product')) {
             $getFileName = $uploadFN->getFileResult();
             $nameStr = implode(", ", $getFileName['fileNames']);
             $videos = "$nameStr";
