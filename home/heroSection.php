@@ -6,14 +6,22 @@
                 foreach ($databaseFN->getResult() as list('heading' => $heading, 'image' => $image, 'description' => $description)) {
             ?>
                     <div class="swiper-slide">
-                        <div class="group relative m-0 flex h-72 w-96 rounded-xl shadow-xl ring-gray-900/5 sm:mx-auto sm:max-w-lg">
-                            <div class="z-10 h-full w-full overflow-hidden rounded-xl border border-gray-200 opacity-80 transition duration-300 ease-in-out group-hover:opacity-100 dark:border-gray-700 dark:opacity-70">
-                                <img src="upload/slider/<?php echo $image ?>" alt="" />
+                        <div style="background: url(upload/slider/<?php echo $image ?>); background-size: cover; background-position: center;" class=" w-[900px] h-[300px] p-6 rounded-lg shadow-lg flex items-center relative">
+                            <div>
+                                <div class="text-4xl font-bold text-white"><?php echo $heading ?></div>
+                                <div class="text-xl font-light text-white mt-2"><?php echo $description ?></div>
+                                <!-- <button class="mt-4 bg-orange-500 text-white py-2 px-4 rounded-full font-bold">Shop Now</button> -->
                             </div>
-                            <div class="absolute bottom-0 z-20 m-0 pb-4 ps-4 transition duration-300 ease-in-out group-hover:-translate-y-1 group-hover:translate-x-3 group-hover:scale-110">
-                                <h1 class="font-serif text-2xl font-bold text-white shadow-xl"><?php echo $heading ?></h1>
-                                <h1 class="text-sm font-light text-gray-200 shadow-xl"><?php echo $description ?></h1>
+                            <!-- <div class="absolute top-6 right-6 bg-orange-500 text-white p-4 rounded-full text-center">
+                                <div class="text-lg font-bold">UP TO</div>
+                                <div class="text-4xl font-bold">68%</div>
+                                <div class="text-lg font-bold">OFF</div>
                             </div>
+                            <div class="flex-grow flex justify-end items-center">
+                                <img src="https://img.icons8.com/external-flat-juicy-fish/60/000000/external-treadmill-gym-flat-flat-juicy-fish.png" alt="Treadmill" class="h-40">
+                                <img src="https://img.icons8.com/external-flat-juicy-fish/60/000000/external-football-soccer-flat-flat-juicy-fish.png" alt="Football" class="h-20 ml-4">
+                                <img src="https://img.icons8.com/external-flat-juicy-fish/60/000000/external-guitar-music-flat-flat-juicy-fish.png" alt="Guitar" class="h-24 ml-4">
+                            </div> -->
                         </div>
                     </div>
             <?php
