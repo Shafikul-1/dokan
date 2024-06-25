@@ -6,7 +6,7 @@
                 foreach ($databaseFN->getResult() as list('heading' => $heading, 'image' => $image, 'description' => $description)) {
             ?>
                     <div class="swiper-slide">
-                        <div style="background: url(upload/slider/<?php echo $image ?>); background-size: cover; background-position: center;" class=" w-[900px] h-[300px] p-6 rounded-lg shadow-lg flex items-center relative">
+                        <div style="background: url(upload/slider/<?php echo $image ?>); background-size: cover; background-position: center;" class=" w-[900px] h-[30rem] p-6 rounded-lg shadow-lg flex items-center relative">
                             <div>
                                 <div class="text-4xl font-bold text-white"><?php echo $heading ?></div>
                                 <div class="text-xl font-light text-white mt-2"><?php echo $description ?></div>

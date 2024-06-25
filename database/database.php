@@ -93,6 +93,30 @@ class database
         }
     }
 
+    // concat Update Data in query
+    public function concatData($table, $column, $where)
+    {
+        if ($this->TableExits($table)) {
+            $concatClauses = [];
+            foreach ($column as $column => $value) {
+                $concatClauses[] = "$column = CONCAT($column, $value)";
+            }
+            $concatClause = implode(', ', $concatClauses);
+            $sql = "UPDATE $table SET $concatClause WHERE $where";
+            // echo $sql;
+            
+            if ($this->sqli->query($sql)) {
+                array_push($this->result, $this->sqli->affected_rows);
+                return true;
+            } else {
+                array_push($this->result, $this->sqli->error);
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     // Database Get Data
     public function getData($table, $row = "*", $join = null, $where = null, $order = null, $limit = null, $leftJoin = null)
     {
@@ -123,7 +147,7 @@ class database
             if ($dataResult = $this->sqli->query($sql)) {
                 $this->result = $dataResult->fetch_all(MYSQLI_ASSOC);
                 return true;
-            } 
+            }
             // if ($stmt = $this->sqli->prepare($sql)) {
             //     $stmt->execute();
             //     $dataResult = $stmt->get_result();
@@ -140,7 +164,7 @@ class database
     }
 
     // Pagination funtion
-    public function pagination($table,$leftJoin = null, $where = null, $limit = null)
+    public function pagination($table, $leftJoin = null, $where = null, $limit = null)
     {
         if ($this->TableExits($table)) {
             $sql = "SELECT COUNT(*) FROM $table ";
@@ -152,20 +176,19 @@ class database
             }
             // echo $sql;
             if ($dataResult = $this->sqli->query($sql)) {
-               $totalRecord = $dataResult->fetch_array();
-               $totalRecord = $totalRecord[0];
-               $totalPage = ceil($totalRecord / $limit);
+                $totalRecord = $dataResult->fetch_array();
+                $totalRecord = $totalRecord[0];
+                $totalPage = ceil($totalRecord / $limit);
                 if ($totalRecord > $limit) {
-                   return $totalPage; 
-                } 
-
+                    return $totalPage;
+                }
             } else {
                 array_push($this->result, $this->sqli->error);
                 return false;
             }
         } else {
             return false;
-        }  
+        }
     }
 
     // Database Data Delete
