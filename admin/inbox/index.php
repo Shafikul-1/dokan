@@ -3,18 +3,33 @@ ob_start();
 include "../header.php";
 
 $unqueId = $_SESSION['uniqueId'];
-if (isset($_GET['cid'])) {
-    $id = $_GET['id'];
-    $cid = $_GET['cid'];
-    $seenUpdate = [
-        'commentSeenId' => $unqueId . ","
-    ];
-    if ($databaseFN->updateData('usercomment', $seenUpdate, " id = $cid")) {
-        header("Location: " . $databaseFN->mainUrl . "/view.php?id=" . $id);
+if (isset($_POST['seenComment'])) {
+    $tapProductId = htmlentities($_POST['tapProductId'], ENT_QUOTES);
+    $unseenCommentId = htmlentities($_POST['unseenCommentId'], ENT_QUOTES);
+    $exploadUnseenCommentId = explode(",", $unseenCommentId);
+
+    $seenOk = false;
+    if ($unseenCommentId == '') {
+        $seenOk = true;
+    } else {
+        for ($see = 0; $see < count($exploadUnseenCommentId); $see++) {
+            $changeUniqueId = $unqueId . ",";
+            $addedSeenId = ['commentSeenId' => "'$changeUniqueId'"];
+            if ($databaseFN->concatData('usercomment', $addedSeenId, " id = $exploadUnseenCommentId[$see]")) {
+                $seenOk = true;
+            } else {
+                $seenOk = false;
+            }
+        }
+    }
+
+    if ($seenOk) {
+        header("Location: " . $databaseFN->mainUrl . "/view.php?id=" . $tapProductId);
     } else {
         echo "<p id='message' class='text-white text-center bg-red-500'>Someting want wrong</p>";
     }
 }
+
 
 function unseenId($id)
 {
@@ -120,7 +135,8 @@ function unseenId($id)
                                 " productdetails.id DESC"
                             )) {
                                 $data = $databaseFN->getResult();
-                                if (count($data) > 0) {
+                                $countAllData = count($data);
+                                if ( $countAllData > 0) {
                                     $previseProductId = null;
 
                                     foreach ($data as list(
@@ -144,10 +160,12 @@ function unseenId($id)
                                         $seen = 0;
 
                                         $result = unseenId($productId);
+                                        $unseenIdImpload = 0;
                                         if ($result !== false) {
                                             if (count($result) > 0) {
                                                 $seen = count($result);
                                             }
+                                            $unseenIdImpload = implode(",", $result);
                                         } else {
                                             echo "No comments found or an error occurred.";
                                         }
@@ -176,7 +194,7 @@ function unseenId($id)
                                                 <div class="">
                                                     <h4 class="text-gray-700 dark:text-gray-200">
                                                         <?php echo (str_word_count($commentorName) < 5) ? $commentorName : $otherFN->strSort($commentorName, 5)  . " ..." ?>
-                                                        <?php echo ($seen <= 0) ? "" : "<sup class='inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800'>$seen</sup>";?>
+                                                        <?php echo ($seen <= 0) ? "" : "<sup class='inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800'>$seen</sup>"; ?>
                                                     </h4>
                                                     <p class="text-gray-500 dark:text-gray-400">
                                                         <?php echo (str_word_count($comment) < 7) ? $comment : $otherFN->strSort($comment, 7)  . " ..." ?>
@@ -193,7 +211,11 @@ function unseenId($id)
                                                 </div>
                                             </td>
                                             <td class="px-4 py-4 text-sm whitespace-nowrap ml-5">
-                                                <a href="<?php echo basename($_SERVER['PHP_SELF']) . "?cid=" . $commentId . "&id=" . $productId ?>"> <i class="fa-solid fa-eye dark:text-white hover:text-green-400 text-[1rem] cursor-pointer"></i></a>
+                                                <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+                                                    <input type="text" hidden name="tapProductId" value="<?php echo $productId ?>">
+                                                    <input type="text" hidden name="unseenCommentId" value="<?php echo $unseenIdImpload ?>">
+                                                    <button name="seenComment" type="submit"><i class="fa-solid fa-eye dark:text-white hover:text-green-400 text-[1rem] cursor-pointer"></i></button>
+                                                </form>
                                             </td>
                                         </tr>
                             <?php
@@ -214,7 +236,7 @@ function unseenId($id)
 
     <div class="mt-6 sm:flex sm:items-center sm:justify-between ">
         <div class="text-sm text-gray-500 dark:text-gray-400">
-            Page <span class="font-medium text-gray-700 dark:text-gray-100">1 of 10</span>
+            Page <span class="font-medium text-gray-700 dark:text-gray-100">1 of <?php echo $countAllData ?></span>
         </div>
 
         <div class="flex items-center mt-4 gap-x-4 sm:mt-0">
@@ -240,7 +262,17 @@ function unseenId($id)
         </div>
     </div>
 </section>
-
+<script>
+    // Comment Insert Show notic
+    document.addEventListener("DOMContentLoaded", function() {
+        setTimeout(function() {
+            var messageDiv = document.getElementById("message");
+            if (messageDiv) {
+                messageDiv.style.display = "none";
+            }
+        }, 5000); // 10000 milliseconds = 10 seconds
+    });
+</script>
 <?php
 include "../footer.php";
 ?>

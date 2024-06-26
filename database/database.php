@@ -103,7 +103,7 @@ class database
             }
             $concatClause = implode(', ', $concatClauses);
             $sql = "UPDATE $table SET $concatClause WHERE $where";
-            // echo $sql;
+            // echo $sql . "<br>";
             
             if ($this->sqli->query($sql)) {
                 array_push($this->result, $this->sqli->affected_rows);
