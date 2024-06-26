@@ -15,6 +15,27 @@ if (isset($_GET['cid'])) {
         echo "<p id='message' class='text-white text-center bg-red-500'>Someting want wrong</p>";
     }
 }
+
+function unseenId($id)
+{
+    $unqueId = $_SESSION['uniqueId'];
+    $databaseFN = new database();
+    if ($databaseFN->getData('usercomment', "*", null, " postId = $id")) {
+        $getUnseenId = array();
+        foreach ($databaseFN->getResult() as $comment) {
+            $commentId = $comment['id'];
+            $commentSeenId = $comment['commentSeenId'];
+
+            if (is_null($commentSeenId) || strpos($commentSeenId, $unqueId) === false) {
+                array_push($getUnseenId, $commentId);
+            }
+        }
+        return $getUnseenId;
+    } else {
+        return false;
+    }
+}
+
 ?>
 
 
@@ -100,33 +121,42 @@ if (isset($_GET['cid'])) {
                             )) {
                                 $data = $databaseFN->getResult();
                                 if (count($data) > 0) {
+                                    $previseProductId = null;
 
-                                    // $commentCount = array();
-                                    // $previseProductName = null;
+                                    foreach ($data as list(
+                                        'commentId' => $commentId,
+                                        'commentorName' => $commentorName,
+                                        'comment' => $comment,
+                                        'commentSeenId' => $commentSeenId,
+                                        'productDescription' => $productDescription,
+                                        'productId' => $productId,
+                                        'productName' => $productName,
+                                        'productImage' => $productImage
+                                    )) {
 
-                                    foreach ($data as list('commentId' => $commentId, 'commentorName' => $commentorName, 'comment' => $comment, 'commentSeenId' => $commentSeenId, 'productDescription' => $productDescription, 'productId' => $productId, 'productName' => $productName, 'productImage' => $productImage)) {
-                                        // array_push($commentCount, $value['productId']);
+                                        if ($previseProductId === $productId) {
+                                            continue;
+                                        }
+                                        $previseProductId = $productId;
 
-                                        // if ($previseProductName === $value['productName']) {
-                                        //     continue;
-                                        // }
-
-                                        // $previseProductName = $value['productName'];
                                         $singleImgName =  explode(",", $productImage);
                                         $commentSeen =  explode(",", $commentSeenId);
+                                        $seen = 0;
 
-                                        $seen = false;
-                                        for ($i = 0; $i < count($commentSeen); $i++) {
-                                            if ($commentSeen[$i] === $unqueId) {
-                                                $seen = true;
-                                                break; // Exit the loop early since we found a match
+                                        $result = unseenId($productId);
+                                        if ($result !== false) {
+                                            if (count($result) > 0) {
+                                                $seen = count($result);
                                             }
+                                        } else {
+                                            echo "No comments found or an error occurred.";
                                         }
                             ?>
-                                        <tr class="<?php echo ($seen) ? 'opacity-50 mt-5' : 'shadow-md shadow-blue-500/50 opacity-100 mt-5' ?>">
+
+                                        <tr class="<?php echo ($seen <= 0) ? 'opacity-50 mt-5' : 'shadow-md shadow-blue-500/50 opacity-100 mt-5' ?> relative">
                                             <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
                                                 <div class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                                    <?php echo $commentId ?>
+                                                    <?php echo $productId ?>
                                                 </div>
                                             </td>
                                             <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
@@ -146,7 +176,7 @@ if (isset($_GET['cid'])) {
                                                 <div class="">
                                                     <h4 class="text-gray-700 dark:text-gray-200">
                                                         <?php echo (str_word_count($commentorName) < 5) ? $commentorName : $otherFN->strSort($commentorName, 5)  . " ..." ?>
-                                                        <?php echo ($seen) ? "" : "<sup class='inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800'>1</sup>"; ?>
+                                                        <?php echo ($seen <= 0) ? "" : "<sup class='inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800'>$seen</sup>";?>
                                                     </h4>
                                                     <p class="text-gray-500 dark:text-gray-400">
                                                         <?php echo (str_word_count($comment) < 7) ? $comment : $otherFN->strSort($comment, 7)  . " ..." ?>
