@@ -51,6 +51,13 @@ function unseenId($id)
     }
 }
 
+function allCommentdetails($id)
+{
+    $databaseFN = new database();
+    if ($databaseFN->getData('usercomment', "*", null, " postId = $id")) {
+        return $databaseFN->getResult();
+    }
+}
 ?>
 
 
@@ -136,7 +143,7 @@ function unseenId($id)
                             )) {
                                 $data = $databaseFN->getResult();
                                 $countAllData = count($data);
-                                if ( $countAllData > 0) {
+                                if ($countAllData > 0) {
                                     $previseProductId = null;
 
                                     foreach ($data as list(
@@ -203,11 +210,24 @@ function unseenId($id)
                                             </td>
                                             <td class="px-4 mx-10 py-4 text-sm whitespace-nowrap">
                                                 <div class="flex items-center">
-                                                    <img class="object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=256&q=80" alt="">
-                                                    <img class="object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=256&q=80" alt="">
-                                                    <img class="object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1256&q=80" alt="">
-                                                    <img class="object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=256&q=80" alt="">
-                                                    <p class="flex items-center justify-center w-6 h-6 -mx-1 text-xs text-blue-600 bg-blue-100 border-2 border-white rounded-full">+4</p>
+                                                    <?php
+                                                    $allcommentorImage = allCommentdetails($productId);
+                                                    $countVal = array();
+                                                    foreach ($allcommentorImage as list('id' => $commentId)) {
+                                                        array_push($countVal, $commentId);
+                                                    }
+                                                    $allCountVal = count($countVal);
+                                                    if ($allCountVal < 5) {
+                                                        for ($image=0; $image < $allCountVal; $image++) { 
+                                                            echo "<img class='object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0' src='https://picsum.photos/200/300?random=".$countVal[$image]."' alt=''>";
+                                                        }
+                                                    } else {
+                                                        for ($images=0; $images < 4; $images++) { 
+                                                            echo "<img class='object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0' src='https://picsum.photos/200/300?random=".$countVal[$images]."' alt=''>";
+                                                        }
+                                                        echo "<p class='flex items-center justify-center w-6 h-6 -mx-1 text-xs text-blue-600 bg-blue-100 border-2 border-white rounded-full'>+".$allCountVal - 4 ."</p> ";
+                                                    }
+                                                    ?>
                                                 </div>
                                             </td>
                                             <td class="px-4 py-4 text-sm whitespace-nowrap ml-5">
