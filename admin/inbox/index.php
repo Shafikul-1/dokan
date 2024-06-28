@@ -4,6 +4,7 @@ include "../header.php";
 $unqueId = $_SESSION['uniqueId'];
 $valuesPerPage = 5;
 $active = "bg-gray-100 dark:bg-gray-800";
+$currentUrl = basename($_SERVER['PHP_SELF']) . "?";
 
 // See comment and send data in databse
 if (isset($_POST['seenComment'])) {
@@ -102,9 +103,16 @@ function getCommentData($id)
 <section class="container px-4 mx-auto">
     <div class="mt-6 md:flex md:items-center md:justify-between">
         <div class="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
-            <a class="<?php echo (empty($_GET['msg'])) ? $active : '' ?> px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100" href="<?php echo basename($_SERVER['PHP_SELF']) ?>">View All</a>
-            <a class="<?php echo (isset($_GET['msg']) && $_GET['msg'] == 'unseen') ? $active : '' ?> px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100" href="<?php echo basename($_SERVER['PHP_SELF']) . "?msg=unseen" ?>">Unseen</a>
-            <a class="<?php echo (isset($_GET['msg']) && $_GET['msg'] == 'seen') ? $active : '' ?> px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100" href="<?php echo basename($_SERVER['PHP_SELF']) . "?msg=seen" ?>">Seen</a>
+            <?php
+            if (isset($_GET['search'])) {
+                $msgUrl =  $currentUrl . "search=" . $_GET['search'] . "&";
+            } else {
+                $msgUrl = $currentUrl;
+            }
+            ?>
+            <a class="<?php echo (empty($_GET['msg'])) ? $active : '' ?> px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100" href="<?php echo $msgUrl ?>">View All</a>
+            <a class="<?php echo (isset($_GET['msg']) && $_GET['msg'] == 'unseen') ? $active : '' ?> px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100" href="<?php echo $msgUrl . "msg=unseen" ?>">Unseen</a>
+            <a class="<?php echo (isset($_GET['msg']) && $_GET['msg'] == 'seen') ? $active : '' ?> px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100" href="<?php echo $msgUrl . "msg=seen" ?>">Seen</a>
         </div>
 
         <div class="relative flex items-center mt-4 md:mt-0">
@@ -261,19 +269,23 @@ function getCommentData($id)
                                                                                 echo " of " . count($checkUniquePostIds); ?></span>
         </div>
 
+        <!-- Pagination -->
         <div class="flex items-center mt-4 gap-x-4 sm:mt-0">
-            <!-- Pagination -->
             <div class="text-center mt-4">
                 <nav aria-label="Page navigation example">
                     <ul class="inline-flex -space-x-px text-sm">
                         <?php
-                        $getTotalPage = $totalPages;
-                        $currentPath = basename($_SERVER['PHP_SELF']) . "?";
-
-                        if (isset($_GET['msg'])) {
-                            $currentPath = basename($_SERVER['PHP_SELF']) . "?msg=" . $_GET['msg'] . "&";
+                        if (isset($_GET['search'])) {
+                            $paginationUrl =  $currentUrl . "search=" . $_GET['search'] . "&";
+                        } else if (isset($_GET['msg'])) {
+                            $paginationUrl =  $currentUrl . "msg=" . $_GET['msg'] . "&";
+                        } else if (isset($_GET['search']) && isset($_GET['msg'])) {
+                            $paginationUrl =  $currentUrl . "search=" . $_GET['search'] . "&msg=" . $_GET['msg'] . "&";
+                        } else {
+                            $paginationUrl = $currentUrl;
                         }
 
+                        $getTotalPage = $totalPages;
                         if (isset($_GET['page'])) {
                             $page = intval($_GET['page']);
                         } else {
@@ -282,15 +294,15 @@ function getCommentData($id)
 
                         if ($page > 1) {
                             $prev = $page - 1;
-                            echo "<li><a href='" . $currentPath . "page=$prev'class='flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Previous</a></li>";
+                            echo "<li><a href='" . $paginationUrl . "page=$prev'class='flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Previous</a></li>";
                         }
                         for ($paginationLoop = 1; $paginationLoop <= $getTotalPage; $paginationLoop++) {
                             $active = ($paginationLoop == $page) ? "bg-indigo-500 text-white dark:bg-blue-500 dark:text-white" : "";
-                            echo "<li ><a href='" . $currentPath . "page=$paginationLoop' class='$active  flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>$paginationLoop</a></li>";
+                            echo "<li ><a href='" . $paginationUrl . "page=$paginationLoop' class='$active  flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>$paginationLoop</a></li>";
                         }
                         if ($page < $getTotalPage) {
                             $next = $page + 1;
-                            echo "<li><a href='" . $currentPath . "page=$next' class='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Next</a></li>";
+                            echo "<li><a href='" . $paginationUrl . "page=$next' class='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Next</a></li>";
                         }
                         ?>
                     </ul>
