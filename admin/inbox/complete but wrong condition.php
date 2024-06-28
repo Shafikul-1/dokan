@@ -3,19 +3,64 @@ ob_start();
 include "../header.php";
 
 $unqueId = $_SESSION['uniqueId'];
-if (isset($_GET['cid'])) {
-    $id = $_GET['id'];
-    $cid = $_GET['cid'];
-    $seenUpdate = [
-        'commentSeenId' => "'$unqueId,'"
-    ];
-    if ($databaseFN->concatData('usercomment', $seenUpdate, " id = $cid")) {
-        // header("Location: ".$databaseFN->mainUrl."/view.php?id=" . $id);
+if (isset($_POST['seenComment'])) {
+    $tapProductId = htmlentities($_POST['tapProductId'], ENT_QUOTES);
+    $unseenCommentId = htmlentities($_POST['unseenCommentId'], ENT_QUOTES);
+    $exploadUnseenCommentId = explode(",", $unseenCommentId);
+
+    $seenOk = false;
+    if ($unseenCommentId == '') {
+        $seenOk = true;
+    } else {
+        for ($see = 0; $see < count($exploadUnseenCommentId); $see++) {
+            $changeUniqueId = $unqueId . ",";
+            $addedSeenId = ['commentSeenId' => "'$changeUniqueId'"];
+            if ($databaseFN->concatData('usercomment', $addedSeenId, " id = $exploadUnseenCommentId[$see]")) {
+                $seenOk = true;
+            } else {
+                $seenOk = false;
+            }
+        }
+    }
+
+    if ($seenOk) {
+        header("Location: " . $databaseFN->mainUrl . "/view.php?id=" . $tapProductId);
     } else {
         echo "<p id='message' class='text-white text-center bg-red-500'>Someting want wrong</p>";
     }
 }
+
+
+function unseenId($id)
+{
+    $unqueId = $_SESSION['uniqueId'];
+    $databaseFN = new database();
+    if ($databaseFN->getData('usercomment', "*", null, " postId = $id")) {
+        $getUnseenId = array();
+        foreach ($databaseFN->getResult() as $comment) {
+            $commentId = $comment['id'];
+            $commentSeenId = $comment['commentSeenId'];
+
+            if (is_null($commentSeenId) || strpos($commentSeenId, $unqueId) === false) {
+                array_push($getUnseenId, $commentId);
+            }
+        }
+        return $getUnseenId;
+    } else {
+        return false;
+    }
+}
+
+function allCommentdetails($id)
+{
+    $databaseFN = new database();
+    if ($databaseFN->getData('usercomment', "*", null, " postId = $id")) {
+        return $databaseFN->getResult();
+    }
+}
 ?>
+
+
 
 <!-- component -->
 <section class="container px-4 mx-auto">
@@ -28,11 +73,11 @@ if (isset($_GET['cid'])) {
             </button>
 
             <button class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-                Monitored
+                Unseen
             </button>
 
             <button class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-                Unmonitored
+                Seen
             </button>
         </div>
 
@@ -81,100 +126,132 @@ if (isset($_GET['cid'])) {
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                             <?php
-
                             if ($databaseFN->getData(
                                 'usercomment',
                                 "usercomment.id AS commentId,
                                 usercomment.name AS commentorName,
                                 usercomment.comment AS comment,
                                 usercomment.commentSeenId AS commentSeenId,
+                                usercomment.comment_time AS comment_time,
                                 productdetails.id AS productId,
                                 productdetails.productName AS productName,
                                 productdetails.productDescription AS productDescription,
                                 productdetails.productImages AS productImage",
                                 " productdetails on usercomment.postId = productdetails.id",
-                                null,
-                                " productdetails.id DESC"
+                                null, " usercomment.comment_time DESC"
                             )) {
                                 $data = $databaseFN->getResult();
-                                if (count($data) > 0) {
+                                $countAllData = count($data);
+                                if ($countAllData > 0) {
 
-                                    $commentCount = array();
-                                    $previseProductId = null;
-
-                                    foreach ($data as $key => $value) {
-                                        array_push($commentCount, $value['productId']);
-                                    }
-
-                                    foreach ($data as $key => $value) {
-                                        if ($previseProductId === $value['productId']) {
-                                            continue;
+                                    $processedProductIds = [];
+                                    foreach ($data as list(
+                                        'commentId' => $commentId,
+                                        'commentorName' => $commentorName,
+                                        'comment' => $comment,
+                                        'commentSeenId' => $commentSeenId,
+                                        'productDescription' => $productDescription,
+                                        'productId' => $productId,
+                                        'productName' => $productName,
+                                        'productImage' => $productImage,
+                                        'comment_time' => $comment_time
+                                    )) {
+                                        // Check if the productId has already been processed
+                                        if (in_array($productId, $processedProductIds)) {
+                                            continue; // Skip this iteration if the productId is already processed
                                         }
 
-                                        $previseProductId = $value['productId'];
-                                        $singleImgName =  explode(",", $value['productImage']);
-                                        $commentSeen =  explode(",", $value['commentSeenId']);
-                            ?>
-                                        <?php for ($i = 0; $i < count($commentSeen); $i++) {
-                                            if ($commentSeen[$i] == $unqueId) {
-                                                echo $commentSeen[$i] . "<br>";
-                                                // echo "opacity-50";
-                                            } else {
-                                                echo "unseen <br>";
-                                                // echo "shadow-md shadow-blue-500/50 opacity-100 mt-5";
+                                        // Add the current productId to the set of processed IDs
+                                        $processedProductIds[] = $productId;
+
+                                        $singleImgName =  explode(",", $productImage);
+                                        $commentSeen =  explode(",", $commentSeenId);
+                                        $seen = 0;
+
+                                        $result = unseenId($productId);
+                                        $unseenIdImpload = 0;
+                                        if ($result !== false) {
+                                            if (count($result) > 0) {
+                                                $seen = count($result);
                                             }
-                                        } ?>
-                                        <tr>
+                                            $unseenIdImpload = implode(",", $result);
+                                        } else {
+                                            echo "No comments found or an error occurred.";
+                                        }
+
+                            ?>
+
+                                        <tr class="<?php echo ($seen <= 0) ? 'opacity-50 mt-5' : 'shadow-md shadow-blue-500/50 opacity-100 mt-5' ?> relative">
                                             <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
                                                 <div class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                                    <?php echo $value['productId'] ?>
+                                                    <!-- <?php echo $commentId ?> -->
+                                                    <?php echo $productId ?>
                                                 </div>
                                             </td>
+                                            <!-- Product Name & Description -->
                                             <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                 <div>
                                                     <h2 class="font-medium text-gray-800 dark:text-white ">
-                                                        <?php echo (str_word_count($value['productName']) < 5) ? $value['productName'] : $otherFN->strSort($value['productName'], 5)  . " ..." ?>
+                                                        <?php echo (str_word_count($productName) < 5) ? $productName : $otherFN->strSort($productName, 5)  . " ..." ?>
                                                     </h2>
                                                     <p class="text-sm font-normal text-gray-600 dark:text-gray-400">
-                                                        <?php echo (str_word_count($value['productDescription']) < 5) ? $value['productDescription'] : $otherFN->strSort($value['productDescription'], 5)  . " ..." ?>
+                                                        <?php echo (str_word_count($productDescription) < 5) ? $productDescription : $otherFN->strSort($productDescription, 5)  . " ..." ?>
                                                     </p>
                                                 </div>
                                             </td>
+                                            <!-- Product Image -->
                                             <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
                                                 <img src="<?php echo $databaseFN->mainUrl . "/upload/product/" . $singleImgName[0]   ?>" class="w-[45px] h-[40px] " alt="<?php echo $singleImgName[0] ?>">
                                             </td>
+                                            <!-- Commentor Name & Comment -->
                                             <td class="px-4 py-4 text-sm whitespace-nowrap ">
                                                 <div class="">
                                                     <h4 class="text-gray-700 dark:text-gray-200">
-                                                        <?php echo (str_word_count($value['commentorName']) < 5) ? $value['commentorName'] : $otherFN->strSort($value['commentorName'], 5)  . " ..." ?>
-                                                        <sup class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                                            <?php
-                                                            $productCurrentId = $value['productId'];
-                                                            $count_values = array_count_values($commentCount);
-                                                            echo isset($count_values[$productCurrentId]) ? $count_values[$productCurrentId] : 0;
-                                                            ?>
-                                                        </sup>
+                                                        <?php echo (str_word_count($commentorName) < 5) ? $commentorName : $otherFN->strSort($commentorName, 5)  . " ..." ?>
+                                                        <?php echo ($seen <= 0) ? "" : "<sup class='inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800'>$seen</sup>"; ?>
                                                     </h4>
                                                     <p class="text-gray-500 dark:text-gray-400">
-                                                        <?php echo (str_word_count($value['comment']) < 7) ? $value['comment'] : $otherFN->strSort($value['comment'], 7)  . " ..." ?>
+                                                        <?php echo (str_word_count($comment) < 7) ? $comment : $otherFN->strSort($comment, 7)  . " ..." ?>
                                                     </p>
                                                 </div>
                                             </td>
+                                            <!-- All Commentor Show -->
                                             <td class="px-4 mx-10 py-4 text-sm whitespace-nowrap">
                                                 <div class="flex items-center">
-                                                    <img class="object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=256&q=80" alt="">
-                                                    <img class="object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=256&q=80" alt="">
-                                                    <img class="object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1256&q=80" alt="">
-                                                    <img class="object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=256&q=80" alt="">
-                                                    <p class="flex items-center justify-center w-6 h-6 -mx-1 text-xs text-blue-600 bg-blue-100 border-2 border-white rounded-full">+4</p>
+                                                    <?php
+                                                    $allcommentorImage = allCommentdetails($productId);
+                                                    $countVal = array();
+                                                    foreach ($allcommentorImage as list('id' => $commentId)) {
+                                                        array_push($countVal, $commentId);
+                                                    }
+                                                    $allCountVal = count($countVal);
+                                                    if ($allCountVal < 5) {
+                                                        for ($image = 0; $image < $allCountVal; $image++) {
+                                                            echo "<img class='object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0' src='https://picsum.photos/200/300?random=" . $countVal[$image] . "' alt=''>";
+                                                        }
+                                                    } else {
+                                                        for ($images = 0; $images < 4; $images++) {
+                                                            echo "<img class='object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0' src='https://picsum.photos/200/300?random=" . $countVal[$images] . "' alt=''>";
+                                                        }
+                                                        echo "<p class='flex items-center justify-center w-6 h-6 -mx-1 text-xs text-blue-600 bg-blue-100 border-2 border-white rounded-full'>+" . $allCountVal - 4 . "</p> ";
+                                                    }
+                                                    ?>
                                                 </div>
                                             </td>
-                                            <td class="px-4 py-4 text-sm whitespace-nowrap ml-5">
-                                                <a href="<?php echo basename($_SERVER['PHP_SELF']) . "?cid=" . $value['commentId'] . "&id=" . $value['productId'] ?>"> <i class="fa-solid fa-eye dark:text-white hover:text-green-400 text-[1rem] cursor-pointer"></i></a>
+                                            <!-- Submit Button -->
+                                            <td class="px-4 py-4 text-sm whitespace-nowrap ml-5 text-right">
+                                                <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+                                                    <input type="text" hidden name="tapProductId" value="<?php echo $productId ?>">
+                                                    <input type="text" hidden name="unseenCommentId" value="<?php echo $unseenIdImpload ?>">
+                                                    <button name="seenComment" type="submit"><i class="fa-solid fa-eye dark:text-white hover:text-green-400 text-[1rem] cursor-pointer"></i></button>
+                                                </form>
                                             </td>
                                         </tr>
                             <?php
                                     }
+                                    // echo "<pre>";
+                                    // print_r($processedProductIds);
+                                    // echo "</pre>";
                                 } else {
                                     echo "<p id='message' class='text-center bg-green-500 py-3 capitalize font-bold'>No Comment Found in database</p>";
                                 }
@@ -191,7 +268,7 @@ if (isset($_GET['cid'])) {
 
     <div class="mt-6 sm:flex sm:items-center sm:justify-between ">
         <div class="text-sm text-gray-500 dark:text-gray-400">
-            Page <span class="font-medium text-gray-700 dark:text-gray-100">1 of 10</span>
+            Page <span class="font-medium text-gray-700 dark:text-gray-100">1 of <?php echo $countAllData ?></span>
         </div>
 
         <div class="flex items-center mt-4 gap-x-4 sm:mt-0">
@@ -217,7 +294,17 @@ if (isset($_GET['cid'])) {
         </div>
     </div>
 </section>
-
+<script>
+    // Comment Insert Show notic
+    document.addEventListener("DOMContentLoaded", function() {
+        setTimeout(function() {
+            var messageDiv = document.getElementById("message");
+            if (messageDiv) {
+                messageDiv.style.display = "none";
+            }
+        }, 5000); // 10000 milliseconds = 10 seconds
+    });
+</script>
 <?php
 include "../footer.php";
 ?>
