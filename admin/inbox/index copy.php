@@ -48,7 +48,7 @@ function commentTableData($id)
 
     <div class="mt-6 md:flex md:items-center md:justify-between">
         <div class="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
-            <a class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300" href="<?php echo basename($_SERVER['PHP_SELF']) . "?msg=all" ?>">View All</a>
+            <a class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300" href="<?php echo basename($_SERVER['PHP_SELF']) ?>">View All</a>
             <a class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100" href="<?php echo basename($_SERVER['PHP_SELF']) . "?msg=unseen" ?>">Unseen</a>
             <a class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100" href="<?php echo basename($_SERVER['PHP_SELF']) . "?msg=seen" ?>">Seen</a>
         </div>
@@ -152,7 +152,6 @@ function commentTableData($id)
                                                 continue;
                                             }
                                             $processedProductIds[] = $productId;
-                                            $singleImgName =  explode(",", $productImage);
 
                                             $result = commentTableData($productId);
                                             $getUnseenId = array();
@@ -164,13 +163,24 @@ function commentTableData($id)
                                                 array_push($commentAllId, $id);
                                             }
 
-                                            echo "<pre>";
-                                            print_r($getUnseenId);
-                                            if ($getUnseenId != null) {
-                                                continue;
-                                            } 
-                                            
-                                            echo "</pre>";
+                                            if (isset($_GET['msg'])) {
+                                                if (isset($_GET['msg']) && $_GET['msg'] == 'unseen') {
+                                                    if ($getUnseenId == null) {
+                                                        continue;
+                                                    }
+                                                } else if (isset($_GET['msg']) && $_GET['msg'] == 'seen') {
+                                                    if ($getUnseenId != null) {
+                                                        continue;
+                                                    }
+                                                }
+                                            }
+
+                                            // echo "<pre>";
+                                            // print_r($getUnseenId);
+                                            // echo "</pre>";
+
+
+                                            $singleImgName =  explode(",", $productImage);
                             ?>
                                             <tr class="<?php echo (count($getUnseenId) <= 0) ? 'opacity-50 mt-5' : 'shadow-md shadow-blue-500/50 opacity-100 mt-5' ?>">
                                                 <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
@@ -252,12 +262,12 @@ function commentTableData($id)
                     <nav aria-label="Page navigation example">
                         <ul class="inline-flex -space-x-px text-sm">
                             <?php
-                            // echo $totalPages;
-                            // for ($page = 1; $page <= $totalPages; $page++) {
-                            //     echo "<a href=\"?page=$page\">$page</a> ";
-                            // }
                             $getTotalPage = $totalPages;
-                            $currentPath = basename($_SERVER['PHP_SELF']);
+                            $currentPath = basename($_SERVER['PHP_SELF']) . "?";
+                            if(isset($_GET['msg'])){
+                                $currentPath = basename($_SERVER['PHP_SELF']) . "?msg=" . $_GET['msg'] . "&";
+                            }
+                            
                             if (isset($_GET['page'])) {
                                 $page = intval($_GET['page']);
                             } else {
@@ -266,15 +276,15 @@ function commentTableData($id)
 
                             if ($page > 1) {
                                 $prev = $page - 1;
-                                echo "<li><a href='$currentPath?page=$prev'class='flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Previous</a></li>";
+                                echo "<li><a href='".$currentPath."page=$prev'class='flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Previous</a></li>";
                             }
                             for ($paginationLoop = 1; $paginationLoop <= $getTotalPage; $paginationLoop++) {
-                                $active = ($paginationLoop == $page) ? "bg-indigo-500 text-white" : "";
-                                echo "<li><a href='$currentPath?page=$paginationLoop' class='$active  flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>$paginationLoop</a></li>";
+                                $active = ($paginationLoop == $page) ? "bg-indigo-500 text-white dark:bg-blue-500 dark:text-white" : "";
+                                echo "<li ><a href='".$currentPath."page=$paginationLoop' class='$active  flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>$paginationLoop</a></li>";
                             }
                             if ($page < $getTotalPage) {
                                 $next = $page + 1;
-                                echo "<li><a href='$currentPath?page=$next' class='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Next</a></li>";
+                                echo "<li><a href='".$currentPath."page=$next' class='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Next</a></li>";
                             }
                             ?>
                         </ul>
@@ -287,7 +297,7 @@ function commentTableData($id)
 
     <div class="mt-6 sm:flex sm:items-center sm:justify-between ">
         <div class="text-sm text-gray-500 dark:text-gray-400">
-            Page <span class="font-medium text-gray-700 dark:text-gray-100">1 of <?php echo $countTotalProduct ?></span>
+            Page <span class="font-medium text-gray-700 dark:text-gray-100"> <?php echo (isset($_GET['page'])) ? $_GET['page'] : 1; echo " of " .$countTotalProduct; ?></span>
         </div>
 
         <div class="flex items-center mt-4 gap-x-4 sm:mt-0">

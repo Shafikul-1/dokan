@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 22, 2024 at 11:40 AM
+-- Generation Time: Jun 28, 2024 at 01:41 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -33,6 +33,13 @@ CREATE TABLE `cart` (
   `productId` int(11) DEFAULT NULL,
   `Qty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`id`, `uniqueId`, `productId`, `Qty`) VALUES
+(92, '6653e69a69bd127052024074914AM', 72, 1);
 
 -- --------------------------------------------------------
 
@@ -219,8 +226,56 @@ CREATE TABLE `usercomment` (
   `time` varchar(600) DEFAULT NULL,
   `userAuth` int(11) DEFAULT NULL,
   `postId` int(11) DEFAULT NULL,
-  `uniqueId` text NOT NULL
+  `uniqueId` text NOT NULL,
+  `commentSeenId` text NOT NULL,
+  `comment_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `usercomment`
+--
+
+INSERT INTO `usercomment` (`id`, `name`, `comment`, `time`, `userAuth`, `postId`, `uniqueId`, `commentSeenId`, `comment_time`) VALUES
+(47, 'Runjila Akter', 'industry. Lorem Ipsum has been the industry&#039;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop', '24-06-2024 11:29:30 AM', 4, 93, '667903e4e036924062024112804AM', '6653e69a69bd127052024074914AM,667903e4e036924062024112804AM,667a55d621e2e25062024112958AM,', '2024-06-27 07:12:49'),
+(50, 'sdfsdf', 'ed the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.', '24-06-2024 12:41:14 PM', 1, 94, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 07:12:49'),
+(51, 'adsfasf', 'asdfsdafsadfasdf', '24-06-2024 01:20:36 PM', 1, 94, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 07:12:49'),
+(52, 'sdfsdfdsf', 'sdfsfsdf', '24-06-2024 02:49:20 PM', 1, 96, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,667a55d621e2e25062024112958AM,667903e4e036924062024112804AM,', '2024-06-27 07:12:49'),
+(53, 'sfsf', 'sfsdf', '24-06-2024 02:49:24 PM', 1, 96, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 07:12:49'),
+(54, 'sdfsdf', 'sdfsdfsdf', '24-06-2024 02:49:33 PM', 1, 95, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 07:12:49'),
+(55, 'sfsdf', 'sdfsfsdf', '24-06-2024 02:49:40 PM', 1, 86, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 07:12:49'),
+(56, 'dfsdf', 'sdfsdf', '24-06-2024 05:33:55 PM', 1, 93, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 07:12:49'),
+(57, 'sdfsdf', 'sdfsdf', '25-06-2024 02:04:54 PM', 1, 93, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 07:12:49'),
+(58, 'Test Comment', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#039;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\r\n\r\n', '26-06-2024 11:04:51 AM', 1, 89, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,6653e69a69bd127052024074914AM,', '2024-06-27 07:12:49'),
+(59, 'Other Test COmmenrt', 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using &#039;Content here, content here&#039;, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for &#039;lorem ipsum&#039; will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).\r\n\r\n', '26-06-2024 11:05:15 AM', 1, 80, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-28 06:50:08'),
+(60, 'sfsdf', 'sdfsdf', '26-06-2024 01:17:09 PM', 1, 89, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 07:12:49'),
+(61, 'dfsdfa', 'adsfasdf', '26-06-2024 01:17:14 PM', 1, 89, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 07:12:49'),
+(62, 'new comment', 'new comment', '26-06-2024 02:06:44 PM', 1, 95, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 07:12:49'),
+(63, 'sdfsdf', 'sdfsdfsdf', '26-06-2024 04:11:19 PM', 1, 83, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-28 05:47:01'),
+(64, 'fgsdfg', 'dsfgdfsg', '26-06-2024 04:11:35 PM', 1, 83, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-28 05:47:03'),
+(65, 'Md shafikul islam', 'loremloremloremloremloremloremloremlorem', '26-06-2024 04:11:51 PM', 1, 83, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-28 06:49:59'),
+(66, 'Runjila', 'Runjila RunjilaRunjilaRunjilaRunjilaRunjilaRunjila', '26-06-2024 04:12:17 PM', 1, 83, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-28 06:49:59'),
+(67, 'Runjila Akter', 'sdfsdfsd', '26-06-2024 04:56:56 PM', 1, 86, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 07:12:49'),
+(68, 'simply dummy', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#039;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\r\n\r\n', '26-06-2024 04:58:17 PM', 1, 86, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 07:12:49'),
+(69, 'essentially unchanged', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#039;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\r\n\r\n', '26-06-2024 04:58:41 PM', 1, 86, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 07:12:49'),
+(70, 'essentially unchanged', 'essentially unchanged', '26-06-2024 04:58:50 PM', 1, 86, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 07:12:49'),
+(71, 'essentially unchanged', 'essentially unchangedvessentially unchangedessentially unchangedessentially unchangedessentially unchanged', '26-06-2024 04:58:56 PM', 1, 86, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 07:12:49'),
+(72, 'sdfgsdfg', 'sfdgsfdgsdg', '27-06-2024 01:14:57 PM', 1, 95, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 07:17:46'),
+(73, 'wertyreyrte', 'etryertyert', '27-06-2024 01:17:57 PM', 1, 85, '6653e69a69bd127052024074914AM', '', '2024-06-27 07:18:03'),
+(74, 'Current tiem ', 'Current tiem Current tiem Current tiem Current tiem ', '27-06-2024 02:45:58 PM', 1, 94, '6653e69a69bd127052024074914AM', '', '2024-06-27 08:46:17'),
+(75, 'Current Tiem Check', 'Current Tiem Check Current Tiem Check Current Tiem Check Current Tiem Check', '27-06-2024 02:51:55 PM', 1, 86, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 08:53:32'),
+(76, 'Check again ', ' other again check comment', '27-06-2024 02:52:12 PM', 1, 86, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-27 08:53:32'),
+(77, 'ssdfsf', 'sdfsdf', '27-06-2024 02:52:55 PM', 1, 86, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-28 08:26:47'),
+(78, 'sfsdf', 'sdfsdf', '27-06-2024 04:03:22 PM', 1, 93, '6653e69a69bd127052024074914AM', '', '2024-06-27 10:03:36'),
+(79, 'sdfsdaf', 'asdfsd', '28-06-2024 10:59:26 AM', 1, 93, '6653e69a69bd127052024074914AM', '', '2024-06-28 04:59:38'),
+(80, 'sfsdf', 'sdfsdf', '28-06-2024 12:00:39 PM', 1, 93, '6653e69a69bd127052024074914AM', '', '2024-06-28 06:00:49'),
+(81, 'sfsdf', 'sdfsdf', '28-06-2024 12:02:29 PM', 1, 93, '6653e69a69bd127052024074914AM', '', '2024-06-28 06:02:35'),
+(82, 'sdfsdf', 'sdfsdfsdfsdf', '28-06-2024 12:12:19 PM', 1, 86, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-28 08:26:47'),
+(83, 'Test Commetn', 'Test Commetn', '28-06-2024 12:50:18 PM', 1, 80, '6653e69a69bd127052024074914AM', '', '2024-06-28 06:50:27'),
+(84, 'adsfa', 'sdfasdfasf', '28-06-2024 02:14:27 PM', 1, 96, '6653e69a69bd127052024074914AM', '', '2024-06-28 08:14:32'),
+(85, 'sdfadfga', 'sdfsadfsdaf', '28-06-2024 02:25:43 PM', 1, 83, '6653e69a69bd127052024074914AM', '', '2024-06-28 08:25:48'),
+(86, 'adfasdfa', 'try. Lorem Ipsum has been the industry&#039;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently', '28-06-2024 02:25:51 PM', 1, 89, '6653e69a69bd127052024074914AM', '', '2024-06-28 08:25:57'),
+(87, 'sdfasdf', 'try. Lorem Ipsum has been the industry&#039;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently', '28-06-2024 02:25:59 PM', 1, 90, '6653e69a69bd127052024074914AM', '', '2024-06-28 08:26:05'),
+(88, 'sdfasdf', 'adsfasdf', '28-06-2024 02:26:30 PM', 1, 81, '6653e69a69bd127052024074914AM', '', '2024-06-28 08:26:35');
 
 -- --------------------------------------------------------
 
@@ -247,9 +302,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `pass`, `conPass`, `date`, `userComment`, `userRoll`, `email`, `img`, `uniqueId`) VALUES
 (48, 'admin', '$2y$10$OquX9WV6CIsqwgTajY.y2.ZH.rGPyFos/CFR4N5UJd/vwCwh2rDYG', '$2y$10$IDxgCp.mgsq1AwjC/QnlAeno7snJeE1m5zA3x8zfRUZWijfHGie6i', '27-05-2024 07:48:58 AM', 'admin', 1, 'admin@gmail.com', NULL, '6653e69a69bd127052024074914AM'),
-(68, 'Manager', '$2y$10$GHZDPEJE1X/jpRg3A6VhUOOyVhkvAF37kLFHK7kjeUnqpYHuPBzxK', '$2y$10$MjUH0JfzXQnI0d5Pc8GkKuKVHryb0WrGNiCcsDQusu/FxhV9NHqn.', '14-06-2024 02:59:18 PM', 'Fast manager At this time\r\n', 2, 'manager@gmail.com', '445782839_122123112524280279_5278681660228043620_n.jpg', '666c06fe2f99714062024030150PM'),
-(71, 'Runjila Akter', '$2y$10$vxOJAo2GpBWmnVbLjKQdneX/hIYvlJLcUyO4tEPABzgfRCrkMmpFu', '$2y$10$NfwZ5WVCwCzTLwRFVtNnSeKG/DQXOn4bzhgp.Jd3..ZT1MMK9A0rO', '20-06-2024 04:36:11 PM', 'runjila', 1, 'runjila@gmail.com', 'beauty_glam_028-960x1440_22-06-2024 12_03_23_PM.jpg', '6674062d2596120062024043629PM'),
-(80, 'testtesttesttesttest', '$2y$10$r3z7uoIP/jsR1J6g37WZZuvM8.EdeTzyxr9Pbihrz875hC9IA0MtS', '$2y$10$sRhz9dZJMq6/6cW1xgti4ex2So92dAxQzGKphMBZBzZe8gROKx4OG', '22-06-2024 12:12:16 PM', 'testtesttesttest', 4, 'tetesttesttesttestst@gmail.com', 'product.jpg', '66766b58d731e22062024121240PM');
+(82, 'md shafikul islam', '$2y$10$61/NWVXeR2o1J4UzFyIbDOMstqFv51jUWIvMqqFueH7K7xOxIgqly', '$2y$10$8DHlf4Q59vy6.6hKCnfwf.DVfe..VGa0b1ByuLvRuxVRHVCfj7h.G', '24-06-2024 11:26:44 AM', 'OutSide User', 4, 'shafikuluser@gmail.com', NULL, '667903e4e036924062024112804AM'),
+(83, 'Manager', '$2y$10$/lfd64GfvSmtOhbadhunzO.QoItCoT4lQyPfR45QUTmDczs6rmxj6', '$2y$10$UI6FdjqT94tTsybjwRW5WeBYiMnoJy4XwLjiLBTdXI50mSxM0zyay', '25-06-2024 11:29:41 AM', 'manager', 2, 'manager@gmail.com', NULL, '667a55d621e2e25062024112958AM');
 
 -- --------------------------------------------------------
 
@@ -268,7 +322,8 @@ CREATE TABLE `whichlist` (
 --
 
 INSERT INTO `whichlist` (`id`, `uniqueId`, `productId`) VALUES
-(35, '6653e69a69bd127052024074914AM', 81);
+(35, '6653e69a69bd127052024074914AM', 81),
+(53, '6679025a0c7b624062024112130AM', 94);
 
 --
 -- Indexes for dumped tables
@@ -342,7 +397,7 @@ ALTER TABLE `whichlist`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT for table `oldorder`
@@ -384,19 +439,19 @@ ALTER TABLE `slider`
 -- AUTO_INCREMENT for table `usercomment`
 --
 ALTER TABLE `usercomment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT for table `whichlist`
 --
 ALTER TABLE `whichlist`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
