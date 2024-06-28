@@ -1,8 +1,11 @@
 <?php
 ob_start();
 include "../header.php";
-$valuesPerPage = 5;
 $unqueId = $_SESSION['uniqueId'];
+$valuesPerPage = 5;
+$active = "bg-gray-100 dark:bg-gray-800";
+
+// See comment and send data in databse
 if (isset($_POST['seenComment'])) {
     $tapProductId = htmlentities($_POST['tapProductId'], ENT_QUOTES);
     $unseenCommentId = htmlentities($_POST['unseenCommentId'], ENT_QUOTES);
@@ -33,21 +36,46 @@ if (isset($_POST['seenComment'])) {
 $allId = array();
 $unseenId = array();
 $seenId = array();
+$searchTrue = false;
 
-if ($databaseFN->getData("usercomment", "*", null, null, " id DESC")) {
-    $result = $databaseFN->getResult();
-    foreach ($result as list("id" => $id, "postId" => $postId, "commentSeenId" => $commentSeenId)) {
-        $pushArr = ['postId' => $postId, 'commentId' => $id];
-        if (is_null($commentSeenId) || strpos($commentSeenId, $unqueId) === false) {
-            array_push($unseenId, $pushArr);
+// Search Value
+if (isset($_GET['search'])) {
+    $searchTrue = true;
+    $search = $_GET['search'];
+    if ($databaseFN->searchData("productdetails", "*", "productName", $search)) {
+        foreach ($databaseFN->getResult() as list("id" => $postId)) {
+            if ($databaseFN->getData("usercomment", "*", null, " postId = $postId", null, 1)) {
+                $commentTableData = $databaseFN->getResult();
+                if (count($commentTableData) > 0) {
+                    $pushArr = ['postId' => $postId];
+                    array_push($allId, $pushArr);
+                } else {
+                    continue;
+                }
+            }
         }
-        if (strpos($commentSeenId, $unqueId) !== false) {
-            array_push($seenId, $pushArr);
-        }
-        array_push($allId, $pushArr);
+    } else {
+        echo "someting want wrong Search";
     }
-} else {
-    echo "someting want wrong";
+}
+
+// Comment All Data Fetch
+if ($searchTrue == false) {
+    if ($databaseFN->getData("usercomment", "*", null, null, " id DESC")) {
+        $result = $databaseFN->getResult();
+        foreach ($result as list("id" => $id, "postId" => $postId, "commentSeenId" => $commentSeenId)) {
+            $pushArr = ['postId' => $postId, 'commentId' => $id];
+            if (is_null($commentSeenId) || strpos($commentSeenId, $unqueId) === false) {
+                array_push($unseenId, $pushArr);
+            }
+            if (!is_null($commentSeenId) && strpos($commentSeenId, $unqueId) !== false) {
+                array_push($seenId, $pushArr);
+            }
+            array_push($allId, $pushArr);
+        }
+    } else {
+        echo "someting want wrong";
+    }
 }
 
 $showValue = $allId;
@@ -67,16 +95,16 @@ function getCommentData($id)
         return $data;
     }
 }
+
+
 ?>
 <!-- component -->
 <section class="container px-4 mx-auto">
-
-
     <div class="mt-6 md:flex md:items-center md:justify-between">
         <div class="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
-            <a class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300" href="<?php echo basename($_SERVER['PHP_SELF']) ?>">View All</a>
-            <a class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100" href="<?php echo basename($_SERVER['PHP_SELF']) . "?msg=unseen" ?>">Unseen</a>
-            <a class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100" href="<?php echo basename($_SERVER['PHP_SELF']) . "?msg=seen" ?>">Seen</a>
+            <a class="<?php echo (empty($_GET['msg'])) ? $active : '' ?> px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100" href="<?php echo basename($_SERVER['PHP_SELF']) ?>">View All</a>
+            <a class="<?php echo (isset($_GET['msg']) && $_GET['msg'] == 'unseen') ? $active : '' ?> px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100" href="<?php echo basename($_SERVER['PHP_SELF']) . "?msg=unseen" ?>">Unseen</a>
+            <a class="<?php echo (isset($_GET['msg']) && $_GET['msg'] == 'seen') ? $active : '' ?> px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100" href="<?php echo basename($_SERVER['PHP_SELF']) . "?msg=seen" ?>">Seen</a>
         </div>
 
         <div class="relative flex items-center mt-4 md:mt-0">
@@ -86,7 +114,9 @@ function getCommentData($id)
                 </svg>
             </span>
 
-            <input type="text" placeholder="Search" class="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40">
+            <form action="" method="get">
+                <input type="text" name="search" placeholder="Search Product Name" class="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40">
+            </form>
         </div>
     </div>
 
@@ -239,6 +269,7 @@ function getCommentData($id)
                         <?php
                         $getTotalPage = $totalPages;
                         $currentPath = basename($_SERVER['PHP_SELF']) . "?";
+
                         if (isset($_GET['msg'])) {
                             $currentPath = basename($_SERVER['PHP_SELF']) . "?msg=" . $_GET['msg'] . "&";
                         }
