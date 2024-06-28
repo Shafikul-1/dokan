@@ -115,7 +115,7 @@ function commentTableData($id)
                                     }
                                 }
                                 $countTotalProduct = count($uniquePostIds);
-                                $valuesPerPage = 10;
+                                $valuesPerPage = 5;
                                 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                                 $totalPages = ceil(count($uniquePostIds) / $valuesPerPage);
                                 if ($currentPage < 1) {
@@ -257,29 +257,30 @@ function commentTableData($id)
                         <ul class="inline-flex -space-x-px text-sm">
 
                             <?php
+                            // echo $totalPages;
                             // for ($page = 1; $page <= $totalPages; $page++) {
                             //     echo "<a href=\"?page=$page\">$page</a> ";
                             // }
-                            // $getTotalPage = $databaseFN->pagination("productdetails", null, null, 5);
-                            // $currentPath = basename($_SERVER['PHP_SELF']);
-                            // if (isset($_GET['page'])) {
-                            //     $page = intval($_GET['page']);
-                            // } else {
-                            //     $page = 1;
-                            // }
+                            $getTotalPage = $totalPages;
+                            $currentPath = basename($_SERVER['PHP_SELF']);
+                            if (isset($_GET['page'])) {
+                                $page = intval($_GET['page']);
+                            } else {
+                                $page = 1;
+                            }
 
-                            // if ($page > 1) {
-                            //     $prev = $page - 1;
-                            //     echo "<li><a href='$currentPath?page=$prev'class='flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Previous</a></li>";
-                            // }
-                            // for ($i = 1; $i <= $getTotalPage; $i++) {
-                            //     $active = ($i == $page) ? "bg-indigo-500 text-white" : "";
-                            //     echo "<li><a href='$currentPath?page=$i' class='$active  flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>$i</a></li>";
-                            // }
-                            // if ($page < $getTotalPage) {
-                            //     $next = $page + 1;
-                            //     echo "<li><a href='$currentPath?page=$next' class='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Next</a></li>";
-                            // }
+                            if ($page > 1) {
+                                $prev = $page - 1;
+                                echo "<li><a href='$currentPath?page=$prev'class='flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Previous</a></li>";
+                            }
+                            for ($paginationLoop = 1; $paginationLoop <= $getTotalPage; $paginationLoop++) {
+                                $active = ($paginationLoop == $page) ? "bg-indigo-500 text-white" : "";
+                                echo "<li><a href='$currentPath?page=$paginationLoop' class='$active  flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>$paginationLoop</a></li>";
+                            }
+                            if ($page < $getTotalPage) {
+                                $next = $page + 1;
+                                echo "<li><a href='$currentPath?page=$next' class='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Next</a></li>";
+                            }
                             ?>
 
                         </ul>
