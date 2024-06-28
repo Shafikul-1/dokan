@@ -44,12 +44,20 @@ if (isset($_GET['search'])) {
     $searchTrue = true;
     $search = $_GET['search'];
     if ($databaseFN->searchData("productdetails", "*", "productName", $search)) {
-        foreach ($databaseFN->getResult() as list("id" => $postId)) {
-            if ($databaseFN->getData("usercomment", "*", null, " postId = $postId", null, 1)) {
+        foreach ($databaseFN->getResult() as list("id" => $searchPostId)) {
+            if ($databaseFN->getData("usercomment", "*", null, " postId = $searchPostId")) {
                 $commentTableData = $databaseFN->getResult();
                 if (count($commentTableData) > 0) {
-                    $pushArr = ['postId' => $postId];
-                    array_push($allId, $pushArr);
+                    foreach ($commentTableData as list("id" => $id, "postId" => $postId, "commentSeenId" => $commentSeenId)) {
+                        $pushArr = ['postId' => $postId, 'commentId' => $id];
+                        if (is_null($commentSeenId) || strpos($commentSeenId, $unqueId) === false) {
+                            array_push($unseenId, $pushArr);
+                        }
+                        if (!is_null($commentSeenId) && strpos($commentSeenId, $unqueId) !== false) {
+                            array_push($seenId, $pushArr);
+                        }
+                        array_push($allId, $pushArr);
+                    }
                 } else {
                     continue;
                 }
