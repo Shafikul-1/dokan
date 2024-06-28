@@ -143,7 +143,7 @@ class database
                 $start = ($page - 1) * $limit;
                 $sql .= " LIMIT $start, $limit";
             }
-            echo $sql . "<br>";
+            // echo $sql . "<br>";
             if ($dataResult = $this->sqli->query($sql)) {
                 $this->result = $dataResult->fetch_all(MYSQLI_ASSOC);
                 return true;

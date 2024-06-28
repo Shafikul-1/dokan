@@ -1,7 +1,7 @@
 <?php
 ob_start();
 include "../header.php";
-
+$valuesPerPage = 5;
 $unqueId = $_SESSION['uniqueId'];
 if (isset($_POST['seenComment'])) {
     $tapProductId = htmlentities($_POST['tapProductId'], ENT_QUOTES);
@@ -30,18 +30,44 @@ if (isset($_POST['seenComment'])) {
     }
 }
 
+$allId = array();
+$unseenId = array();
+$seenId = array();
 
-function commentTableData($id)
+if ($databaseFN->getData("usercomment", "*", null, null, " id DESC")) {
+    $result = $databaseFN->getResult();
+    foreach ($result as list("id" => $id, "postId" => $postId, "commentSeenId" => $commentSeenId)) {
+        $pushArr = ['postId' => $postId, 'commentId' => $id];
+        if (is_null($commentSeenId) || strpos($commentSeenId, $unqueId) === false) {
+            array_push($unseenId, $pushArr);
+        }
+        if (strpos($commentSeenId, $unqueId) !== false) {
+            array_push($seenId, $pushArr);
+        }
+        array_push($allId, $pushArr);
+    }
+} else {
+    echo "someting want wrong";
+}
+
+$showValue = $allId;
+if (isset($_GET['msg']) && $_GET['msg'] == 'seen') {
+    $showValue = $seenId;
+}
+if (isset($_GET['msg']) && $_GET['msg'] == 'unseen') {
+    $showValue = $unseenId;
+}
+$checkUniquePostIds = array_unique(array_column($showValue, 'postId'));
+
+function getCommentData($id)
 {
     $databaseFN = new database();
-    if ($databaseFN->getData('usercomment', "*", null, " postId = $id")) {
-        return $databaseFN->getResult();
+    if ($databaseFN->getData("usercomment", "*", null, " postId = $id")) {
+        $data = $databaseFN->getResult();
+        return $data;
     }
 }
 ?>
-
-
-
 <!-- component -->
 <section class="container px-4 mx-auto">
 
@@ -98,228 +124,148 @@ function commentTableData($id)
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                             <?php
-                            if ($databaseFN->getData("usercomment", "postId", null, null, " id DESC")) {
-                                $commentPostId = $databaseFN->getResult();
-                                $uniquePostIds = array();
-                                foreach ($commentPostId as $post) {
-                                    if (!in_array($post['postId'], $uniquePostIds)) {
-                                        $uniquePostIds[] = $post['postId'];
-                                    }
-                                }
-                                $countTotalProduct = count($uniquePostIds);
-                                $valuesPerPage = 5;
-                                $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                                $totalPages = ceil(count($uniquePostIds) / $valuesPerPage);
-                                if ($currentPage < 1) {
-                                    $currentPage = 1;
-                                } elseif ($currentPage > $totalPages) {
-                                    $currentPage = $totalPages;
-                                }
-                                $startIndex = ($currentPage - 1) * $valuesPerPage;
-                                $currentPageValues = array_slice($uniquePostIds, $startIndex, $valuesPerPage);
+                            $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                            $totalPages = ceil(count($checkUniquePostIds) / $valuesPerPage);
+                            if ($currentPage < 1) {
+                                $currentPage = 1;
+                            } elseif ($currentPage > $totalPages) {
+                                $currentPage = $totalPages;
+                            }
+                            $startIndex = ($currentPage - 1) * $valuesPerPage;
+                            $currentPageValues = array_slice($checkUniquePostIds, $startIndex, $valuesPerPage);
 
-                                for ($i = 0; $i < count($currentPageValues); $i++) {
-                                    if ($databaseFN->getData(
-                                        "productdetails",
-                                        "usercomment.id AS commentId,
-                                        usercomment.name AS commentorName,
-                                        usercomment.comment AS comment,
-                                        usercomment.commentSeenId AS commentSeenId,
-                                        usercomment.comment_time AS comment_time,
-                                        productdetails.id AS productId,
-                                        productdetails.productName AS productName,
-                                        productdetails.productDescription AS productDescription,
-                                        productdetails.productImages AS productImage",
-                                        " usercomment ON productdetails.id = usercomment.postId",
-                                        " productdetails.id =" . $currentPageValues[$i],
-                                        " usercomment.id DESC"
-                                    )) {
-                                        $allData = $databaseFN->getResult();
-                                        $totalComment = count($allData);
-                                        $processedProductIds = [];
-                                        foreach ($allData as list(
-                                            'commentId' => $commentId,
-                                            'commentorName' => $commentorName,
-                                            'comment' => $comment,
-                                            'commentSeenId' => $commentSeenId,
-                                            'productDescription' => $productDescription,
-                                            'productId' => $productId,
-                                            'productName' => $productName,
-                                            'productImage' => $productImage,
-                                            'comment_time' => $comment_time
-                                        )) {
-                                            if (in_array($productId, $processedProductIds)) {
-                                                continue;
+                            foreach ($currentPageValues as $checkUniquePostId) {
+                                if ($databaseFN->getData("productdetails", "id, productName, productDescription, productImages", null, " id = $checkUniquePostId")) {
+                                    foreach ($databaseFN->getResult() as list("id" => $productId, "productName" => $productName, "productDescription" => $productDescription, "productImages" => $productImages)) {
+                                        $singleImgName =  explode(",", $productImages);
+                                        $Commentdata = getCommentData($productId);
+                                        $unseenComment = array();
+
+                                        foreach ($Commentdata as list("id" => $commentid, "name" => $commentorName, "comment" => $comment, "commentSeenId" => $commentSeenId)) {
+                                            if (is_null($commentSeenId) || strpos($commentSeenId, $unqueId) === false) {
+                                                array_push($unseenComment, $commentid);
                                             }
-                                            $processedProductIds[] = $productId;
-
-                                            $result = commentTableData($productId);
-                                            $getUnseenId = array();
-                                            $commentAllId = array();
-                                            foreach ($result as list("commentSeenId" => $commentSeenId, "id" => $id)) {
-                                                if (is_null($commentSeenId) || strpos($commentSeenId, $unqueId) === false) {
-                                                    array_push($getUnseenId, $id);
-                                                }
-                                                array_push($commentAllId, $id);
-                                            }
-
-                                            if (isset($_GET['msg'])) {
-                                                if (isset($_GET['msg']) && $_GET['msg'] == 'unseen') {
-                                                    if ($getUnseenId == null) {
-                                                        continue;
-                                                    }
-                                                } else if (isset($_GET['msg']) && $_GET['msg'] == 'seen') {
-                                                    if ($getUnseenId != null) {
-                                                        continue;
-                                                    }
-                                                }
-                                            }
-
-                                            // echo "<pre>";
-                                            // print_r($getUnseenId);
-                                            // echo "</pre>";
-
-
-                                            $singleImgName =  explode(",", $productImage);
-                            ?>
-                                            <tr class="<?php echo (count($getUnseenId) <= 0) ? 'opacity-50 mt-5' : 'shadow-md shadow-blue-500/50 opacity-100 mt-5' ?>">
-                                                <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
-                                                    <div class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                                        <?php echo "P=" . $productId ?>
-                                                        <?php echo "C=" . $commentId ?>
-                                                    </div>
-                                                </td>
-                                                <!-- Product Name & Description -->
-                                                <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                                                    <div>
-                                                        <h2 class="font-medium text-gray-800 dark:text-white ">
-                                                            <?php echo (str_word_count($productName) < 5) ? $productName : $otherFN->strSort($productName, 5)  . " ..." ?>
-                                                        </h2>
-                                                        <p class="text-sm font-normal text-gray-600 dark:text-gray-400">
-                                                            <?php echo (str_word_count($productDescription) < 5) ? $productDescription : $otherFN->strSort($productDescription, 5)  . " ..." ?>
-                                                        </p>
-                                                    </div>
-                                                </td>
-                                                <!-- Product Image -->
-                                                <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
-                                                    <img src="<?php echo $databaseFN->mainUrl . "/upload/product/" . $singleImgName[0]   ?>" class="w-[45px] h-[40px] " alt="<?php echo $singleImgName[0] ?>">
-                                                </td>
-                                                <!-- Commentor Name & Comment -->
-                                                <td class="px-4 py-4 text-sm whitespace-nowrap ">
-                                                    <div class="">
-                                                        <h4 class="text-gray-700 dark:text-gray-200">
-                                                            <?php echo (str_word_count($commentorName) < 5) ? $commentorName : $otherFN->strSort($commentorName, 5)  . " ..." ?>
-                                                            <?php echo (count($getUnseenId) <= 0) ? "" : "<sup class='inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800'>" . count($getUnseenId) . "</sup>";
-                                                            ?>
-                                                        </h4>
-                                                        <p class="text-gray-500 dark:text-gray-400">
-                                                            <?php echo (str_word_count($comment) < 7) ? $comment : $otherFN->strSort($comment, 7)  . " ..." ?>
-                                                        </p>
-                                                    </div>
-                                                </td>
-                                                <!-- All Commentor Show -->
-                                                <td class="px-4 mx-10 py-4 text-sm whitespace-nowrap">
-                                                    <div class="flex items-center">
-                                                        <?php
-                                                        $allCountVal = count($commentAllId);
-                                                        if ($allCountVal < 5) {
-                                                            for ($image = 0; $image < $allCountVal; $image++) {
-                                                                echo "<img class='object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0' src='https://picsum.photos/200/300?random=" . $commentAllId[$image] . "' alt=''>";
-                                                            }
-                                                        } else {
-                                                            for ($images = 0; $images < 4; $images++) {
-                                                                echo "<img class='object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0' src='https://picsum.photos/200/300?random=" . $commentAllId[$images] . "' alt=''>";
-                                                            }
-                                                            echo "<p class='flex items-center justify-center w-6 h-6 -mx-1 text-xs text-blue-600 bg-blue-100 border-2 border-white rounded-full'>+" . $allCountVal - 4 . "</p> ";
-                                                        }
-                                                        ?>
-                                                    </div>
-                                                </td>
-                                                <!-- Submit Button -->
-                                                <td class="px-4 py-4 text-sm whitespace-nowrap ml-5 text-right">
-                                                    <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                                                        <input type="text" hidden name="tapProductId" value="<?php echo $productId ?>">
-                                                        <input type="text" hidden name="unseenCommentId" value="<?php echo implode(",", $getUnseenId) ?>">
-                                                        <button name="seenComment" type="submit"><i class="fa-solid fa-eye dark:text-white hover:text-green-400 text-[1rem] cursor-pointer"></i></button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                            <?php
                                         }
-                                    } else {
-                                        echo "<p id='message' class='text-center bg-red-500 py-3 capitalize font-bold'>Someting want wrong Please reload your browser</p>";
+
+                            ?>
+                                        <tr class="<?php echo (count($unseenComment) <= 0) ? 'opacity-50 mt-5' : 'shadow-md shadow-blue-500/50 opacity-100 mt-5' ?>">
+                                            <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
+                                                <div class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
+                                                    <?php echo "P=" . $productId ?>
+                                                </div>
+                                            </td>
+                                            <!-- Product Name & Description -->
+                                            <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                                                <div>
+                                                    <h2 class="font-medium text-gray-800 dark:text-white ">
+                                                        <?php echo (str_word_count($productName) < 5) ? $productName : $otherFN->strSort($productName, 5)  . " ..." ?>
+                                                    </h2>
+                                                    <p class="text-sm font-normal text-gray-600 dark:text-gray-400">
+                                                        <?php echo (str_word_count($productDescription) < 5) ? $productDescription : $otherFN->strSort($productDescription, 5)  . " ..." ?>
+                                                    </p>
+                                                </div>
+                                            </td>
+                                            <!-- Product Image -->
+                                            <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
+                                                <img src="<?php echo $databaseFN->mainUrl . "/upload/product/" . $singleImgName[0]   ?>" class="w-[45px] h-[40px] " alt="<?php echo $singleImgName[0] ?>">
+                                            </td>
+                                            <!-- Commentor Name & Comment -->
+                                            <td class="px-4 py-4 text-sm whitespace-nowrap ">
+                                                <div class="">
+                                                    <h4 class="text-gray-700 dark:text-gray-200">
+                                                        <?php echo (str_word_count($commentorName) < 5) ? $commentorName : $otherFN->strSort($commentorName, 5)  . " ..."
+                                                        ?>
+                                                        <?php echo (count($unseenComment) <= 0) ? "" : "<sup class='inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800'>" . count($unseenComment) . "</sup>";
+                                                        ?>
+                                                    </h4>
+                                                    <p class="text-gray-500 dark:text-gray-400">
+                                                        <?php echo (str_word_count($comment) < 7) ? $comment : $otherFN->strSort($comment, 7)  . " ..."
+                                                        ?>
+                                                    </p>
+                                                </div>
+                                            </td>
+                                            <!-- All Commentor Show -->
+                                            <td class="px-4 mx-10 py-4 text-sm whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <?php
+                                                    $allCountVal = count($Commentdata);
+                                                    if ($allCountVal < 5) {
+                                                        for ($image = 0; $image < $allCountVal; $image++) {
+                                                            echo "<img class='object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0' src='https://picsum.photos/200/300?random=" . rand(1, 10) . "' alt=''>";
+                                                        }
+                                                    } else {
+                                                        for ($images = 0; $images < 4; $images++) {
+                                                            echo "<img class='object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0' src='https://picsum.photos/200/300?random=" . rand(10, 20) . "' alt=''>";
+                                                        }
+                                                        echo "<p class='flex items-center justify-center w-6 h-6 -mx-1 text-xs text-blue-600 bg-blue-100 border-2 border-white rounded-full'>+" . $allCountVal - 4 . "</p> ";
+                                                    }
+                                                    ?>
+                                                </div>
+                                            </td>
+                                            <!-- Submit Button -->
+                                            <td class="px-4 py-4 text-sm whitespace-nowrap ml-5 text-right">
+                                                <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+                                                    <input type="text" hidden name="tapProductId" value="<?php echo $productId ?>">
+                                                    <input type="text" hidden name="unseenCommentId" value="<?php echo implode(",", $unseenComment) ?>">
+                                                    <button name="seenComment" type="submit"><i class="fa-solid fa-eye dark:text-white hover:text-green-400 text-[1rem] cursor-pointer"></i></button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                            <?php
                                     }
+                                } else {
+                                    echo "someting want wrong";
                                 }
-                            } else {
-                                echo "<p id='message' class='text-center bg-red-500 py-3 capitalize font-bold'>Someting want wrong Please reload your browser</p>";
                             }
                             ?>
                         </tbody>
                     </table>
                 </div>
-                <!-- pagination -->
-                <div class="text-center mt-4">
-                    <nav aria-label="Page navigation example">
-                        <ul class="inline-flex -space-x-px text-sm">
-                            <?php
-                            $getTotalPage = $totalPages;
-                            $currentPath = basename($_SERVER['PHP_SELF']) . "?";
-                            if(isset($_GET['msg'])){
-                                $currentPath = basename($_SERVER['PHP_SELF']) . "?msg=" . $_GET['msg'] . "&";
-                            }
-                            
-                            if (isset($_GET['page'])) {
-                                $page = intval($_GET['page']);
-                            } else {
-                                $page = 1;
-                            }
-
-                            if ($page > 1) {
-                                $prev = $page - 1;
-                                echo "<li><a href='".$currentPath."page=$prev'class='flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Previous</a></li>";
-                            }
-                            for ($paginationLoop = 1; $paginationLoop <= $getTotalPage; $paginationLoop++) {
-                                $active = ($paginationLoop == $page) ? "bg-indigo-500 text-white dark:bg-blue-500 dark:text-white" : "";
-                                echo "<li ><a href='".$currentPath."page=$paginationLoop' class='$active  flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>$paginationLoop</a></li>";
-                            }
-                            if ($page < $getTotalPage) {
-                                $next = $page + 1;
-                                echo "<li><a href='".$currentPath."page=$next' class='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Next</a></li>";
-                            }
-                            ?>
-                        </ul>
-                    </nav>
-                </div>
-                <!-- pagination -->
             </div>
         </div>
     </div>
 
     <div class="mt-6 sm:flex sm:items-center sm:justify-between ">
         <div class="text-sm text-gray-500 dark:text-gray-400">
-            Page <span class="font-medium text-gray-700 dark:text-gray-100"> <?php echo (isset($_GET['page'])) ? $_GET['page'] : 1; echo " of " .$countTotalProduct; ?></span>
+            Page <span class="font-medium text-gray-700 dark:text-gray-100"> <?php echo (isset($_GET['page'])) ? $_GET['page'] : 1;
+                                                                                echo " of " . count($checkUniquePostIds); ?></span>
         </div>
 
         <div class="flex items-center mt-4 gap-x-4 sm:mt-0">
-            <a href="#" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-                </svg>
+            <!-- Pagination -->
+            <div class="text-center mt-4">
+                <nav aria-label="Page navigation example">
+                    <ul class="inline-flex -space-x-px text-sm">
+                        <?php
+                        $getTotalPage = $totalPages;
+                        $currentPath = basename($_SERVER['PHP_SELF']) . "?";
+                        if (isset($_GET['msg'])) {
+                            $currentPath = basename($_SERVER['PHP_SELF']) . "?msg=" . $_GET['msg'] . "&";
+                        }
 
-                <span>
-                    previous
-                </span>
-            </a>
+                        if (isset($_GET['page'])) {
+                            $page = intval($_GET['page']);
+                        } else {
+                            $page = 1;
+                        }
 
-            <a href="#" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
-                <span>
-                    Next
-                </span>
-
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-                </svg>
-            </a>
+                        if ($page > 1) {
+                            $prev = $page - 1;
+                            echo "<li><a href='" . $currentPath . "page=$prev'class='flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Previous</a></li>";
+                        }
+                        for ($paginationLoop = 1; $paginationLoop <= $getTotalPage; $paginationLoop++) {
+                            $active = ($paginationLoop == $page) ? "bg-indigo-500 text-white dark:bg-blue-500 dark:text-white" : "";
+                            echo "<li ><a href='" . $currentPath . "page=$paginationLoop' class='$active  flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>$paginationLoop</a></li>";
+                        }
+                        if ($page < $getTotalPage) {
+                            $next = $page + 1;
+                            echo "<li><a href='" . $currentPath . "page=$next' class='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>Next</a></li>";
+                        }
+                        ?>
+                    </ul>
+                </nav>
+            </div>
+            <!-- Pagination -->
         </div>
     </div>
 </section>
