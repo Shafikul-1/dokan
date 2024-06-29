@@ -1,5 +1,5 @@
-## Daily work schedule
-* live chat desing
+## Daily Work Schedule
+* live chat design
 * js submit form
 * dynamic live chat
 * product review
