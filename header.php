@@ -14,7 +14,7 @@ $databaseFN = new database();
   <title>Dokan</title>
 
   <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
-   <!-- <script src="flemwork/tailwind.js"></script> -->
+  <!-- <script src="flemwork/tailwind.js"></script> -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <link rel="stylesheet" href="css/swiper.css">
 
@@ -59,11 +59,11 @@ $databaseFN = new database();
             if ($checkUsers == 1) {
               echo "<li><a href='$databaseFN->mainUrl/admin' class='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent capitalize'>Admin</a></li>";
             } else if ($checkUsers == 2) {
-              echo "<li><a href='$databaseFN->mainUrl/profile?view=manager&msg=".$uniqueId."' class='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent capitalize'>profile</a></li>";
+              echo "<li><a href='$databaseFN->mainUrl/profile?view=manager&msg=" . $uniqueId . "' class='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent capitalize'>profile</a></li>";
             } else if ($checkUsers == 3) {
-              echo "<li><a href='$databaseFN->mainUrl/profile?view=employee&msg=".$uniqueId."' class='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent capitalize'>profile</a></li>";
+              echo "<li><a href='$databaseFN->mainUrl/profile?view=employee&msg=" . $uniqueId . "' class='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent capitalize'>profile</a></li>";
             } else if ($checkUsers == 4) {
-              echo "<li><a href='$databaseFN->mainUrl/profile?view=users&msg=".$uniqueId."' class='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent capitalize'>profile</a></li>";
+              echo "<li><a href='$databaseFN->mainUrl/profile?view=users&msg=" . $uniqueId . "' class='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent capitalize'>profile</a></li>";
             }
           }
 
@@ -90,3 +90,8 @@ $databaseFN = new database();
         MobileMenu.classList.toggle("hidden");
       }
     </script>
+    <div class="absolute bottom-0 right-0 z-50">
+      <?php
+      include "./livechat/index.php";
+      ?>
+    </div>
