@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 28, 2024 at 01:41 PM
+-- Generation Time: Jul 02, 2024 at 11:33 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -40,6 +40,44 @@ CREATE TABLE `cart` (
 
 INSERT INTO `cart` (`id`, `uniqueId`, `productId`, `Qty`) VALUES
 (92, '6653e69a69bd127052024074914AM', 72, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chat_details`
+--
+
+CREATE TABLE `chat_details` (
+  `id` int(11) NOT NULL,
+  `chat_text` text NOT NULL,
+  `chat_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `check_user` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `chat_details`
+--
+
+INSERT INTO `chat_details` (`id`, `chat_text`, `chat_time`, `check_user`) VALUES
+(13, 'dsfsfsdfsdf', '2024-07-02 08:12:05', 1),
+(14, 'sdfsfdsfsdfsdfsdfdsfdsfdsfsdf', '2024-07-01 10:52:25', 0),
+(15, 'tests sms', '2024-07-02 08:12:08', 1),
+(16, 'test sms then check', '2024-07-01 10:53:06', 0),
+(21, 'testing sms', '2024-07-02 08:12:10', 1),
+(22, 'othe test project', '2024-07-01 11:02:51', 0),
+(23, 'again test', '2024-07-02 08:12:12', 1),
+(24, 'sfsdf', '2024-07-02 08:12:21', 1),
+(25, 'sdfdsf', '2024-07-02 08:12:20', 1),
+(26, 'tewst comnet', '2024-07-02 06:41:37', 0),
+(27, 'othe ruser test', '2024-07-02 06:41:45', 0),
+(28, 'asfaf', '2024-07-02 09:19:52', 1),
+(29, 'sdfsfsdf', '2024-07-02 09:21:07', 1),
+(30, 'asfasf', '2024-07-02 09:23:04', 1),
+(31, 'sfsfsd', '2024-07-02 09:25:32', 1),
+(32, 'again test', '2024-07-02 09:29:54', 1),
+(33, 'dsfsdgg', '2024-07-02 09:31:34', 1),
+(34, 'trertytr', '2024-07-02 09:31:40', 1),
+(35, 'gsdfgsdfgadsfa', '2024-07-02 09:32:21', 1);
 
 -- --------------------------------------------------------
 
@@ -270,7 +308,7 @@ INSERT INTO `usercomment` (`id`, `name`, `comment`, `time`, `userAuth`, `postId`
 (80, 'sfsdf', 'sdfsdf', '28-06-2024 12:00:39 PM', 1, 93, '6653e69a69bd127052024074914AM', '', '2024-06-28 06:00:49'),
 (81, 'sfsdf', 'sdfsdf', '28-06-2024 12:02:29 PM', 1, 93, '6653e69a69bd127052024074914AM', '', '2024-06-28 06:02:35'),
 (82, 'sdfsdf', 'sdfsdfsdfsdf', '28-06-2024 12:12:19 PM', 1, 86, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-06-28 08:26:47'),
-(83, 'Test Commetn', 'Test Commetn', '28-06-2024 12:50:18 PM', 1, 80, '6653e69a69bd127052024074914AM', '', '2024-06-28 06:50:27'),
+(83, 'Test Commetn', 'Test Commetn', '28-06-2024 12:50:18 PM', 1, 80, '6653e69a69bd127052024074914AM', '6653e69a69bd127052024074914AM,', '2024-07-01 05:52:43'),
 (84, 'adsfa', 'sdfasdfasf', '28-06-2024 02:14:27 PM', 1, 96, '6653e69a69bd127052024074914AM', '', '2024-06-28 08:14:32'),
 (85, 'sdfadfga', 'sdfsadfsdaf', '28-06-2024 02:25:43 PM', 1, 83, '6653e69a69bd127052024074914AM', '', '2024-06-28 08:25:48'),
 (86, 'adfasdfa', 'try. Lorem Ipsum has been the industry&#039;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently', '28-06-2024 02:25:51 PM', 1, 89, '6653e69a69bd127052024074914AM', '', '2024-06-28 08:25:57'),
@@ -336,6 +374,12 @@ ALTER TABLE `cart`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `chat_details`
+--
+ALTER TABLE `chat_details`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `oldorder`
 --
 ALTER TABLE `oldorder`
@@ -398,6 +442,12 @@ ALTER TABLE `whichlist`
 --
 ALTER TABLE `cart`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+
+--
+-- AUTO_INCREMENT for table `chat_details`
+--
+ALTER TABLE `chat_details`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `oldorder`
