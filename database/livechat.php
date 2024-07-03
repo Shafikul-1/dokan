@@ -1,5 +1,5 @@
 <?php
-include "../database/database.php";
+include "database.php";
 
 function insertMassage($getData){
     $databaseFN = new database();

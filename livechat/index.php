@@ -79,7 +79,7 @@
             }
         };
         // console.log(JSON.stringify(data));
-        fetch('livechat/script.php', {
+        fetch('database/livechat.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -103,7 +103,7 @@
             action: 'fetch'
         };
 
-        fetch('livechat/script.php', {
+        fetch('database/livechat.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
