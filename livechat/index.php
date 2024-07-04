@@ -79,11 +79,7 @@
         return Date.now().toString(36) + Math.random().toString(36).substr(2);
     }
     const uniqueId = randomString() + randomID;
-    const livechatUniqueId = sessionStorage.getItem('livechatUniqueId');
     const authForm = document.getElementById('authForm');
-    const liveChatUserTableId = sessionStorage.getItem('liveChatUserTableId');
-
-
 
     // Chat Toggle icon
     function chatbotToggle() {
@@ -100,43 +96,11 @@
         }
     }
 
-    // Chat User Data
-    document.getElementById('chatUserData').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const phonenumber = document.getElementById('phonenumber').value;
-        const data = {
-            action: 'chatUserData',
-            message: {
-                name : name,
-                email : email,
-                phonenumber : phonenumber
-            }
-        };
-        // console.log(JSON.stringify(data));
-        fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                // Optionally, clear the input field or perform other actions
-                // document.querySelector('.chatInput').value = '';
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    });
-
     // Chat sms Data
     document.getElementById('chatForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const chatInput = document.querySelector('.chatInput').value;
+        const liveChatUserTableId = sessionStorage.getItem('liveChatUserTableId');
         const data = {
             action: 'insert',
             message: {
@@ -155,7 +119,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
+                // console.log('Success:', data);
                 // Optionally, clear the input field or perform other actions
                 document.querySelector('.chatInput').value = '';
             })
@@ -166,6 +130,8 @@
 
     // Fetch All data with 2sec
     function fetchMessages() {
+        const liveChatUserTableId = sessionStorage.getItem('liveChatUserTableId');
+        const livechatUniqueId = sessionStorage.getItem('livechatUniqueId');
         const data = {
             action: 'fetch',
             message: {
@@ -184,7 +150,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    const chatFetchData = data.data;
+                    // const chatFetchData = data.data;
                     // console.log(chatFetchData);
                     const livechatContent = document.getElementById('livechatContent');
 
@@ -236,8 +202,48 @@
             });
     }
 
+    // Chat User Data
+    document.getElementById('chatUserData').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phonenumber = document.getElementById('phonenumber').value;
+        const data = {
+            action: 'chatUserData',
+            message: {
+                name: name,
+                email: email,
+                phonenumber: phonenumber
+            }
+        };
+        // console.log(JSON.stringify(data));
+        fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Optionally, clear the input field or perform other actions
+                // document.getElementById('name').value = '';
+                // document.getElementById('email').value = '';
+                // document.getElementById('phonenumber').value = '';
+
+                sessionStorage.setItem('liveChatUserTableId', data.tableData[0])
+                sessionStorage.setItem('livechatUniqueId', data.YourUniqueId)
+                authChat();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+
     // Authention
     function authChat() {
+        const livechatUniqueId = sessionStorage.getItem('livechatUniqueId');
         const data = {
             action: 'checkorinsert',
             message: {
@@ -258,7 +264,7 @@
                     // console.log(authdata);
                     const userDatabaseId = authdata[0].user_unique_id;
                     if (livechatUniqueId === userDatabaseId) {
-                        sessionStorage.setItem('liveChatUserTableId', authdata[0].id)
+                        // sessionStorage.setItem('liveChatUserTableId', authdata[0].id)
                         authForm.classList.add('hidden')
                         fetchMessages();
                         setInterval(fetchMessages, 2000);

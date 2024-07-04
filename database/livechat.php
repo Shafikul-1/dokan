@@ -20,14 +20,16 @@ function authChatUser($getData)
 {
     $databaseFN = new database();
     $otherFn = new otherFn(); 
+    $currentUniqueId = $otherFn->uniqueIdCreate();
     $data = [
         'name' => $getData['name'],
         'email' => $getData['email'],
         'number' => $getData['phonenumber'],
-        'user_unique_id' => $otherFn->uniqueIdCreate()
+        'user_unique_id' => $currentUniqueId
     ];
     if ($databaseFN->insertData('livechatuser', $data)) {
-        return ['success' => true, 'message' => 'Message saved successfully'];
+        $tableDats = $databaseFN->getResult();
+        return ['success' => true, 'message' => 'Message saved successfully', 'tableData' => $tableDats, 'YourUniqueId' => $currentUniqueId];
     } else {
         return ['success' => false, 'message' => 'Failed to save message'];
     }
