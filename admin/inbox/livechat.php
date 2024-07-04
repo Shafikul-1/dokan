@@ -18,16 +18,8 @@ include "../header.php";
             </header>
 
             <!-- Contact List -->
-            <div class="overflow-y-auto h-screen p-3 mb-9 pb-20">
-                <div class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
-                    <div class="w-12 h-12 bg-gray-300 rounded-full mr-3">
-                        <img src="https://placehold.co/200x/ad922e/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" alt="User Avatar" class="w-12 h-12 rounded-full">
-                    </div>
-                    <div class="flex-1">
-                        <h2 class="text-lg font-semibold">Martin</h2>
-                        <p class="text-gray-600">That pizza place was amazing! We should go again sometime. 🍕</p>
-                    </div>
-                </div>
+            <div class="overflow-y-auto h-screen p-3 mb-9 pb-20" id="userChatList">
+                
 
             </div>
         </div>
@@ -49,7 +41,7 @@ include "../header.php";
             <!-- Chat Input -->
             <footer class="bg-white border-t border-gray-300 p-4 fixed bottom-9 w-[56%]">
                 <form action="" id="chatForm" method="post">
-                <div class="flex items-center ">
+                    <div class="flex items-center ">
                         <input type="text" placeholder="Type a message..." class="chatInput w-full p-2 rounded-md border border-gray-400 focus:outline-none focus:border-blue-500">
                         <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md ml-2">Send</button>
                     </div>
@@ -62,12 +54,58 @@ include "../header.php";
 </div>
 <script>
     const url = "../../database/livechat.php";
-    const randomID = Math.random().toString(16).slice(2);
-    const randomString = function(){
-        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    // const randomID = Math.random().toString(16).slice(2);
+    // const randomString = function() {
+    //     return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    // }
+    // const uniqueId = randomString() + randomID;
+    // // console.log(uniqueId)
+
+
+
+    function userList() {
+        const data = {
+            action: 'liveChatUserlist',
+        }
+        fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const allChatUser = data.allData;
+                    const userChatList = document.getElementById('userChatList');
+                    userChatList.innerHTML = '';
+                    
+                    allChatUser.forEach(chat => {
+                        // console.log(chat.name);
+                        userChatList.innerHTML += `
+                        <div class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
+                            <div class="w-12 h-12 bg-gray-300 rounded-full mr-3">
+                                <img src="https://placehold.co/200x/ad922e/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" alt="User Avatar" class="w-12 h-12 rounded-full">
+                            </div>
+                            <div class="flex-1">
+                                <h2 class="text-lg font-semibold">${chat.name}</h2>
+                                <p class="text-gray-600">That pizza place was amazing! We should go again sometime. 🍕</p>
+                            </div>
+                        </div>
+                        `
+                    })
+                } else {
+                    console.error('Failed to fetch messages:', data.message);
+                }
+            })
+            .catch((error) => {
+                console.error('Error: ', error);
+            });
     }
-    const uniqueId = randomString()+randomID;
-    console.log(uniqueId)
+
+    userList()
 
     // Fetch All data with 2sec
     function fetchMessages() {
@@ -129,8 +167,8 @@ include "../header.php";
                 console.error('Error:', error);
             });
     }
-    fetchMessages();
-    setInterval(fetchMessages, 2000);
+    // fetchMessages();
+    // setInterval(fetchMessages, 2000);
 
     // Insert Data
     document.getElementById('chatForm').addEventListener('submit', function(e) {
@@ -162,20 +200,20 @@ include "../header.php";
             });
     });
 
+    // toggle sidebar
     function toggleSidebar() {
         const sidebarArea = document.querySelector('.sidebarArea');
         const showSideBarArea = document.querySelector('.showSideBarArea');
         sidebarArea.classList.add('hidden');
         showSideBarArea.classList.remove('hidden');
     }
-
+    // toggle sidebar
     function showSidebar() {
         const sidebarArea = document.querySelector('.sidebarArea');
         const showSideBarArea = document.querySelector('.showSideBarArea');
         sidebarArea.classList.remove('hidden');
         showSideBarArea.classList.add('hidden');
     }
-   
 </script>
 
 

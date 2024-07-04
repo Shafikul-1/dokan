@@ -19,7 +19,7 @@ function insertMassage($getData)
 function authChatUser($getData)
 {
     $databaseFN = new database();
-    $otherFn = new otherFn(); 
+    $otherFn = new otherFn();
     $currentUniqueId = $otherFn->uniqueIdCreate();
     $data = [
         'name' => $getData['name'],
@@ -60,6 +60,16 @@ function checkUser($getData)
     }
 }
 
+function livechatusertable()
+{
+    $databaseFN = new database();
+    if ($databaseFN->getData('livechatuser')) {
+        $chatTableUser = $databaseFN->getResult();
+        return ['success' => true, 'message' => 'Message saved successfully', 'allData' => $chatTableUser];
+    } else {
+        return ['success' => false, 'message' => 'Failed to save message'];
+    }
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $requestData = file_get_contents("php://input");
@@ -87,7 +97,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $response = authChatUser($data['message']);
                 echo json_encode($response);
                 break;
-
+            case 'liveChatUserlist':
+                $response = livechatusertable();
+                echo json_encode($response);
+                break;
             default:
                 echo json_encode(['success' => false, 'message' => 'Invalid action']);
         }
