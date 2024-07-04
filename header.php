@@ -92,6 +92,6 @@ $databaseFN = new database();
     </script>
     <div class="absolute bottom-0 right-0 z-50">
       <?php
-      include "./livechat/index.php";
+      include "livechat/index.php";
       ?>
     </div>

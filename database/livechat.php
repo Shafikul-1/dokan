@@ -1,28 +1,61 @@
 <?php
 include "database.php";
-
-function insertMassage($getData){
+include "otherFn.php";
+function insertMassage($getData)
+{
     $databaseFN = new database();
     $data = [
         'chat_text' => $getData['chatInput'],
-        'check_user' => $getData['massageUser']
+        'check_user' => $getData['massageUser'],
+        'livechat_user_id' => $getData['chatUserTableId']
     ];
-    if($databaseFN->insertData('chat_details', $data)){
+    if ($databaseFN->insertData('chat_details', $data)) {
         return ['success' => true, 'message' => 'Message saved successfully'];
-    }else{
+    } else {
         return ['success' => false, 'message' => 'Failed to save message'];
     }
 }
 
-function getMassage(){
+function authChatUser($getData)
+{
     $databaseFN = new database();
-    if ($databaseFN->getData('chat_details')) {
+    $otherFn = new otherFn(); 
+    $data = [
+        'name' => $getData['name'],
+        'email' => $getData['email'],
+        'number' => $getData['phonenumber'],
+        'user_unique_id' => $otherFn->uniqueIdCreate()
+    ];
+    if ($databaseFN->insertData('livechatuser', $data)) {
+        return ['success' => true, 'message' => 'Message saved successfully'];
+    } else {
+        return ['success' => false, 'message' => 'Failed to save message'];
+    }
+}
+
+function getMassage($data)
+{
+    $databaseFN = new database();
+    $tableId = $data['chatUserTableId'];
+    // if ($databaseFN->getData( "livechatuser", " chat_details.chat_text, chat_details.chat_time, chat_details.check_user", null, " livechatuser.user_unique_id = '$data'", null, null, " chat_details on livechatuser.id = chat_details.livechat_user_id")) {
+    if ($databaseFN->getData("chat_details", "*", null, " livechat_user_id = $tableId")) {
         $messages = $databaseFN->getResult();
         return ['success' => true, 'data' => $messages];
     } else {
         return ['success' => false, 'message' => 'Fetch failed: ' . $databaseFN->getResult()];
     }
-    
+}
+
+function checkUser($getData)
+{
+    $data = $getData['authUser'];
+    $databaseFN = new database();
+    if ($databaseFN->getData('livechatuser', "*", null, " user_unique_id = '$data' ")) {
+        $messages = $databaseFN->getResult();
+        return ['success' => true, 'data' => $messages];
+    } else {
+        return ['success' => false, 'message' => 'Fetch failed: ' . $databaseFN->getResult()];
+    }
 }
 
 
@@ -37,13 +70,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo json_encode($response);
                 break;
             case 'fetch':
-                $response = getMassage();
+                $response = getMassage($data['message']);
                 echo json_encode($response);
                 break;
             case 'update':
                 // $response = updateMessage($pdo, $data['id'], $data['message']);
                 // echo json_encode($response);
                 break;
+            case 'checkorinsert':
+                $response = checkUser($data['message']);
+                echo json_encode($response);
+                break;
+            case 'chatUserData':
+                $response = authChatUser($data['message']);
+                echo json_encode($response);
+                break;
+
             default:
                 echo json_encode(['success' => false, 'message' => 'Invalid action']);
         }
@@ -51,4 +93,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['success' => false, 'message' => 'No action specified']);
     }
 }
-?>

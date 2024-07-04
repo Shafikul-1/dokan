@@ -30,9 +30,29 @@
 
         <!-- Chat Message ALL -->
         <div class="overflow-y-scroll h-[474px] px-2 ">
-            <div class="flex flex-col" id="livechatContent">
-                <!-- All Chat SHow -->
 
+            <!-- Not User Auth Then show -->
+            <div id="authForm">
+                <form id="chatUserData" class="max-w-sm mx-auto">
+                    <div class="mb-5">
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Name</label>
+                        <input type="text" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter your Name" required />
+                    </div>
+                    <div class="mb-5">
+                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email Address</label>
+                        <input type="text" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter your Email" required />
+                    </div>
+                    <div class="mb-5">
+                        <label for="phonenumber" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Phone Number</label>
+                        <input type="text" id="phonenumber" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="01***" required />
+                    </div>
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                </form>
+            </div>
+
+            <!-- All Chat SHow -->
+            <div class="flex flex-col" id="livechatContent">
+                <!-- in -->
             </div>
         </div>
 
@@ -49,10 +69,23 @@
 
 
 <!-- <svg stroke="none" fill="black" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"></path>
-                            </svg> -->
+<path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"></path>
+</svg> -->
 
 <script>
+    const url = "database/livechat.php";
+    const randomID = Math.random().toString(16).slice(2);
+    const randomString = function() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+    const uniqueId = randomString() + randomID;
+    const livechatUniqueId = sessionStorage.getItem('livechatUniqueId');
+    const authForm = document.getElementById('authForm');
+    const liveChatUserTableId = sessionStorage.getItem('liveChatUserTableId');
+
+
+
+    // Chat Toggle icon
     function chatbotToggle() {
         const allChatHistory = document.getElementById('allChatHistory');
         const chatOpenIcon = document.querySelector('.chatOpenIcon');
@@ -67,7 +100,40 @@
         }
     }
 
-    // Insert Data
+    // Chat User Data
+    document.getElementById('chatUserData').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phonenumber = document.getElementById('phonenumber').value;
+        const data = {
+            action: 'chatUserData',
+            message: {
+                name : name,
+                email : email,
+                phonenumber : phonenumber
+            }
+        };
+        // console.log(JSON.stringify(data));
+        fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Optionally, clear the input field or perform other actions
+                // document.querySelector('.chatInput').value = '';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+
+    // Chat sms Data
     document.getElementById('chatForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const chatInput = document.querySelector('.chatInput').value;
@@ -75,11 +141,12 @@
             action: 'insert',
             message: {
                 chatInput: chatInput,
-                massageUser: 1
+                massageUser: 1,
+                chatUserTableId: liveChatUserTableId
             }
         };
         // console.log(JSON.stringify(data));
-        fetch('database/livechat.php', {
+        fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -100,10 +167,14 @@
     // Fetch All data with 2sec
     function fetchMessages() {
         const data = {
-            action: 'fetch'
+            action: 'fetch',
+            message: {
+                authUser: livechatUniqueId,
+                chatUserTableId: liveChatUserTableId
+            }
         };
 
-        fetch('database/livechat.php', {
+        fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -164,6 +235,42 @@
                 console.error('Error:', error);
             });
     }
-    fetchMessages();
-    setInterval(fetchMessages, 2000);
+
+    // Authention
+    function authChat() {
+        const data = {
+            action: 'checkorinsert',
+            message: {
+                authUser: livechatUniqueId
+            }
+        }
+        fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const authdata = data.data;
+                    // console.log(authdata);
+                    const userDatabaseId = authdata[0].user_unique_id;
+                    if (livechatUniqueId === userDatabaseId) {
+                        sessionStorage.setItem('liveChatUserTableId', authdata[0].id)
+                        authForm.classList.add('hidden')
+                        fetchMessages();
+                        setInterval(fetchMessages, 2000);
+                    }
+                } else {
+                    console.error('Auth Failed to fetch messages:', data.message);
+                }
+            })
+            .catch((error) => {
+                console.log("auth error ==> " + error);
+            })
+    }
+
+    authChat();
 </script>
