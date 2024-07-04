@@ -81,6 +81,9 @@
     const uniqueId = randomString() + randomID;
     const authForm = document.getElementById('authForm');
 
+
+
+
     // Chat Toggle icon
     function chatbotToggle() {
         const allChatHistory = document.getElementById('allChatHistory');
@@ -95,6 +98,8 @@
             chatOpenIcon.classList.add('hidden')
         }
     }
+
+  
 
     // Chat sms Data
     document.getElementById('chatForm').addEventListener('submit', function(e) {
@@ -150,7 +155,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // const chatFetchData = data.data;
+                    const chatFetchData = data.data;
                     // console.log(chatFetchData);
                     const livechatContent = document.getElementById('livechatContent');
 
@@ -202,8 +207,9 @@
             });
     }
 
-    // Chat User Data
-    document.getElementById('chatUserData').addEventListener('submit', function(e) {
+
+      // Chat User Data
+      document.getElementById('chatUserData').addEventListener('submit', function(e) {
         e.preventDefault();
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
@@ -226,7 +232,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
+                // console.log('Success:', data);
                 // Optionally, clear the input field or perform other actions
                 // document.getElementById('name').value = '';
                 // document.getElementById('email').value = '';
@@ -240,6 +246,7 @@
                 console.error('Error:', error);
             });
     });
+
 
     // Authention
     function authChat() {
