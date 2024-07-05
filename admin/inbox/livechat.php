@@ -19,7 +19,7 @@ include "../header.php";
 
             <!-- Contact List -->
             <div class="overflow-y-auto h-screen p-3 mb-9 pb-20" id="userChatList">
-                
+
 
             </div>
         </div>
@@ -81,11 +81,11 @@ include "../header.php";
                     const allChatUser = data.allData;
                     const userChatList = document.getElementById('userChatList');
                     userChatList.innerHTML = '';
-                    
+
                     allChatUser.forEach(chat => {
                         // console.log(chat.name);
                         userChatList.innerHTML += `
-                        <div class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
+                        <div class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md" onclick="currentUserId('${chat.id}')">
                             <div class="w-12 h-12 bg-gray-300 rounded-full mr-3">
                                 <img src="https://placehold.co/200x/ad922e/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" alt="User Avatar" class="w-12 h-12 rounded-full">
                             </div>
@@ -104,15 +104,16 @@ include "../header.php";
                 console.error('Error: ', error);
             });
     }
-
     userList()
+    setInterval(userList, 2000);
 
-    // Fetch All data with 2sec
-    function fetchMessages() {
+    function currentUserId(userId) {
+        sessionStorage.setItem('messageUserId', userId);
         const data = {
-            action: 'fetch'
+            action: 'singleuser',
+            message: userId
         };
-
+        // console.log(JSON.stringify(data));
         fetch(url, {
                 method: 'POST',
                 headers: {
@@ -126,10 +127,7 @@ include "../header.php";
                     const chatFetchData = data.data;
                     // console.log(chatFetchData);
                     const livechatContent = document.getElementById('livechatContent');
-
-                    // Clear existing content before appending new data
                     livechatContent.innerHTML = '';
-
                     chatFetchData.forEach(chat => {
                         const timestamp = chat.chat_time;
                         // console.log(chat);
@@ -156,9 +154,7 @@ include "../header.php";
                             </div>
                              `
                         }
-
                     });
-
                 } else {
                     console.error('Failed to fetch messages:', data.message);
                 }
@@ -167,17 +163,42 @@ include "../header.php";
                 console.error('Error:', error);
             });
     }
-    // fetchMessages();
-    // setInterval(fetchMessages, 2000);
+
+    let currentChatId = sessionStorage.getItem('messageUserId');
+    if (currentChatId) {
+        currentUserId(currentChatId);
+    } 
+    setInterval(() => {
+        let updatedUserId  = sessionStorage.getItem('messageUserId'); 
+        if (updatedUserId  !== currentChatId) {
+            currentChatId = updatedUserId
+            currentUserId(currentChatId);
+        } else {
+            currentUserId(currentChatId);
+        }
+    }, 2000);
+    
+
+    // window.onload = function() {
+    //     let messageUserId = sessionStorage.getItem('messageUserId');
+    //     if (messageUserId) {
+    //         currentUserId(messageUserId);
+    //         setInterval(() => currentUserId(messageUserId), 2000);
+    //     } else {
+    //         console.log("No user ID found in sessionStorage.");
+    //     }
+    // };
 
     // Insert Data
     document.getElementById('chatForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const chatInput = document.querySelector('.chatInput').value;
+        let messageUserId = sessionStorage.getItem('messageUserId');
         const data = {
             action: 'insert',
             message: {
                 chatInput: chatInput,
+                chatUserTableId: messageUserId,
                 massageUser: 0
             }
         };
@@ -191,7 +212,7 @@ include "../header.php";
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
+                // console.log('Success:', data);
                 // Optionally, clear the input field or perform other actions
                 document.querySelector('.chatInput').value = '';
             })

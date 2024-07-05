@@ -44,7 +44,7 @@ function getMassage($data)
         $messages = $databaseFN->getResult();
         return ['success' => true, 'data' => $messages];
     } else {
-        return ['success' => false, 'message' => 'Fetch failed: ' . $databaseFN->getResult()];
+        return ['success' => false, 'message' => 'Fetch failed: '];
     }
 }
 
@@ -56,20 +56,33 @@ function checkUser($getData)
         $messages = $databaseFN->getResult();
         return ['success' => true, 'data' => $messages];
     } else {
-        return ['success' => false, 'message' => 'Fetch failed: ' . $databaseFN->getResult()];
+        return ['success' => false, 'message' => 'Fetch failed: '];
     }
 }
 
 function livechatusertable()
 {
     $databaseFN = new database();
-    if ($databaseFN->getData('livechatuser')) {
+    if ($databaseFN->getData('livechatuser', "*", null, null, " id DESC")) {
         $chatTableUser = $databaseFN->getResult();
         return ['success' => true, 'message' => 'Message saved successfully', 'allData' => $chatTableUser];
     } else {
         return ['success' => false, 'message' => 'Failed to save message'];
     }
 }
+
+function singleChatData($userId)
+{
+    $data = (int)$userId;
+    $databaseFN = new database();
+    if ($databaseFN->getData('chat_details', "*", null, " livechat_user_id = $data ")) {
+        $messages = $databaseFN->getResult();
+        return ['success' => true, 'data' => $messages];
+    } else {
+        return ['success' => false, 'message' => 'Fetch failed: '];
+    }
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $requestData = file_get_contents("php://input");
@@ -101,6 +114,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $response = livechatusertable();
                 echo json_encode($response);
                 break;
+            case 'singleuser':
+                $response = singleChatData($data['message']);
+                echo json_encode($response);
+                break;
+
             default:
                 echo json_encode(['success' => false, 'message' => 'Invalid action']);
         }

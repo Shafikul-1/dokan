@@ -1,21 +1,23 @@
 <?php
 include "../database/database.php";
 include "../database/otherFn.php";
-function livechatusertable()
+function singleChatData($userId)
 {
+    $data = (int)$userId;
     $databaseFN = new database();
-    if ($databaseFN->getData('livechatuser')) {
-        $chatTableUser = $databaseFN->getResult();
-        return ['success' => true, 'message' => 'Message saved successfully', 'allData' => $chatTableUser];
+    if ($databaseFN->getData('chat_details', "*", null, " livechat_user_id = $data ")) {
+        $messages = $databaseFN->getResult();
+        return ['success' => true, 'data' => $messages];
     } else {
-        return ['success' => false, 'message' => 'Failed to save message'];
+        return ['success' => false, 'message' => 'Fetch failed: '];
     }
 }
 
 
-$data = '{"action":"chatUserData","message":{"name":"RUnjla","email":"RUnjla@gmail.com","phonenumber":"01311770633"}}';
+
+$data = '{"action":"singleuser","message":"3"}';
 $datas = json_decode($data, true);
 
 
-$alldata = livechatusertable();
+$alldata = singleChatData($datas['message']);
 echo json_encode($alldata);
