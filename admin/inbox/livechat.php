@@ -21,6 +21,8 @@ include "../header.php";
             <div class="overflow-y-auto h-screen p-3 mb-9 pb-20" id="userChatList">
 
 
+
+
             </div>
         </div>
 
@@ -75,15 +77,17 @@ include "../header.php";
                     userChatList.innerHTML = '';
 
                     allChatUser.forEach(chat => {
-                        // console.log(chat.name);
+                        //     console.log(chat.unseenmessage[0].chat_text); // Output: "asdfasdf"
+                        
                         userChatList.innerHTML += `
-                        <div class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md" onclick="currentUserId('${chat.id}')">
+                        <div class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md relative" onclick="currentUserId('${chat.id}')">
                             <div class="w-12 h-12 bg-gray-300 rounded-full mr-3">
                                 <img src="https://placehold.co/200x/ad922e/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" alt="User Avatar" class="w-12 h-12 rounded-full">
                             </div>
                             <div class="flex-1">
+                                ${(chat.unseenmessage.length <= 0) ? '' : `<p class="absolute top-4 right-0 z-50 bg-indigo-400 rounded-full p-1 font-bold">${chat.unseenmessage.length}</p>`}
                                 <h2 class="text-lg font-semibold">${chat.name}</h2>
-                                <p class="text-gray-600">That pizza place was amazing! We should go again sometime. 🍕</p>
+                                <p class="text-gray-600">${(chat && Array.isArray(chat.unseenmessage) && chat.unseenmessage.length > 0 && chat.unseenmessage[0].chat_text !== undefined) ? chat.unseenmessage[0].chat_text : ''}</p>
                             </div>
                         </div>
                         `
@@ -159,17 +163,17 @@ include "../header.php";
     let currentChatId = sessionStorage.getItem('messageUserId');
     if (currentChatId) {
         currentUserId(currentChatId);
-    } 
+    }
     setInterval(() => {
-        let updatedUserId  = sessionStorage.getItem('messageUserId'); 
-        if (updatedUserId  !== currentChatId) {
+        let updatedUserId = sessionStorage.getItem('messageUserId');
+        if (updatedUserId !== currentChatId) {
             currentChatId = updatedUserId
             currentUserId(currentChatId);
         } else {
             currentUserId(currentChatId);
         }
     }, 2000);
-    
+
 
     // window.onload = function() {
     //     let messageUserId = sessionStorage.getItem('messageUserId');

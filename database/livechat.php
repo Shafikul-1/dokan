@@ -60,15 +60,38 @@ function checkUser($getData)
     }
 }
 
-function livechatusertable()
-{
+// All Message & Unseen Message
+function checkMessageStatus() {
     $databaseFN = new database();
-    if ($databaseFN->getData('livechatuser', "*", null, null, " id DESC")) {
+    $userData = array();
+
+    if ($databaseFN->getData('livechatuser')) {
         $chatTableUser = $databaseFN->getResult();
-        return ['success' => true, 'message' => 'Message saved successfully', 'allData' => $chatTableUser];
+        foreach ($chatTableUser as $key => $value) {
+            // Initialize unseen message count
+            $unseen = 0;
+
+            if ($databaseFN->getData('chat_details', "*", null, "livechat_user_id = " . $value['id'] . " AND check_user = 1 AND message_status = 0", " id DESC")) {
+                $unseenMessages = $databaseFN->getResult();
+                // $unseen = count($unseenMessages);
+                $unseen = $unseenMessages;
+            }
+
+            // Add unseen message count to user data
+            $value['unseenmessage'] = $unseen;
+            array_push($userData, $value);
+        }
     } else {
         return ['success' => false, 'message' => 'Failed to save message'];
     }
+
+    return $userData;
+}
+// ⏫ Show all Message
+function liveChatUserlist()
+{
+    $chatUserAllData = checkMessageStatus();
+    return ['success' => true, 'message' => 'Message saved successfully', 'allData' => $chatUserAllData];
 }
 
 function singleChatData($userId)
@@ -111,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo json_encode($response);
                 break;
             case 'liveChatUserlist':
-                $response = livechatusertable();
+                $response = liveChatUserlist();
                 echo json_encode($response);
                 break;
             case 'singleuser':

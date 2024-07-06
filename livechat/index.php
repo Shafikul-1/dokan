@@ -81,9 +81,6 @@
     const uniqueId = randomString() + randomID;
     const authForm = document.getElementById('authForm');
 
-
-
-
     // Chat Toggle icon
     function chatbotToggle() {
         const allChatHistory = document.getElementById('allChatHistory');
@@ -98,8 +95,6 @@
             chatOpenIcon.classList.add('hidden')
         }
     }
-
-  
 
     // Chat sms Data
     document.getElementById('chatForm').addEventListener('submit', function(e) {
