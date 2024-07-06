@@ -54,14 +54,6 @@ include "../header.php";
 </div>
 <script>
     const url = "../../database/livechat.php";
-    // const randomID = Math.random().toString(16).slice(2);
-    // const randomString = function() {
-    //     return Date.now().toString(36) + Math.random().toString(36).substr(2);
-    // }
-    // const uniqueId = randomString() + randomID;
-    // // console.log(uniqueId)
-
-
 
     function userList() {
         const data = {
@@ -133,7 +125,7 @@ include "../header.php";
                         // console.log(chat);
                         if (chat.check_user == 0) {
                             livechatContent.innerHTML += `
-                                <div class="flex justify-end mb-4 cursor-pointer">
+                                <div class="flex justify-end mb-4 cursor-pointer"> <pre class="mx-4">admin</pre>
                                     <div class="flex max-w-96 bg-indigo-500 text-white rounded-lg p-3 gap-3">
                                         <p>${chat.chat_text}</p>
                                     </div>

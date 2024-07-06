@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 02, 2024 at 11:33 AM
+-- Generation Time: Jul 06, 2024 at 09:55 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -51,33 +51,63 @@ CREATE TABLE `chat_details` (
   `id` int(11) NOT NULL,
   `chat_text` text NOT NULL,
   `chat_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `check_user` bigint(20) NOT NULL
+  `check_user` bigint(20) NOT NULL,
+  `livechat_user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `chat_details`
 --
 
-INSERT INTO `chat_details` (`id`, `chat_text`, `chat_time`, `check_user`) VALUES
-(13, 'dsfsfsdfsdf', '2024-07-02 08:12:05', 1),
-(14, 'sdfsfdsfsdfsdfsdfdsfdsfdsfsdf', '2024-07-01 10:52:25', 0),
-(15, 'tests sms', '2024-07-02 08:12:08', 1),
-(16, 'test sms then check', '2024-07-01 10:53:06', 0),
-(21, 'testing sms', '2024-07-02 08:12:10', 1),
-(22, 'othe test project', '2024-07-01 11:02:51', 0),
-(23, 'again test', '2024-07-02 08:12:12', 1),
-(24, 'sfsdf', '2024-07-02 08:12:21', 1),
-(25, 'sdfdsf', '2024-07-02 08:12:20', 1),
-(26, 'tewst comnet', '2024-07-02 06:41:37', 0),
-(27, 'othe ruser test', '2024-07-02 06:41:45', 0),
-(28, 'asfaf', '2024-07-02 09:19:52', 1),
-(29, 'sdfsfsdf', '2024-07-02 09:21:07', 1),
-(30, 'asfasf', '2024-07-02 09:23:04', 1),
-(31, 'sfsfsd', '2024-07-02 09:25:32', 1),
-(32, 'again test', '2024-07-02 09:29:54', 1),
-(33, 'dsfsdgg', '2024-07-02 09:31:34', 1),
-(34, 'trertytr', '2024-07-02 09:31:40', 1),
-(35, 'gsdfgsdfgadsfa', '2024-07-02 09:32:21', 1);
+INSERT INTO `chat_details` (`id`, `chat_text`, `chat_time`, `check_user`, `livechat_user_id`) VALUES
+(13, 'dsfsfsdfsdf', '2024-07-02 08:12:05', 1, 0),
+(14, 'sdfsfdsfsdfsdfsdfdsfdsfdsfsdf', '2024-07-01 10:52:25', 0, 0),
+(15, 'tests sms', '2024-07-02 08:12:08', 1, 0),
+(16, 'test sms then check', '2024-07-01 10:53:06', 0, 0),
+(21, 'testing sms', '2024-07-02 08:12:10', 1, 0),
+(22, 'othe test project', '2024-07-01 11:02:51', 0, 0),
+(23, 'again test', '2024-07-02 08:12:12', 1, 0),
+(24, 'sfsdf', '2024-07-02 08:12:21', 1, 0),
+(25, 'sdfdsf', '2024-07-02 08:12:20', 1, 0),
+(26, 'tewst comnet', '2024-07-02 06:41:37', 0, 0),
+(27, 'othe ruser test', '2024-07-02 06:41:45', 0, 0),
+(28, 'asfaf', '2024-07-02 09:19:52', 1, 0),
+(29, 'sdfsfsdf', '2024-07-02 09:21:07', 1, 0),
+(30, 'asfasf', '2024-07-02 09:23:04', 1, 0),
+(31, 'sfsfsd', '2024-07-02 09:25:32', 1, 0),
+(32, 'again test', '2024-07-02 09:29:54', 1, 0),
+(33, 'dsfsdgg', '2024-07-02 09:31:34', 1, 0),
+(34, 'trertytr', '2024-07-02 09:31:40', 1, 0),
+(35, 'gsdfgsdfgadsfa', '2024-07-02 09:32:21', 1, 0),
+(36, 'sdsdfdf', '2024-07-06 07:25:21', 1, 19),
+(37, 'asdfasdf', '2024-07-06 07:25:31', 1, 19),
+(38, 'asdfadsf', '2024-07-06 07:25:33', 1, 19),
+(39, 'sdfsdf', '2024-07-06 07:53:30', 0, 19),
+(40, 'Hello', '2024-07-06 07:54:39', 1, 20),
+(41, 'hi', '2024-07-06 07:54:44', 0, 20);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `livechatuser`
+--
+
+CREATE TABLE `livechatuser` (
+  `id` int(11) NOT NULL,
+  `name` varchar(600) NOT NULL,
+  `email` varchar(600) NOT NULL,
+  `number` varchar(300) NOT NULL,
+  `user_unique_id` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `livechatuser`
+--
+
+INSERT INTO `livechatuser` (`id`, `name`, `email`, `number`, `user_unique_id`) VALUES
+(18, 'Runjila Akter', 'Runjila @gmail.com', '01311770633', '6688f05d79c2406072024012101PM'),
+(19, 'Runjila Akter', 'Akter@gmail.com', '01311770633', '6688f0f4ad6b706072024012332PM'),
+(20, 'Runjila', 'runjila@gmail.com', '01756867220', '6688f834d1e8906072024015428PM');
 
 -- --------------------------------------------------------
 
@@ -380,6 +410,12 @@ ALTER TABLE `chat_details`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `livechatuser`
+--
+ALTER TABLE `livechatuser`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `oldorder`
 --
 ALTER TABLE `oldorder`
@@ -447,7 +483,13 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT for table `chat_details`
 --
 ALTER TABLE `chat_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+
+--
+-- AUTO_INCREMENT for table `livechatuser`
+--
+ALTER TABLE `livechatuser`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `oldorder`

@@ -124,7 +124,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                // console.log('Success:', data);
+                console.log('Success:', data);
                 // Optionally, clear the input field or perform other actions
                 document.querySelector('.chatInput').value = '';
             })
@@ -232,7 +232,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                // console.log('Success:', data);
+                console.log('Success:', data);
                 // Optionally, clear the input field or perform other actions
                 // document.getElementById('name').value = '';
                 // document.getElementById('email').value = '';
@@ -251,8 +251,9 @@
     // Authention
     function authChat() {
         const livechatUniqueId = sessionStorage.getItem('livechatUniqueId');
+        console.log(livechatUniqueId);
         const data = {
-            action: 'checkorinsert',
+            action: 'checkUser',
             message: {
                 authUser: livechatUniqueId
             }

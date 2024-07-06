@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // $response = updateMessage($pdo, $data['id'], $data['message']);
                 // echo json_encode($response);
                 break;
-            case 'checkorinsert':
+            case 'checkUser':
                 $response = checkUser($data['message']);
                 echo json_encode($response);
                 break;
