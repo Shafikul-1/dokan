@@ -6,7 +6,7 @@
 * product comment like
 
 setting-> config.json
-`    "[blade]": {
+``"[blade]": {
         "inlineFold.regex": "(class|viewBox|d|xmlns)=\"([\\w\\s. -:\\[\\]]+)\"",
         "inlineFold.regexFlags": "g",
         "inlineFold.regexGroup": 2,
@@ -15,5 +15,5 @@ setting-> config.json
         "inlineFold.maskColor": "#000",
         "inlineFold.unfoldOnLineSelect": true,
         "inlineFold.autoFold": true
-    },
-    `
+},
+``
