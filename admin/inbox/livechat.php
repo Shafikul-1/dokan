@@ -9,7 +9,7 @@ include "../header.php";
         <div class="w-1/4 bg-white border-r border-gray-300 sidebarArea">
             <!-- Sidebar Header -->
             <header class="p-4 border-b border-gray-300 flex justify-between items-center bg-indigo-600 text-white">
-                <h1 class="text-2xl font-semibold">Chat Web</h1>
+                <h1 class="text-2xl font-semibold" id="chatUserName">Chat Web</h1>
                 <div class="relative">
                     <button onclick="toggleSidebar()" class="focus:outline-none">
                         <i class="fa-solid fa-bars text-3xl"></i>
@@ -77,8 +77,8 @@ include "../header.php";
                     userChatList.innerHTML = '';
 
                     allChatUser.forEach(chat => {
-                        //     console.log(chat.unseenmessage[0].chat_text); // Output: "asdfasdf"
-                        
+                            console.log(chat.unseenmessage); 
+
                         userChatList.innerHTML += `
                         <div class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md relative" onclick="currentUserId('${chat.id}')">
                             <div class="w-12 h-12 bg-gray-300 rounded-full mr-3">
@@ -87,7 +87,7 @@ include "../header.php";
                             <div class="flex-1">
                                 ${(chat.unseenmessage.length <= 0) ? '' : `<p class="absolute top-4 right-0 z-50 bg-indigo-400 rounded-full p-1 font-bold">${chat.unseenmessage.length}</p>`}
                                 <h2 class="text-lg font-semibold">${chat.name}</h2>
-                                <p class="text-gray-600">${(chat && Array.isArray(chat.unseenmessage) && chat.unseenmessage.length > 0 && chat.unseenmessage[0].chat_text !== undefined) ? chat.unseenmessage[0].chat_text : ''}</p>
+                                <p class="text-gray-600">${(chat && Array.isArray(chat.unseenmessage) && chat.unseenmessage.length > 0 && chat.unseenmessage[0].chat_text !== undefined) ? chat.unseenmessage[0].chat_text.substring(0, 5) : ''}</p>
                             </div>
                         </div>
                         `
@@ -120,8 +120,8 @@ include "../header.php";
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    // console.log(data);
                     const chatFetchData = data.data;
-                    // console.log(chatFetchData);
                     const livechatContent = document.getElementById('livechatContent');
                     livechatContent.innerHTML = '';
                     chatFetchData.forEach(chat => {
