@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 06, 2024 at 09:55 AM
+-- Generation Time: Jul 26, 2024 at 01:38 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -52,39 +52,62 @@ CREATE TABLE `chat_details` (
   `chat_text` text NOT NULL,
   `chat_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `check_user` bigint(20) NOT NULL,
-  `livechat_user_id` int(11) NOT NULL
+  `livechat_user_id` int(11) NOT NULL,
+  `message_status` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `chat_details`
 --
 
-INSERT INTO `chat_details` (`id`, `chat_text`, `chat_time`, `check_user`, `livechat_user_id`) VALUES
-(13, 'dsfsfsdfsdf', '2024-07-02 08:12:05', 1, 0),
-(14, 'sdfsfdsfsdfsdfsdfdsfdsfdsfsdf', '2024-07-01 10:52:25', 0, 0),
-(15, 'tests sms', '2024-07-02 08:12:08', 1, 0),
-(16, 'test sms then check', '2024-07-01 10:53:06', 0, 0),
-(21, 'testing sms', '2024-07-02 08:12:10', 1, 0),
-(22, 'othe test project', '2024-07-01 11:02:51', 0, 0),
-(23, 'again test', '2024-07-02 08:12:12', 1, 0),
-(24, 'sfsdf', '2024-07-02 08:12:21', 1, 0),
-(25, 'sdfdsf', '2024-07-02 08:12:20', 1, 0),
-(26, 'tewst comnet', '2024-07-02 06:41:37', 0, 0),
-(27, 'othe ruser test', '2024-07-02 06:41:45', 0, 0),
-(28, 'asfaf', '2024-07-02 09:19:52', 1, 0),
-(29, 'sdfsfsdf', '2024-07-02 09:21:07', 1, 0),
-(30, 'asfasf', '2024-07-02 09:23:04', 1, 0),
-(31, 'sfsfsd', '2024-07-02 09:25:32', 1, 0),
-(32, 'again test', '2024-07-02 09:29:54', 1, 0),
-(33, 'dsfsdgg', '2024-07-02 09:31:34', 1, 0),
-(34, 'trertytr', '2024-07-02 09:31:40', 1, 0),
-(35, 'gsdfgsdfgadsfa', '2024-07-02 09:32:21', 1, 0),
-(36, 'sdsdfdf', '2024-07-06 07:25:21', 1, 19),
-(37, 'asdfasdf', '2024-07-06 07:25:31', 1, 19),
-(38, 'asdfadsf', '2024-07-06 07:25:33', 1, 19),
-(39, 'sdfsdf', '2024-07-06 07:53:30', 0, 19),
-(40, 'Hello', '2024-07-06 07:54:39', 1, 20),
-(41, 'hi', '2024-07-06 07:54:44', 0, 20);
+INSERT INTO `chat_details` (`id`, `chat_text`, `chat_time`, `check_user`, `livechat_user_id`, `message_status`) VALUES
+(13, 'dsfsfsdfsdf', '2024-07-02 08:12:05', 1, 0, 0),
+(14, 'sdfsfdsfsdfsdfsdfdsfdsfdsfsdf', '2024-07-01 10:52:25', 0, 0, 0),
+(15, 'tests sms', '2024-07-02 08:12:08', 1, 0, 0),
+(16, 'test sms then check', '2024-07-01 10:53:06', 0, 0, 0),
+(21, 'testing sms', '2024-07-02 08:12:10', 1, 0, 0),
+(22, 'othe test project', '2024-07-01 11:02:51', 0, 0, 0),
+(23, 'again test', '2024-07-26 11:13:04', 1, 0, 1),
+(24, 'sfsdf', '2024-07-26 11:23:06', 1, 0, 1),
+(25, 'sdfdsf', '2024-07-02 08:12:20', 1, 0, 0),
+(26, 'tewst comnet', '2024-07-02 06:41:37', 0, 0, 0),
+(27, 'othe ruser test', '2024-07-02 06:41:45', 0, 0, 0),
+(28, 'asfaf', '2024-07-02 09:19:52', 1, 0, 0),
+(29, 'sdfsfsdf', '2024-07-02 09:21:07', 1, 0, 0),
+(30, 'asfasf', '2024-07-02 09:23:04', 1, 0, 0),
+(31, 'sfsfsd', '2024-07-02 09:25:32', 1, 0, 0),
+(32, 'again test', '2024-07-02 09:29:54', 1, 0, 0),
+(33, 'dsfsdgg', '2024-07-02 09:31:34', 1, 0, 0),
+(34, 'trertytr', '2024-07-26 11:19:25', 1, 0, 1),
+(35, 'gsdfgsdfgadsfa', '2024-07-02 09:32:21', 1, 0, 0),
+(36, 'sdsdfdf', '2024-07-26 11:33:12', 1, 19, 1),
+(37, 'asdfasdf', '2024-07-26 11:33:12', 1, 19, 1),
+(38, 'asdfadsf', '2024-07-06 09:03:02', 1, 19, 1),
+(39, 'sdfsdf', '2024-07-06 09:02:32', 0, 19, 1),
+(40, 'Hello', '2024-07-26 11:16:45', 1, 20, 1),
+(41, 'hi', '2024-07-06 07:54:44', 0, 20, 0),
+(42, '54', '2024-07-26 11:13:04', 0, 18, 1),
+(43, 'sfsfsdfsdf', '2024-07-26 11:31:44', 0, 20, 1),
+(44, 'adsfasdfsa', '2024-07-26 11:32:19', 1, 22, 1),
+(45, '5544545', '2024-07-26 11:32:19', 1, 22, 1),
+(46, 'adfasdf', '2024-07-26 11:32:19', 1, 22, 1),
+(47, 'sfgdfg', '2024-07-06 10:23:14', 0, 22, 0),
+(48, 'safdf', '2024-07-26 11:32:23', 1, 23, 1),
+(49, 'text comment', '2024-07-26 11:32:23', 1, 23, 1),
+(50, 'other tedsts', '2024-07-26 11:32:23', 1, 23, 1),
+(51, 'again test', '2024-07-26 11:32:23', 1, 23, 1),
+(52, 'sdfsfsdf', '2024-07-06 11:41:40', 0, 23, 0),
+(53, 'sdfsdf', '2024-07-26 11:13:04', 0, 22, 1),
+(54, 'Hello', '2024-07-26 11:13:04', 1, 24, 1),
+(55, 'Hello sir', '2024-07-26 09:54:29', 0, 24, 0),
+(56, 'afljfl', '2024-07-26 11:35:05', 1, 25, 1),
+(57, 'safsadf', '2024-07-26 11:36:01', 1, 26, 1),
+(58, 'hi', '2024-07-26 11:36:01', 1, 26, 1),
+(59, 'he', '2024-07-26 11:36:01', 1, 26, 1),
+(60, 'asfadf', '2024-07-26 11:36:01', 1, 26, 1),
+(61, 'adfasdfsdf', '2024-07-26 11:36:01', 1, 26, 1),
+(62, 'df', '2024-07-26 11:37:26', 0, 21, 0),
+(63, 'sdfg', '2024-07-26 11:37:30', 0, 21, 0);
 
 -- --------------------------------------------------------
 
@@ -107,7 +130,13 @@ CREATE TABLE `livechatuser` (
 INSERT INTO `livechatuser` (`id`, `name`, `email`, `number`, `user_unique_id`) VALUES
 (18, 'Runjila Akter', 'Runjila @gmail.com', '01311770633', '6688f05d79c2406072024012101PM'),
 (19, 'Runjila Akter', 'Akter@gmail.com', '01311770633', '6688f0f4ad6b706072024012332PM'),
-(20, 'Runjila', 'runjila@gmail.com', '01756867220', '6688f834d1e8906072024015428PM');
+(20, 'Runjila', 'runjila@gmail.com', '01756867220', '6688f834d1e8906072024015428PM'),
+(21, 'Test Comment', 'commet@gmail.com', '01756867220', '668914fa8727906072024035714PM'),
+(22, 'Text Comment ', 'comment@gmail.com', '52464461', '66891592ac6ae06072024035946PM'),
+(23, 'again test message', 'Runjila@gmail.com', '013', '66891b33cd40a06072024042347PM'),
+(24, 'Md Shafikul Islam', 'shaifkulislam@gmail.com', '01756867220', '66a371f3ca24126072024035251PM'),
+(25, 'Runjila Akter', 'adminss@gmail.com', '01311770633', '66a389b15474226072024053409PM'),
+(26, 'sdfsdf', 'sdfssdf@gmail.com', '01756867220', '66a38a04a23ef26072024053532PM');
 
 -- --------------------------------------------------------
 
@@ -483,13 +512,13 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT for table `chat_details`
 --
 ALTER TABLE `chat_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `livechatuser`
 --
 ALTER TABLE `livechatuser`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `oldorder`

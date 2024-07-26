@@ -2,53 +2,43 @@
 include "../database/database.php";
 include "../database/otherFn.php";
 
-function checkMessageStatus() {
+function singleChatData($userId)
+{
+    $data = (int)$userId['userId'];
+    $unseenAllId = $userId['unseenId'];
     $databaseFN = new database();
-    $userData = array();
 
-    if ($databaseFN->getData('livechatuser')) {
-        $chatTableUser = $databaseFN->getResult();
-        foreach ($chatTableUser as $key => $value) {
-            // Initialize unseen message count
-            $unseen = 0;
-
-            if ($databaseFN->getData('chat_details', "*", null, "livechat_user_id = " . $value['id'] . " AND check_user = 1 AND message_status = 0")) {
-                $unseenMessages = $databaseFN->getResult();
-                // $unseen = count($unseenMessages);
-                $unseen = $unseenMessages;
-            }
-
-            // Add unseen message count to user data
-            $value['unseenmessage'] = $unseen;
-            array_push($userData, $value);
-        }
-    } else {
-        return ['success' => false, 'message' => 'Failed to save message'];
+    // if (!is_null($unseenAllId)) {
+    //     $unseenId = explode(",", $unseenAllId);
+    // }
+    foreach ($unseenAllId as $value) {
+        if ($databaseFN->updateData('chat_details', ['message_status' => 1], "id = $value")) {
+            echo "success ---- ";
+        };
     }
 
-    return $userData;
+    if ($databaseFN->getData('chat_details', "*", null, " livechat_user_id = $data ")) {
+        $messages = $databaseFN->getResult();
+        return ['success' => true, 'data' => $messages];
+    } else {
+        return ['success' => false, 'message' => 'Fetch failed: '];
+    }
 }
 
-function livechatusertable() {
-    $chatUserAllData = checkMessageStatus();
+$arr = [
+    'userId' => '22',
+    'unseenId' => [
+        "3",
+        "43",
+        "2"
+    ],
+];
 
-    return ['success' => true, 'message' => 'Message saved successfully', 'allData' => $chatUserAllData];
-}
+$response = singleChatData($arr);
 
-$alldata = livechatusertable();
+
 // echo json_encode($alldata);
 ?>
 <pre>
-    <?php print_r($alldata) ?>
+    <?php print_r($response) ?>
 </pre>
-
-<!-- 
-    // for ($i = 0; $i < count($userId); $i++) {
-    //     if ($databaseFN->getData('chat_details', "*", null, " livechat_user_id = " . $i . " AND check_user = " . 1 . " AND message_status = " . 0)) {
-    //         $chatTableUser = $databaseFN->getResult();
-
-    //         echo count($chatTableUser) . "<br>";
-    //     }
-    // }    
- -->
-

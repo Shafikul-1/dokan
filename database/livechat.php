@@ -96,8 +96,19 @@ function liveChatUserlist()
 
 function singleChatData($userId)
 {
-    $data = (int)$userId;
+    $data = (int)$userId['userId'];
+    $unseenAllId = $userId['unseenId'];
     $databaseFN = new database();
+    
+    // if(!is_null($unseenAllId)){
+    //     $unseenId = explode(",", $unseenAllId);
+        
+    // }
+
+    foreach ($unseenAllId as $value) {
+        $databaseFN->updateData('chat_details', ['message_status' => 1], "id = " . (int)$value);
+    }
+
     if ($databaseFN->getData('chat_details', "*", null, " livechat_user_id = $data ")) {
         $messages = $databaseFN->getResult();
         return ['success' => true, 'data' => $messages];

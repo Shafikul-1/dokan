@@ -77,10 +77,11 @@ include "../header.php";
                     userChatList.innerHTML = '';
 
                     allChatUser.forEach(chat => {
-                            console.log(chat.unseenmessage); 
+                        const unseenMessageIds = chat.unseenmessage.map(msg => msg.id);
+                        const unseenMessageIdsString = unseenMessageIds.length > 0 ? `'${unseenMessageIds.join(',')}'` : 'null';
 
                         userChatList.innerHTML += `
-                        <div class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md relative" onclick="currentUserId('${chat.id}')">
+                        <div class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md relative" onclick="currentUserId('${chat.id}', ${unseenMessageIdsString})">
                             <div class="w-12 h-12 bg-gray-300 rounded-full mr-3">
                                 <img src="https://placehold.co/200x/ad922e/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" alt="User Avatar" class="w-12 h-12 rounded-full">
                             </div>
@@ -90,7 +91,7 @@ include "../header.php";
                                 <p class="text-gray-600">${(chat && Array.isArray(chat.unseenmessage) && chat.unseenmessage.length > 0 && chat.unseenmessage[0].chat_text !== undefined) ? chat.unseenmessage[0].chat_text.substring(0, 5) : ''}</p>
                             </div>
                         </div>
-                        `
+                        `;
                     })
                 } else {
                     console.error('Failed to fetch messages:', data.message);
@@ -103,11 +104,17 @@ include "../header.php";
     userList()
     setInterval(userList, 2000);
 
-    function currentUserId(userId) {
+    function currentUserId(userId, unseenId) {
         sessionStorage.setItem('messageUserId', userId);
+        const unseenIds = unseenId ? unseenId.split(',') : [];
+        // console.log(unseenIds);
+        
         const data = {
             action: 'singleuser',
-            message: userId
+            message: {
+                userId: userId,
+                unseenId: unseenIds
+            },
         };
         // console.log(JSON.stringify(data));
         fetch(url, {
@@ -166,6 +173,8 @@ include "../header.php";
     }
     setInterval(() => {
         let updatedUserId = sessionStorage.getItem('messageUserId');
+        let unseenIds = sessionStorage.getItem('unseenId');
+
         if (updatedUserId !== currentChatId) {
             currentChatId = updatedUserId
             currentUserId(currentChatId);
